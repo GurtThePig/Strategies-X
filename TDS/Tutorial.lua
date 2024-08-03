@@ -35,7 +35,6 @@ RemoteEvent:FireServer("Hotbar", "Click", 3)
 TDS:Place("Demoman", 22.69474983215332, 18.100854873657227, -19.067611694335938, 3, 0, 0, true, 0, 0, 0)
 
 TimeWaveWait(4,0,0,true)
-task.wait(15)
 WaitSpotLight()
 TDS:Place('Scout', 25.7487850189209, 18.06426239013672, -19.04046630859375, 4, 0, 0, false, 0, 0, 0, false)
 task.wait(.5)
