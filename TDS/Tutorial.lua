@@ -36,6 +36,7 @@ TDS:Place("Demoman", 22.69474983215332, 18.100854873657227, -19.067611694335938,
 
 TimeWaveWait(4,0,0,true)
 task.wait(15)
+WaitSpotLight()
 TDS:Place('Scout', 25.7487850189209, 18.06426239013672, -19.04046630859375, 4, 0, 0, false, 0, 0, 0, false)
 task.wait(.5)
 TDS:Upgrade(4, 4, 0, 0, true)
@@ -51,7 +52,7 @@ TDS:Place("Scout", 23.797218322753906, 17.89316749572754, 16.803075790405273, 5,
 
 TimeWaveWait(6,0,0,true)
 task.wait(15)
---WaitSpotlight()
+WaitSpotlight()
 TDS:Sell(5, 6, 0, 0, true)
 task.wait(.5)
 TDS:Sell(2, 6, 0, 0, true)
