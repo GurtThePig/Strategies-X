@@ -15,7 +15,8 @@ local TeleportService = game:GetService("TeleportService")
 local SpecialGameMode = {
     ["Pizza Party"] = {mode = "halloween", challenge = "PizzaParty"},
     ["Badlands II"] = {mode = "badlands", challenge = "Badlands"},
-    ["Polluted Wastelands II"] = {mode = "polluted", challenge = "PollutedWasteland"}, 
+    ["Polluted Wastelands II"] = {mode = "polluted", challenge = "PollutedWasteland"},
+    ["Failed Gateway"] = {mode = "halloween2024", difficulty = "Act1" or "Act1Easy"},
 }
 local ElevatorSettings = {
     ["Survival"] = {Enabled = false, ReMap = true, JoinMap = true, WaitTimeRe = .1, WaitTimeJoin = .25},
@@ -92,12 +93,21 @@ return function(self, p1)
                 Functions.Loadout(Strat,LoadoutInfo)
                 task.wait(2)
                 UI.JoiningStatus.Text = `Teleporting to Special Gamemode`
-                RemoteFunction:InvokeServer("Multiplayer","single_create")
-                RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                    ["count"] = 1,
-                    ["mode"] = SpecialTable.mode,
-                    ["challenge"] = SpecialTable.challenge,
-                })
+                if not SpecialTable == "Failed Gateway" then
+                    RemoteFunction:InvokeServer("Multiplayer","single_create")
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                        ["count"] = 1,
+                        ["mode"] = SpecialTable.mode,
+                        ["challenge"] = SpecialTable.challenge,
+                    })
+                elseif SpecialTable == "Failed Gateway" then
+                    RemoteFunction:InvokeServer("Multiplayer","single_create")
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                        ["count"] = 1,
+                        ["mode"] = SpecialTable.mode,
+                        ["difficulty"] = SpecialTable.difficulty,
+                    })
+                end        
                 --[[RemoteFunction:InvokeServer("Multiplayer","single_start",{
                     ["count"] = 1,
                     ["mode"] = if SpecialTable then SpecialTable else string.lower(Mode),
