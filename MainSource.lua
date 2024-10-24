@@ -948,8 +948,8 @@ Functions.MatchMaking = function()
     local SpecialMap = {
         "Pizza Party",
         "Badlands II",
-        "Polluted Wastelands II", 
-        "Huevous Hunt",
+        "Polluted Wastelands II",
+        "Failed Gateway",
     }
     local MapGlobal = StratXLibrary.Global.Map
     local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
