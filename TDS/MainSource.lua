@@ -334,7 +334,6 @@ function CheckPlace()
 end
 
 loadstring(game:HttpGet(MainLink.."TDSTools/LowGraphics.lua", true))()
-loadstring(game:HttpGet(MainLink.."TDSTools/RejoinAfterTime.lua", true))()
 
 --[[local GameInfo
 getgenv().GetGameState = function()
@@ -1124,7 +1123,7 @@ if CheckPlace() then
 	end)
 end
 
-UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin Settings (In Minutes)")
+UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin Settings In Minutes")
 local RejoinSetting = UI.RejoinSetting
 RejoinSetting:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime or 25, cleartext = false, flag = "GameTime"})
 RejoinSetting:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5, cleartext = false, flag = "LobbyTime"})
@@ -1150,7 +1149,36 @@ UtilitiesTab:Section("Universal Settings")
 UtilitiesTab:Toggle("Prefer Matchmaking", {flag = "PreferMatchmaking", default = UtilitiesConfig.PreferMatchmaking})
 UtilitiesTab:Toggle("Auto Skip Wave", {flag = "AutoSkip", default = UtilitiesConfig.AutoSkip})
 UtilitiesTab:Toggle("Low Graphics Mode", {default = UtilitiesConfig.LowGraphics or false, flag = "LowGraphics"}, function(bool)
-	StratXLibrary.LowGraphics(bool)
+    local LobbyTime = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5
+    local GameTime = UtilitiesConfig.RejoinAfterTime.GameTime or 25
+    function MinutesToSeconds(minutes)
+        return minutes*60
+    end
+    function GoBackToLobby()
+        local attemptIndex = 0
+        local success, result
+        local ATTEMPT_LIMIT = 25
+        local RETRY_DELAY = 3
+        repeat
+            success, result = pcall(function()
+                return TeleportHandler(3260590327,2,7)
+            end)
+            attemptIndex += 1
+            if not success then
+                task.wait(RETRY_DELAY)
+            end
+        until success or attemptIndex == ATTEMPT_LIMIT
+    end
+	if bool then
+		if CheckPlace() then
+            task.wait(MinutesToSeconds(GameTime))
+            GoBackToLobby()
+        elseif not CheckPlace() then
+            task.wait(MinutesToSeconds(LobbyTime))
+            GoBackToLobby()
+        end
+	end
+	prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 end)
 UtilitiesTab:Toggle("Bypass Group Checking",{default = UtilitiesConfig.BypassGroup or false, flag = "BypassGroup"})
 UtilitiesTab:Toggle("Auto Buy Missing Tower",{default = UtilitiesConfig.AutoBuyMissing or false, flag = "AutoBuyMissing"})
