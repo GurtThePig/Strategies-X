@@ -65,12 +65,13 @@ StratXLibrary.UtilitiesConfig = {
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
 	RejoinAfterTime = {
-		LobbyTime = if tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
-		GameTime = if tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
+		Enabled = true,
+		LobbyTime = if tonumber(getgenv().LobbyTime) ~= nil then tonumber(getgenv().LobbyTime) else 5,
+		GameTime = if tonumber(getgenv().GameTime) ~= nil then tonumber(getgenv().GameTime) else 25,
 	},
 	Webhook = {
 		Enabled = true,
-		Link = if tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
+		Link = if tostring(getgenv().WebhookLink) ~= "nil" then tostring(getgenv().WebhookLink) else "",
 		HideUser = false,
 		UseNewFormat = false,
 		PlayerInfo = true,
@@ -309,13 +310,14 @@ function SaveUtilitiesConfig()
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
 		RejoinAfterTime = {
-			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
-			GameTime = RejoinSetting.flags.GameTime or 25,
+			Enabled = RejoinSetting.flags.Enabled or false,
+			LobbyTime = RejoinSetting.flags.LobbyTime or if tonumber(getgenv().LobbyTime) ~= nil then tonumber(getgenv().LobbyTime) else 5,
+			GameTime = RejoinSetting.flags.GameTime or if tonumber(getgenv().GameTime) ~= nil then tonumber(getgenv().GameTime) else 25,
 		},
 		Webhook = {
 			Enabled = WebhookSetting.flags.Enabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
-			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
+			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if tostring(getgenv().WebhookLink) ~= "nil" then tostring(getgenv().WebhookLink) else "",
 			HideUser = WebhookSetting.flags.HideUser or false,
 			PlayerInfo = if type(WebhookSetting.flags.PlayerInfo) == "boolean" then WebhookSetting.flags.PlayerInfo else true,
 			GameInfo = if type(WebhookSetting.flags.GameInfo) == "boolean" then WebhookSetting.flags.GameInfo else true,
@@ -1124,9 +1126,9 @@ end
 
 UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin Settings (In Minutes)")
 local RejoinSetting = UI.RejoinSetting
-UtilitiesTab:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime, cleartext = false, flag = "GameTime"})
-UtilitiesTab:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime, cleartext = false, flag = "LobbyTime"})
-UtilitiesTab:Toggle("Rejoin After Time", {flag = "RejoinAfterTime", default = true, location = StratXLibrary}, function(bool)
+RejoinSetting:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime or 25, cleartext = false, flag = "GameTime"})
+RejoinSetting:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5, cleartext = false, flag = "LobbyTime"})
+RejoinSetting:Toggle("Rejoin After Time", {flag = "RejoinAfterTime", default = UtilitiesConfig.RejoinAfterTime.Enabled or true}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 
