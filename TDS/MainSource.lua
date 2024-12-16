@@ -70,11 +70,7 @@ StratXLibrary.UtilitiesConfig = {
 	},
 	Webhook = {
 		Enabled = true,
-<<<<<<< HEAD
 		Link = if tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
-=======
-		Link = if (getgenv().WebhookLink and tostring(getgenv().WebhookLink) ~= nil) then tostring(getgenv().WebhookLink) else "",
->>>>>>> 80f342aa480944fb830d384fec500674f0394296
 		HideUser = false,
 		UseNewFormat = false,
 		PlayerInfo = true,
@@ -262,7 +258,6 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 	if tonumber(getgenv().DefaultCam) and tonumber(getgenv().DefaultCam) <= 3 then
 		UtilitiesConfig.Camera = tonumber(getgenv().DefaultCam)
 	end
-<<<<<<< HEAD
 	if tonumber(getgenv().GameTime) then
 		UtilitiesConfig.RejoinAfterTime.GameTime = tonumber(getgenv().GameTime)
 	end
@@ -270,9 +265,6 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 		UtilitiesConfig.RejoinAfterTime.LobbyTime = tonumber(getgenv().LobbyTime)
 	end
 	if tostring(getgenv().WebhookLink) ~= nil then
-=======
-	if getgenv().WebhookLink and tostring(getgenv().WebhookLink) ~= nil and type(tostring(getgenv().WebhookLink)) == "string" then
->>>>>>> 80f342aa480944fb830d384fec500674f0394296
 		UtilitiesConfig.Webhook.Link = tostring(getgenv().WebhookLink)
 	end
 	if type(getgenv().PotatoPC) == "boolean" then
@@ -321,7 +313,6 @@ function SaveUtilitiesConfig()
 			GameTime = RejoinSetting.flags.GameTime or 25,
 		},
 		Webhook = {
-<<<<<<< HEAD
 			Enabled = WebhookSetting.flags.Enabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
 			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
@@ -330,16 +321,6 @@ function SaveUtilitiesConfig()
 			GameInfo = if type(WebhookSetting.flags.GameInfo) == "boolean" then WebhookSetting.flags.GameInfo else true,
 			TroopsInfo = if type(WebhookSetting.flags.TroopsInfo) == "boolean" then WebhookSetting.flags.TroopsInfo else true,
 			DisableCustomLog = if type(WebhookSetting.flags.DisableCustomLog) == "boolean" then WebhookSetting.flags.DisableCustomLog else true,
-=======
-			Enabled = WebSetting.flags.Enabled or false,
-			UseNewFormat = WebSetting.flags.UseNewFormat or false,
-			Link = (#WebSetting.flags.Link ~= 0 and WebSetting.flags.Link) or if (getgenv().WebhookLink and tostring(getgenv().WebhookLink) ~= nil) then tostring(getgenv().WebhookLink) else "",
-			HideUser = WebSetting.flags.HideUser or false,
-			PlayerInfo = if type(WebSetting.flags.PlayerInfo) == "boolean" then WebSetting.flags.PlayerInfo else true,
-			GameInfo = if type(WebSetting.flags.GameInfo) == "boolean" then WebSetting.flags.GameInfo else true,
-			TroopsInfo = if type(WebSetting.flags.TroopsInfo) == "boolean" then WebSetting.flags.TroopsInfo else true,
-			DisableCustomLog = if type(WebSetting.flags.DisableCustomLog) == "boolean" then WebSetting.flags.DisableCustomLog else true,
->>>>>>> 80f342aa480944fb830d384fec500674f0394296
 		},
 	}
 	UtilitiesConfig = StratXLibrary.UtilitiesConfig
