@@ -1128,28 +1128,7 @@ local RejoinSetting = UI.RejoinSetting
 RejoinSetting:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime or 25, cleartext = false, flag = "GameTime"})
 RejoinSetting:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5, cleartext = false, flag = "LobbyTime"})
 RejoinSetting:Toggle("Rejoin After Time", {default = UtilitiesConfig.RejoinAfterTime.Enabled or true, flag = "RejoinAfterTime"}, function(bool)
-	StratXLibrary.RejoinAfterTime(bool)
-end)
-
-UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
-local WebhookSetting = UI.WebhookSetting
-WebhookSetting:Toggle("Enabled",{default = UtilitiesConfig.Webhook.Enabled or false, flag = "Enabled"})
-WebhookSetting:Toggle("Apply New Format", {default = UtilitiesConfig.Webhook.UseNewFormat or false, flag = "UseNewFormat"})
-WebhookSetting:Section("Webhook Link:                             ")
-WebhookSetting:TypeBox("Webhook Link", {default = UtilitiesConfig.Webhook.Link, cleartext = false, flag = "Link"})
-if getgenv().FeatureConfig and getgenv().FeatureConfig.CustomLog then
-	WebhookSetting:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.Webhook.DisableCustomLog or false, flag = "DisableCustomLog"})
-end
-WebhookSetting:Toggle("Hide Username", {default = UtilitiesConfig.Webhook.HideUser or false, flag = "HideUser"})
-WebhookSetting:Toggle("Player Info", {default = UtilitiesConfig.Webhook.PlayerInfo or false, flag = "PlayerInfo"})
-WebhookSetting:Toggle("Game Info", {default = UtilitiesConfig.Webhook.GameInfo or false, flag = "GameInfo"})
-WebhookSetting:Toggle("Troops Info", {default = UtilitiesConfig.Webhook.TroopsInfo or false, flag = "TroopsInfo"})
-
-UtilitiesTab:Section("Universal Settings")
-UtilitiesTab:Toggle("Prefer Matchmaking", {flag = "PreferMatchmaking", default = UtilitiesConfig.PreferMatchmaking})
-UtilitiesTab:Toggle("Auto Skip Wave", {flag = "AutoSkip", default = UtilitiesConfig.AutoSkip})
-UtilitiesTab:Toggle("Low Graphics Mode", {default = UtilitiesConfig.LowGraphics or false, flag = "LowGraphics"}, function(bool)
-    local LobbyTime = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5
+	local LobbyTime = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5
     local GameTime = UtilitiesConfig.RejoinAfterTime.GameTime or 25
     function MinutesToSeconds(minutes)
         return minutes*60
@@ -1179,6 +1158,27 @@ UtilitiesTab:Toggle("Low Graphics Mode", {default = UtilitiesConfig.LowGraphics 
         end
 	end
 	prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
+end)
+
+UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
+local WebhookSetting = UI.WebhookSetting
+WebhookSetting:Toggle("Enabled",{default = UtilitiesConfig.Webhook.Enabled or false, flag = "Enabled"})
+WebhookSetting:Toggle("Apply New Format", {default = UtilitiesConfig.Webhook.UseNewFormat or false, flag = "UseNewFormat"})
+WebhookSetting:Section("Webhook Link:                             ")
+WebhookSetting:TypeBox("Webhook Link", {default = UtilitiesConfig.Webhook.Link, cleartext = false, flag = "Link"})
+if getgenv().FeatureConfig and getgenv().FeatureConfig.CustomLog then
+	WebhookSetting:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.Webhook.DisableCustomLog or false, flag = "DisableCustomLog"})
+end
+WebhookSetting:Toggle("Hide Username", {default = UtilitiesConfig.Webhook.HideUser or false, flag = "HideUser"})
+WebhookSetting:Toggle("Player Info", {default = UtilitiesConfig.Webhook.PlayerInfo or false, flag = "PlayerInfo"})
+WebhookSetting:Toggle("Game Info", {default = UtilitiesConfig.Webhook.GameInfo or false, flag = "GameInfo"})
+WebhookSetting:Toggle("Troops Info", {default = UtilitiesConfig.Webhook.TroopsInfo or false, flag = "TroopsInfo"})
+
+UtilitiesTab:Section("Universal Settings")
+UtilitiesTab:Toggle("Prefer Matchmaking", {flag = "PreferMatchmaking", default = UtilitiesConfig.PreferMatchmaking})
+UtilitiesTab:Toggle("Auto Skip Wave", {flag = "AutoSkip", default = UtilitiesConfig.AutoSkip})
+UtilitiesTab:Toggle("Low Graphics Mode", {default = UtilitiesConfig.LowGraphics or false, flag = "LowGraphics"}, function(bool)
+	StratXLibrary.LowGraphics(bool)
 end)
 UtilitiesTab:Toggle("Bypass Group Checking",{default = UtilitiesConfig.BypassGroup or false, flag = "BypassGroup"})
 UtilitiesTab:Toggle("Auto Buy Missing Tower",{default = UtilitiesConfig.AutoBuyMissing or false, flag = "AutoBuyMissing"})
