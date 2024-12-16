@@ -2,8 +2,9 @@ local Workspace = game:GetService("Workspace")
 local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local LobbyTime = tonumber(getgenv().LobbyTime) or 5
-local GameTime = tonumber(getgenv().GameTime) or 25
+local UtilitiesConfig = StratXLibrary.UtilitiesConfig
+local LobbyTime = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5
+local GameTime = UtilitiesConfig.RejoinAfterTime.GameTime or 25
 
 function MinutesToSeconds(minutes)
     return minutes*60

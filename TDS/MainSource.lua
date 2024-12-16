@@ -1128,7 +1128,7 @@ UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin Settings (In Minutes)")
 local RejoinSetting = UI.RejoinSetting
 RejoinSetting:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime or 25, cleartext = false, flag = "GameTime"})
 RejoinSetting:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5, cleartext = false, flag = "LobbyTime"})
-RejoinSetting:Toggle("Rejoin After Time", {flag = "RejoinAfterTime", default = UtilitiesConfig.RejoinAfterTime.Enabled or true}, function(bool)
+RejoinSetting:Toggle("Rejoin After Time", {default = UtilitiesConfig.RejoinAfterTime.Enabled or true, flag = "RejoinAfterTime"}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 
