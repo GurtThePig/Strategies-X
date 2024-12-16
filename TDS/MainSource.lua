@@ -66,12 +66,12 @@ StratXLibrary.UtilitiesConfig = {
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
 	RejoinAfterTime = {
 		Enabled = true,
-		LobbyTime = if tonumber(getgenv().LobbyTime) ~= nil then tonumber(getgenv().LobbyTime) else 5,
-		GameTime = if tonumber(getgenv().GameTime) ~= nil then tonumber(getgenv().GameTime) else 25,
+		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
+		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
 	},
 	Webhook = {
 		Enabled = true,
-		Link = if tostring(getgenv().WebhookLink) ~= "nil" then tostring(getgenv().WebhookLink) else "",
+		Link = if getgenv().WebhookLink and tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
 		HideUser = false,
 		UseNewFormat = false,
 		PlayerInfo = true,
@@ -259,13 +259,13 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 	if tonumber(getgenv().DefaultCam) and tonumber(getgenv().DefaultCam) <= 3 then
 		UtilitiesConfig.Camera = tonumber(getgenv().DefaultCam)
 	end
-	if tonumber(getgenv().GameTime) then
+	if getgenv().GameTime and tonumber(getgenv().GameTime) then
 		UtilitiesConfig.RejoinAfterTime.GameTime = tonumber(getgenv().GameTime)
 	end
-	if tonumber(getgenv().LobbyTime) then
+	if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then
 		UtilitiesConfig.RejoinAfterTime.LobbyTime = tonumber(getgenv().LobbyTime)
 	end
-	if tostring(getgenv().WebhookLink) ~= nil then
+	if getgenv().WebhookLink and type(tostring(getgenv().WebhookLink)) == "string" then
 		UtilitiesConfig.Webhook.Link = tostring(getgenv().WebhookLink)
 	end
 	if type(getgenv().PotatoPC) == "boolean" then
@@ -311,13 +311,13 @@ function SaveUtilitiesConfig()
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
 		RejoinAfterTime = {
 			Enabled = RejoinSetting.flags.Enabled or false,
-			LobbyTime = RejoinSetting.flags.LobbyTime or if tonumber(getgenv().LobbyTime) ~= nil then tonumber(getgenv().LobbyTime) else 5,
-			GameTime = RejoinSetting.flags.GameTime or if tonumber(getgenv().GameTime) ~= nil then tonumber(getgenv().GameTime) else 25,
+			LobbyTime = RejoinSetting.flags.LobbyTime or if (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) then tonumber(getgenv().LobbyTime) else 5,
+			GameTime = RejoinSetting.flags.GameTime or if (getgenv().GameTime and tonumber(getgenv().GameTime)) then tonumber(getgenv().GameTime) else 25,
 		},
 		Webhook = {
 			Enabled = WebhookSetting.flags.Enabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
-			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if tostring(getgenv().WebhookLink) ~= "nil" then tostring(getgenv().WebhookLink) else "",
+			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) then tostring(getgenv().WebhookLink) else "",
 			HideUser = WebhookSetting.flags.HideUser or false,
 			PlayerInfo = if type(WebhookSetting.flags.PlayerInfo) == "boolean" then WebhookSetting.flags.PlayerInfo else true,
 			GameInfo = if type(WebhookSetting.flags.GameInfo) == "boolean" then WebhookSetting.flags.GameInfo else true,
