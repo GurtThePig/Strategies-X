@@ -64,11 +64,6 @@ StratXLibrary.UtilitiesConfig = {
 	AutoSkip = getgenv().AutoSkip or false,
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
-	RejoinAfterTime = {
-		Enabled = true,
-		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
-		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
-	},
 	Webhook = {
 		Enabled = true,
 		Link = if getgenv().WebhookLink and tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
@@ -259,12 +254,6 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 	if tonumber(getgenv().DefaultCam) and tonumber(getgenv().DefaultCam) <= 3 then
 		UtilitiesConfig.Camera = tonumber(getgenv().DefaultCam)
 	end
-	if getgenv().GameTime and tonumber(getgenv().GameTime) then
-		UtilitiesConfig.RejoinAfterTime.GameTime = tonumber(getgenv().GameTime)
-	end
-	if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then
-		UtilitiesConfig.RejoinAfterTime.LobbyTime = tonumber(getgenv().LobbyTime)
-	end
 	if getgenv().WebhookLink and type(tostring(getgenv().WebhookLink)) == "string" then
 		UtilitiesConfig.Webhook.Link = tostring(getgenv().WebhookLink)
 	end
@@ -298,7 +287,6 @@ end
 function SaveUtilitiesConfig()
 	UtilitiesTab = UI.UtilitiesTab
 	local WebhookSetting = UI.WebhookSetting
-	local RejoinSetting = UI.RejoinSetting
 	StratXLibrary.UtilitiesConfig = {
 		Camera = tonumber(getgenv().DefaultCam) or 2,
 		LowGraphics = UtilitiesTab.flags.LowGraphics,
@@ -309,11 +297,6 @@ function SaveUtilitiesConfig()
 		AutoSkip = UtilitiesTab.flags.AutoSkip,
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
-		RejoinAfterTime = {
-			Enabled = RejoinSetting.flags.Enabled or false,
-			LobbyTime = RejoinSetting.flags.LobbyTime or if (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) then tonumber(getgenv().LobbyTime) else 5,
-			GameTime = RejoinSetting.flags.GameTime or if (getgenv().GameTime and tonumber(getgenv().GameTime)) then tonumber(getgenv().GameTime) else 25,
-		},
 		Webhook = {
 			Enabled = WebhookSetting.flags.Enabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
@@ -585,7 +568,7 @@ if CheckPlace() then
 		TeleportService:Teleport(3260590327, LocalPlayer)
 	end
 
-	-- Disable Auto Skip Feature
+	--Disable Auto Skip Feature
 	local AutoSkipCheck
 	task.spawn(function()
 		local Success, Skip
@@ -606,7 +589,7 @@ if CheckPlace() then
 		end
 	end)
 
-	-- Check if InWave or not
+	--Check if InWave or not
 	StratXLibrary.TimerConnection = RSTimer.Changed:Connect(function(time)
 		if time == 5 then
 			TimerCheck = true
@@ -615,7 +598,7 @@ if CheckPlace() then
 		end
 	end)
 
-	-- AutoSkip & Auto Start Game
+	--AutoSkip & Auto Start Game
 	if VoteGUI:WaitForChild("prompt").Text == "Ready?" then --Event GameMode
 		task.spawn(function()
 			repeat task.wait() until StratXLibrary.Executed
@@ -661,7 +644,7 @@ if CheckPlace() then
    		end
 	end)
 
-	-- Platform Stand
+	--Platform Stand
 	task.spawn(function()
 		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
 		local Part = Instance.new("Part")
@@ -685,7 +668,7 @@ if CheckPlace() then
 		LocalPlayer.Character.HumanoidRootPart.CFrame = Part.CFrame + Vector3.new(0, 3.5, 0)
 	end)
 
-	-- Game Cores
+	--Game Cores
 	task.spawn(function()
 		loadstring(game:HttpGet(MainLink.."TDSTools/FreeCam.lua", true))()
 
@@ -808,10 +791,10 @@ if CheckPlace() then
 				end)
 			end
 			prints("GameOver Changed1")
-			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobbyAfterMatch) then
-				repeat task.wait() until (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobbyAfterMatch)
+			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby) then
+				repeat task.wait() until (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby)
 			end
-			prints(UtilitiesConfig.RestartMatch,StratXLibrary.RejoinLobbyAfterMatch)
+			prints(UtilitiesConfig.RestartMatch,StratXLibrary.RejoinLobby)
 			prints("GameOver Changed2")
 			if UtilitiesConfig.RestartMatch and RSHealthCurrent.Value == 0 then --StratXLibrary.RestartCount <= UtilitiesConfig.RestartTimes
 				prints(`Match Lose. Strat Will Restart Shortly`)
@@ -895,6 +878,18 @@ if CheckPlace() then
    				local success, result
    				local ATTEMPT_LIMIT = 25
    				local RETRY_DELAY = 3
+				local TempTable = {}
+				function TeleportUsingRemote(string)
+					repeat
+						success, result = pcall(function()
+							return string
+						end)
+						attemptIndex += 1
+						if not success then
+							task.wait(RETRY_DELAY)
+						end
+					until success or attemptIndex == ATTEMPT_LIMIT
+				end
    				--[[repeat
    					success, result = pcall(function()
    						return TeleportHandler(3260590327,2,7)
@@ -910,58 +905,34 @@ if CheckPlace() then
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
-							repeat
-       							success, result = pcall(function()
-       								return RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-       									["difficulty"] = SpecialTable.difficulty,
-       									["night"] = SpecialTable.night,
-       									["count"] = 1,
-       									["mode"] = SpecialTable.mode,
-       								})
-       							end)
-       							attemptIndex += 1
-       							if not success then
-       								task.wait(RETRY_DELAY)
-       							end
-							until success or attemptIndex == ATTEMPT_LIMIT
+							local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+    							["difficulty"] = SpecialTable.difficulty,
+    							["night"] = SpecialTable.night,
+    							["count"] = 1,
+    							["mode"] = SpecialTable.mode,
+    						})
+							table.insert(TempTable, Remote)
+							TeleportUsingRemote(TempTable)
     					elseif SpecialTable.mode == "plsDonate" then
-							repeat
-								success, result = pcall(function()
-									return RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-										["difficulty"] = SpecialTable.difficulty,
-										["count"] = 1,
-									    ["mode"] = SpecialTable.mode,
-									})
-								end)
-								attemptIndex += 1
-								if not success then
-									task.wait(RETRY_DELAY)
-								end
-							until success or attemptIndex == ATTEMPT_LIMIT
+    						local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+         						["difficulty"] = SpecialTable.difficulty,
+         						["count"] = 1,
+         						["mode"] = SpecialTable.mode,
+    						})
+							table.insert(TempTable, Remote)
+							TeleportUsingRemote(TempTable)
     					elseif SpecialTable.mode == "Event" then
-							repeat
-								success, result = pcall(function()
-									return RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-								end)
-								attemptIndex += 1
-								if not success then
-									task.wait(RETRY_DELAY)
-								end
-							until success or attemptIndex == ATTEMPT_LIMIT
+    						local Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+							table.insert(TempTable, Remote)
+							TeleportUsingRemote(TempTable)
 						else
-							repeat
-								success, result = pcall(function()
-									return RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-										["count"] = 1,
-										["mode"] = SpecialTable.mode,
-										["challenge"] = SpecialTable.challenge,
-									})
-								end)
-								attemptIndex += 1
-								if not success then
-									task.wait(RETRY_DELAY)
-								end
-							until success or attemptIndex == ATTEMPT_LIMIT
+    						local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+    							["count"] = 1,
+    							["mode"] = SpecialTable.mode,
+    							["challenge"] = SpecialTable.challenge,
+    						})
+							table.insert(TempTable, Remote)
+							TeleportUsingRemote(TempTable)
     					end
     				else
 						local DiffTable = {
@@ -971,19 +942,13 @@ if CheckPlace() then
     						["Fallen"] = "Fallen",
     					}
     					local DifficultyName = v.Mode.Lists[1] and DiffTable[v.Mode.Lists[1].Name]
-						repeat
-							success, result = pcall(function()
-								return RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-									["count"] = 1,
-									["mode"] = string.lower(v.Map.Lists[1].Mode),
-									["difficulty"] = DifficultyName,
-								})
-							end)
-							attemptIndex += 1
-							if not success then
-								task.wait(RETRY_DELAY)
-							end
-						until success or attemptIndex == ATTEMPT_LIMIT
+    					local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+    						["count"] = 1,
+    						["mode"] = string.lower(v.Map.Lists[1].Mode),
+    						["difficulty"] = DifficultyName,
+    					})
+						table.insert(TempTable, Remote)
+						TeleportUsingRemote(TempTable)
     				end
     			end
 				--TeleportHandler(3260590327,2,7)
@@ -1029,7 +994,7 @@ end
 
 if CheckPlace() then
 	UtilitiesTab:Section("Game Settings")
-	UtilitiesTab:Toggle("Rejoin Lobby After Match",{flag = "RejoinLobbyAfterMatch", default = true, location = StratXLibrary})
+	UtilitiesTab:Toggle("Rejoin Lobby After Match",{flag = "RejoinLobby", default = true, location = StratXLibrary})
 	UtilitiesTab:Toggle("Show Towers Preview", {flag = "TowersPreview", default = UtilitiesConfig.TowersPreview}, function(bool)
 		local TowersFolder = if bool then Workspace.PreviewFolder else ReplicatedStorage.PreviewHolder
 		local ErrorsFolder = if bool then Workspace.PreviewErrorFolder else ReplicatedStorage.PreviewHolder
@@ -1122,43 +1087,6 @@ if CheckPlace() then
 		LocalPlayer.DevCameraOcclusionMode = OldCameraOcclusionMode
 	end)
 end
-
-UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin Settings In Minutes")
-local RejoinSetting = UI.RejoinSetting
-RejoinSetting:TypeBox("Game Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.GameTime or 25, cleartext = false, flag = "GameTime"})
-RejoinSetting:TypeBox("Lobby Rejoin Time", {default = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5, cleartext = false, flag = "LobbyTime"})
-RejoinSetting:Toggle("Rejoin After Time", {default = UtilitiesConfig.RejoinAfterTime.Enabled or true, flag = "RejoinAfterTime"}, function(bool)
-	local LobbyTime = UtilitiesConfig.RejoinAfterTime.LobbyTime or 5
-    local GameTime = UtilitiesConfig.RejoinAfterTime.GameTime or 25
-    function MinutesToSeconds(minutes)
-        return minutes*60
-    end
-    function GoBackToLobby()
-        local attemptIndex = 0
-        local success, result
-        local ATTEMPT_LIMIT = 25
-        local RETRY_DELAY = 3
-        repeat
-            success, result = pcall(function()
-                return TeleportHandler(3260590327,2,7)
-            end)
-            attemptIndex += 1
-            if not success then
-                task.wait(RETRY_DELAY)
-            end
-        until success or attemptIndex == ATTEMPT_LIMIT
-    end
-	if bool then
-		if CheckPlace() then
-            task.wait(MinutesToSeconds(GameTime))
-            GoBackToLobby()
-        elseif not CheckPlace() then
-            task.wait(MinutesToSeconds(LobbyTime))
-            GoBackToLobby()
-        end
-	end
-	prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
-end)
 
 UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
 local WebhookSetting = UI.WebhookSetting
@@ -1376,22 +1304,18 @@ if GetConnects then
         end
     end
 end]]
-
--- Anti-AFK and Rejoining Stuffs
 LocalPlayer.Idled:Connect(function()
 	VirtualUser:ClickButton2(Vector2.new())
 	VirtualUser:Button2Down(Vector2.new(0,0), CurrentCamera.CFrame)
 	task.wait(1)
 	VirtualUser:Button2Up(Vector2.new(0,0), CurrentCamera.CFrame)
 end)
-
 game:GetService("CoreGui").RobloxPromptGui.promptOverlay.ChildAdded:Connect(function(object)
 	if object.Name == "ErrorPrompt" and object:FindFirstChild("MessageArea") and object.MessageArea:FindFirstChild("ErrorFrame") then
 		TeleportService:Teleport(3260590327, LocalPlayer)
 	end
 end)
 
--- Save Config
 task.spawn(function()
 	while true do
 		SaveUtilitiesConfig()
