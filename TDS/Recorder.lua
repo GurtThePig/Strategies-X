@@ -380,19 +380,27 @@ task.spawn(function()
 end)
 
 local OldNamecall
-OldNamecall = hookmetamethod(game, '__namecall', function(...)
-    local Self, Args = (...), ({select(2, ...)})
-    if getnamecallmethod() == "InvokeServer" and Self.name == "RemoteFunction" then
-        local thread = coroutine.running()
-        coroutine.wrap(function(Args)
-            local Timer = GetTimer()
-            local RemoteFired = Self.InvokeServer(Self, unpack(Args))
-            if GenerateFunction[Args[2]] then
-                GenerateFunction[Args[2]](Args, Timer, RemoteFired)
-            end
-            coroutine.resume(thread, RemoteFired)
-        end)(Args)
-        return coroutine.yield()
+OldNamecall = hookmetamethod(game, '__namecall', function(Self, ...)
+    local Args = (...)
+    if getnamecallmethod() == "FireServer" then
+        if Self.Name == "SelectLoadout" then
+            SetStatus(`Loadout Set`)
+            appendstrat(`TDS:PickLoadout("{Args[1]}")`)
+        end
+    end
+    if getnamecallmethod() == "InvokeServer" then
+        if Self.name == "RemoteFunction" then
+            local thread = coroutine.running()
+            coroutine.wrap(function(Args)
+                local Timer = GetTimer()
+                local RemoteFired = Self.InvokeServer(Self, unpack(Args))
+                if GenerateFunction[Args[2]] then
+                    GenerateFunction[Args[2]](Args, Timer, RemoteFired)
+                end
+                coroutine.resume(thread, RemoteFired)
+            end)(Args)
+            return coroutine.yield()
+        end
     end
     return OldNamecall(...,unpack(Args))
 end)
