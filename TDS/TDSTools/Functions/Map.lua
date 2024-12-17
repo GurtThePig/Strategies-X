@@ -90,22 +90,6 @@ return function(self, p1)
             return
         end
         for i,v in next, Workspace.Elevators:GetChildren() do
-            local attemptIndex = 0
-   			local success, result
-   			local ATTEMPT_LIMIT = 25
-   			local RETRY_DELAY = 3
-            local TempTable = {}
-            function TeleportUsingRemote(string)
-                repeat
-                    success, result = pcall(function()
-                        return string
-                    end)
-                    attemptIndex += 1
-                    if not success then
-                        task.wait(RETRY_DELAY)
-                    end
-                until success or attemptIndex == ATTEMPT_LIMIT
-            end
             if SpecialGameMode[MapName] then
                 local SpecialTable = SpecialGameMode[MapName]
                 UI.JoiningStatus.Text = `Special Gamemode Found. Checking Loadout`
@@ -123,34 +107,26 @@ return function(self, p1)
                 UI.JoiningStatus.Text = `Teleporting to Special Gamemode`
                 RemoteFunction:InvokeServer("Multiplayer","single_create")
                 if SpecialTable.mode == "halloween2024" then
-                    local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["difficulty"] = SpecialTable.difficulty,
                         ["night"] = SpecialTable.night,
                         ["count"] = 1,
                         ["mode"] = SpecialTable.mode,
                     })
-                    table.insert(TempTable, Remote)
-                    TeleportUsingRemote(TempTable)
                 elseif SpecialTable.mode == "plsDonate" then
-                    local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["difficulty"] = SpecialTable.difficulty,
                         ["count"] = 1,
                         ["mode"] = SpecialTable.mode,
                     })
-                    table.insert(TempTable, Remote)
-                    TeleportUsingRemote(TempTable)
                 elseif SpecialTable.mode == "Event" then
-                    local Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-                    table.insert(TempTable, Remote)
-                    TeleportUsingRemote(TempTable)
+                    RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
                 else
-                    local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["count"] = 1,
                         ["mode"] = SpecialTable.mode,
                         ["challenge"] = SpecialTable.challenge,
                     })
-                    table.insert(TempTable, Remote)
-                    TeleportUsingRemote(TempTable)
                 end
                 prints(`Using MatchMaking To Teleport To Special GameMode: {SpecialTable.mode}`)
                 return
@@ -184,13 +160,11 @@ return function(self, p1)
                 task.wait(2)
                 UI.JoiningStatus.Text = `Teleporting to Matchmaking Place`
                 RemoteFunction:InvokeServer("Multiplayer","single_create")
-                local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                     ["count"] = 1,
                     ["mode"] = string.lower(MapProps.Mode),
                     ["difficulty"] = DifficultyName,
                 })
-                table.insert(TempTable, Remote)
-                TeleportUsingRemote(TempTable)
                 prints("Teleporting To Matchmaking Place")
                 return
             end

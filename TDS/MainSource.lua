@@ -873,24 +873,12 @@ if CheckPlace() then
 					end)
 					task.wait(12)
 				end]]
-   				--prints("Rejoining To Lobby")
+   				--[[prints("Rejoining To Lobby")
    				local attemptIndex = 0
    				local success, result
    				local ATTEMPT_LIMIT = 25
    				local RETRY_DELAY = 3
-				local TempTable = {}
-				function TeleportUsingRemote(string)
-					repeat
-						success, result = pcall(function()
-							return string
-						end)
-						attemptIndex += 1
-						if not success then
-							task.wait(RETRY_DELAY)
-						end
-					until success or attemptIndex == ATTEMPT_LIMIT
-				end
-   				--[[repeat
+   				repeat
    					success, result = pcall(function()
    						return TeleportHandler(3260590327,2,7)
    					end)
@@ -905,34 +893,26 @@ if CheckPlace() then
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
-							local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     							["difficulty"] = SpecialTable.difficulty,
     							["night"] = SpecialTable.night,
     							["count"] = 1,
     							["mode"] = SpecialTable.mode,
     						})
-							table.insert(TempTable, Remote)
-							TeleportUsingRemote(TempTable)
     					elseif SpecialTable.mode == "plsDonate" then
-    						local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
          						["difficulty"] = SpecialTable.difficulty,
          						["count"] = 1,
          						["mode"] = SpecialTable.mode,
     						})
-							table.insert(TempTable, Remote)
-							TeleportUsingRemote(TempTable)
     					elseif SpecialTable.mode == "Event" then
-    						local Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-							table.insert(TempTable, Remote)
-							TeleportUsingRemote(TempTable)
+							RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
 						else
-    						local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+    						RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     							["count"] = 1,
     							["mode"] = SpecialTable.mode,
     							["challenge"] = SpecialTable.challenge,
     						})
-							table.insert(TempTable, Remote)
-							TeleportUsingRemote(TempTable)
     					end
     				else
 						local DiffTable = {
@@ -942,13 +922,11 @@ if CheckPlace() then
     						["Fallen"] = "Fallen",
     					}
     					local DifficultyName = v.Mode.Lists[1] and DiffTable[v.Mode.Lists[1].Name]
-    					local Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+						RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     						["count"] = 1,
     						["mode"] = string.lower(v.Map.Lists[1].Mode),
     						["difficulty"] = DifficultyName,
     					})
-						table.insert(TempTable, Remote)
-						TeleportUsingRemote(TempTable)
     				end
     			end
 				--TeleportHandler(3260590327,2,7)
