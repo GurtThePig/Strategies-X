@@ -1222,8 +1222,11 @@ Functions.MatchMaking = function()
 				break
 			end
 		end
-		local Strat = StratXLibrary.Strat
-		local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
+		local MapInStrat
+		for i,v in ipairs(StratXLibrary.Strat) do
+			MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
+			break
+		end
   		if not (VetoUsedOnce and CanChangeMap and table.find(CurrentMapList, MapInStrat)) then
   			VetoUsedOnce = true
   			RemoteEvent:FireServer("LobbyVoting", "Veto")
