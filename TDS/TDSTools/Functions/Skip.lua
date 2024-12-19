@@ -21,7 +21,6 @@ return function(self, p1)
             return
         end
         local SkipCheck
-        local attemptLimit = 0
         if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
             repeat
                 task.wait()
@@ -31,10 +30,9 @@ return function(self, p1)
             return
         end
         repeat
-            attemptLimit += 1
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
             task.wait()
-        until attemptLimit == 1 or (type(SkipCheck) == "boolean" and SkipCheck) or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
+        until (type(SkipCheck) == "boolean" and SkipCheck) or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
         SetActionInfo("Skip")
         ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
     end)
