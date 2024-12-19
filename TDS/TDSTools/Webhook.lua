@@ -239,6 +239,7 @@ Embed.AddField("Map:",ReplicatedStorage.State.Map.Value)
 Embed.AddField("Mode:",ReplicatedStorage.State.Difficulty.Value)
 Embed.AddField("Wave / Health:",LocalPlayer.PlayerGui.ReactGameTopGameDisplay.Frame.wave.container.value.Text.." / "..tostring(ReplicatedStorage.State.Health.Current.Value).." ("..tostring(ReplicatedStorage.State.Health.Max.Value)..")")
 Embed.AddField("Game Time:",TimeFormat(Stats.duration.Text))
+Embed.AddField("Won Bells",Pickups)
 
 repeat
 	task.wait()
