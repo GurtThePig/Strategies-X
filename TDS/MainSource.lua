@@ -266,7 +266,7 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 	if type(getgenv().AutoBuyMissing) == "boolean" then
 		UtilitiesConfig.AutoBuyMissing = getgenv().BuyMissingTowers
 	end
-	if type(getgenv().RestartMatch) == "boolean" then
+	if type(getgenv().AutoRestart) == "boolean" then
 		UtilitiesConfig.RestartMatch = getgenv().AutoRestart
 	end
 	if type(getgenv().Debug) == "boolean" then
