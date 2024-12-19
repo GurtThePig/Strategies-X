@@ -33,6 +33,7 @@ return function(self, p1)
         repeat
             attemptLimit += 1
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+            task.wait()
         until attemptLimit == 1 or (type(SkipCheck) == "boolean" and SkipCheck) or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
         SetActionInfo("Skip")
         ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
