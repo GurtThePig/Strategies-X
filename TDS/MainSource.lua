@@ -1246,6 +1246,7 @@ Functions.MatchMaking = function()
     				end
     			elseif currentVeto.Text == `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
     		        prints("Not Private Intermission")
+					break
        			end
     		end
     		task.wait(1)
