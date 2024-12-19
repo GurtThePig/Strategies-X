@@ -14,7 +14,6 @@ return function(self, p1)
     if not CheckPlace() then
         return
     end
-    local GameWave = LocalPlayer.PlayerGui:WaitForChild("ReactGameTopGameDisplay"):WaitForChild("Frame"):WaitForChild("wave"):WaitForChild("container"):WaitForChild("value") -- Current wave you are on
     local VoteGUI = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesVote"):WaitForChild("Frame"):WaitForChild("votes"):WaitForChild("vote") -- it is what it is
     SetActionInfo("Skip","Total")
     task.spawn(function()
@@ -22,18 +21,19 @@ return function(self, p1)
             return
         end
         local SkipCheck
+        local attemptLimit = 0
         if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
             repeat
                 task.wait()
             until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(0.5, 0, 0.5, 0)
         end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or tonumber(GameWave.Text) == 0 then
+        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 then
             return
         end
         repeat
+            attemptLimit += 1
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-            task.wait()
-        until type(SkipCheck) == "boolean" and SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
+        until attemptLimit == 1 or (type(SkipCheck) == "boolean" and SkipCheck) or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
         SetActionInfo("Skip")
         ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
     end)
