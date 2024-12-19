@@ -1243,6 +1243,7 @@ Functions.MatchMaking = function()
                      	Index = v.Index
       					RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
                      	prints("Overrided for Map")
+						break
     				end
     			elseif currentVeto.Text == `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
     		        prints("Not Private Intermission")
