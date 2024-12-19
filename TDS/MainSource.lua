@@ -1245,16 +1245,17 @@ Functions.MatchMaking = function()
       					prints("Not Private Intermission")
          			end
     			end
-    			task.wait(1)
-    			table.clear(CurrentMapList)
-    			for i,v in next, Workspace[Lobby].Boards:GetChildren() do
-    				table.insert(CurrentMapList, v.Hitboxes.Bottom.MapDisplay.Title.Text)
-    			end
-    			task.delay(5,function()
-    				if not MapProps then
-    					TeleportHandler(3260590327,2,7)
-    				end
-    			end)
+				task.wait(1)
+        		table.clear(CurrentMapList)
+        		for i,v in next, Workspace[Lobby].Boards:GetChildren() do
+        			table.insert(CurrentMapList, v.Hitboxes.Bottom.MapDisplay.Title.Text)
+        		end
+        		task.delay(5,function()
+        			if not MapProps then
+        				TeleportHandler(3260590327,2,7)
+        			end
+        		end)
+			break
     		end
 	    end
 	end
