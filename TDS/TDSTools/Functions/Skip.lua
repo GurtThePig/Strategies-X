@@ -14,6 +14,7 @@ return function(self, p1)
     if not CheckPlace() then
         return
     end
+    local GameWave = LocalPlayer.PlayerGui:WaitForChild("ReactGameTopGameDisplay"):WaitForChild("Frame"):WaitForChild("wave"):WaitForChild("container"):WaitForChild("value") -- Current wave you are on
     local VoteGUI = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesVote"):WaitForChild("Frame"):WaitForChild("votes"):WaitForChild("vote") -- it is what it is
     SetActionInfo("Skip","Total")
     task.spawn(function()
@@ -22,17 +23,12 @@ return function(self, p1)
         end
         local SkipState = false
         local SkipCheck
-        if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+        if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
             repeat
                 task.wait()
-            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
+            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(0.5, 0, 0.5, 0)
         end
-        if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
-            repeat
-                task.wait()
-            until VoteGUI.Position == UDim2.new(0.5, 0, 0.5, 0)
-        end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
+        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or tonumber(GameWave.Text) == 0 then
             return
         end
         repeat
