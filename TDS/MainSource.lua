@@ -1255,7 +1255,6 @@ Functions.MatchMaking = function()
         				TeleportHandler(3260590327,2,7)
         			end
         		end)
-			break
     		end
 	    end
 	end
