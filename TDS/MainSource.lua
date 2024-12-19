@@ -1180,8 +1180,8 @@ Functions.MatchMaking = function()
 	local TroopsOwned = GetTowersInfo()
 	local CanChangeMap = game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590)
 	local CurrentMapList = {}
-	for i,v in next, Workspace[Lobby].Boards:GetChildren() do
-		table.insert(CurrentMapList, v.Hitboxes.Bottom.MapDisplay.Title.Text)
+	for i,v in next, Workspace:WaitForChild(Lobby):WaitForChild("Boards"):GetChildren() do
+		table.insert(CurrentMapList, v:WaitForChild("Hitboxes"):WaitForChild("Bottom"):WaitForChild("MapDisplay"):WaitForChild("Title").Text)
 	end
 	task.wait(3)
 	while not MapProps do
@@ -1219,7 +1219,7 @@ Functions.MatchMaking = function()
 				prints("Overrided Map")
 				RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
 				break
-		    elseif not (VetoUsedOnce and CanChangeMap and table.find(CurrentMapList, v.Map.Lists[1].Map)) then
+		    elseif not VetoUsedOnce and not CanChangeMap and not table.find(CurrentMapList, v.Map.Lists[1].Map) then
            		VetoUsedOnce = true
                	RemoteEvent:FireServer("LobbyVoting", "Veto")
            		prints("Veto Has Used Once")
