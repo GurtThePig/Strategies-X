@@ -21,7 +21,6 @@ return function(self, p1)
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
-        local SkipState = false
         local SkipCheck
         if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
             repeat
@@ -33,9 +32,8 @@ return function(self, p1)
         end
         repeat
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-            SkipState = true
             task.wait()
-        until SkipCheck or SkipState == true or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
+        until type(SkipCheck) == "boolean" and SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
         SetActionInfo("Skip")
         ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
     end)
