@@ -1245,9 +1245,9 @@ Functions.MatchMaking = function()
 		end
 		task.wait(1)
       	table.clear(CurrentMapList)
-      	for i,v in next, Workspace[Lobby].Boards:GetChildren() do
-      		table.insert(CurrentMapList, v.Hitboxes.Bottom.MapDisplay.Title.Text)
-      	end
+      	for i,v in next, Workspace:WaitForChild(Lobby):WaitForChild("Boards"):GetChildren() do
+			table.insert(CurrentMapList, v:WaitForChild("Hitboxes"):WaitForChild("Bottom"):WaitForChild("MapDisplay"):WaitForChild("Title").Text)
+		end
       	task.delay(5,function()
       		if not MapProps then
       			TeleportHandler(3260590327,2,7)
