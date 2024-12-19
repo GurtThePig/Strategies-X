@@ -16,27 +16,29 @@ return function(self, p1)
     end
     local VoteGUI = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesVote"):WaitForChild("Frame"):WaitForChild("votes"):WaitForChild("vote") -- it is what it is
     SetActionInfo("Skip","Total")
-    VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
+    task.spawn(function()
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
-        if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
-            return
-        end
         local SkipCheck
-        if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+        VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
+            if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+                repeat
+                    task.wait()
+                until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
+            end
+            if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then
+                return
+            end
+            if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
+                return
+            end
             repeat
+                SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
                 task.wait()
-            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
-        end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
-            return
-        end
-        repeat
-            SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-            task.wait()
-        until SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
-        SetActionInfo("Skip")
-        ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
+            until SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
+            SetActionInfo("Skip")
+            ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
+        end)
     end)
 end
