@@ -1222,7 +1222,7 @@ Functions.MatchMaking = function()
 				break
 			end
 		end
-		if not (VetoUsedOnce and CanChangeMap and #CurrentMapList == 0) then
+		if not (VetoUsedOnce and CanChangeMap) and #CurrentMapList == 0 then
 			VetoUsedOnce = true
 			RemoteEvent:FireServer("LobbyVoting", "Veto")
 			prints("Veto Has Used Once")
