@@ -1166,7 +1166,7 @@ Functions.SellAllFarms = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/S
 Functions.Option = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/Option.lua", true))()
 
 Functions.MatchMaking = function()
-	local MapProps, Index
+	local MapProps, Index, MapInStrat, RemoteCheck
     local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
 	local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
 	local Lobby = if GameMode == "Survival" then "IntermissionLobby" else "HardcoreIntermissionLobby"
@@ -1222,14 +1222,17 @@ Functions.MatchMaking = function()
 				break
 			end
 		end
-		local MapInStrat
 		for i,v in ipairs(StratXLibrary.Strat) do
     		MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
 			break
 		end
        	if not (VetoUsedOnce and CanChangeMap and table.find(CurrentMapList, MapInStrat)) then
     		VetoUsedOnce = true
-    		RemoteEvent:FireServer("LobbyVoting", "Veto")
+			repeat
+        		RemoteCheck = RemoteEvent:FireServer("LobbyVoting", "Veto")
+				task.wait()
+				break
+			until typeof(RemoteCheck) == "boolean" and RemoteCheck
     		prints("Veto Has Used Once")
     		task.wait(3)
     		if not CheckingForPrivateIntermission then
@@ -1260,8 +1263,6 @@ Functions.MatchMaking = function()
       				TeleportHandler(3260590327,2,7)
       			end
       		end)
-    	else
-			return
 		end
     end
 	RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
