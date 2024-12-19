@@ -9,7 +9,7 @@ local TeleportService = game:GetService("TeleportService")
 local SpecialGameMode = {
     ["Pizza Party"] = {mode = "halloween", challenge = "PizzaParty"},
     ["Badlands II"] = {mode = "badlands", challenge = "Badlands"},
-    ["Polluted Wastelands II"] = {mode = "polluted", challenge = "PollutedWasteland"},
+    ["Polluted Wasteland II"] = {mode = "polluted", challenge = "PollutedWasteland"},
     --Current Special Maps ^^^^^^
     ["Failed Gateway"] = {mode = "halloween2024", difficulty = "Act1", night = 1},
     ["The Nightmare Realm"] = {mode = "halloween2024", difficulty = "Act2", night = 2},
@@ -123,7 +123,7 @@ return function(self, p1)
                     })
                 elseif SpecialTable.mode == "frostInvasion" then
                     RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                        ["difficulty"] = SpecialTable.difficulty,
+                        ["difficulty"] = if not table.find(SpecialTable.difficulty, Difficulty) then "Easy" else "Hard",
                         ["mode"] = SpecialTable.mode,
                         ["count"] = 1,
                     })
