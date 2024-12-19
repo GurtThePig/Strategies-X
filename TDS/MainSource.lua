@@ -1260,7 +1260,9 @@ Functions.MatchMaking = function()
       				TeleportHandler(3260590327,2,7)
       			end
       		end)
-    	end
+    	else
+			return
+		end
     end
 	RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
 	RemoteEvent:FireServer("LobbyVoting", "Vote", MapProps.Map, LocalPlayer.Character.HumanoidRootPart.Position)
