@@ -6,18 +6,17 @@ local Info = MatchGui:WaitForChild("content"):WaitForChild("info")
 local Stats = Info.stats
 local Rewards = Info:WaitForChild("rewards")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Executor = identifyexecutor and identifyexecutor() or "???"
+local Executor = identifyexecutor and identifyexecutor() or getexecutor and getexecutor() or"???"
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local PlayerInfo = StratXLibrary.UI.PlayerInfo.Property
 
 --Pickups Stuff
 
-local Before = getgenv().OldPickups
-local Now = LocalPlayer.PlayerGui.ReactOverridesTopBar.Frame.items["Operation I.C.E"].text.Text
-Before = string.gsub(Before, "%D", "")
-Now = string.gsub(Now, "%D", "")
-local Pickups = Now - Before
-Pickups = tostring(Pickups)
+local OldPickups = getgenv().OldPickups
+local CurrentPickups = LocalPlayer.PlayerGui.ReactOverridesTopBar.Frame.items["Operation I.C.E"].text.Text
+OldPickups = string.gsub(OldPickups, "%D", "")
+CurrentPickups = string.gsub(CurrentPickups, "%D", "")
+local WonPickups = CurrentPickups - OldPickups
 
 --Text Formatters
 
@@ -239,7 +238,7 @@ Embed.AddField("Map:",ReplicatedStorage.State.Map.Value)
 Embed.AddField("Mode:",ReplicatedStorage.State.Difficulty.Value)
 Embed.AddField("Wave / Health:",LocalPlayer.PlayerGui.ReactGameTopGameDisplay.Frame.wave.container.value.Text.." / "..tostring(ReplicatedStorage.State.Health.Current.Value).." ("..tostring(ReplicatedStorage.State.Health.Max.Value)..")")
 Embed.AddField("Game Time:",TimeFormat(Stats.duration.Text))
-Embed.AddField("Won Bells:",Pickups)
+Embed.AddField("Won Bells:",WonPickups)
 
 repeat
 	task.wait()
@@ -280,7 +279,7 @@ Embed.AddField("Exp:", CommaText(PlayerInfo.Experience).." :star:")
 Embed.AddField("Spin Tickets:", CommaText(PlayerInfo.SpinTickets).." :tickets:")
 Embed.AddField("Revive Tickets:", CommaText(PlayerInfo.ReviveTickets).." :ticket:")
 Embed.AddField("Timescale Tickets:", CommaText(PlayerInfo.TimescaleTickets).." :tickets:")
-Embed.AddField("Total Bells:", Now.. " :bell:")
+Embed.AddField("Total Bells:", CurrentPickups.. " :bell:")
 Embed.AddField("----------------- TROOPS INFO ---------------", "```m\n"..CheckTower().."```", false)
 
 if #UtilitiesConfig.Webhook.Link ~= 0 then
