@@ -1222,29 +1222,28 @@ Functions.MatchMaking = function()
 				break
 			end
 		end
-		if not (VetoUsedOnce and CanChangeMap) and #CurrentMapList == 0 then
-			VetoUsedOnce = true
-			RemoteEvent:FireServer("LobbyVoting", "Veto")
-			prints("Veto Has Used Once")
-			task.wait(3)
-			if not CheckingForPrivateIntermission then
-				prints("Checking for Private Intermission")
-				local IntermissionButtons = LocalPlayer.PlayerGui:WaitForChild("ReactGameIntermission"):WaitForChild("Frame"):WaitForChild("buttons")
-				local currentVeto = IntermissionButtons:WaitForChild("veto"):WaitForChild("value")
-				if currentVeto.Text ~= `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
+		for i,v in ipairs(StratXLibrary.Strat) do
+			local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
+     		if not (VetoUsedOnce and CanChangeMap and table.find(CurrentMapList, MapInStrat)) then
+     			VetoUsedOnce = true
+     			RemoteEvent:FireServer("LobbyVoting", "Veto")
+     			prints("Veto Has Used Once")
+     			task.wait(3)
+     			if not CheckingForPrivateIntermission then
 					CheckingForPrivateIntermission = true
-					for i,v in ipairs(StratXLibrary.Strat) do
-						if CheckingForPrivateIntermission then
-							prints("Checking finished, Start Overriding for Map")
-    						MapProps = v.Map.Lists[#v.Map.Lists]
-                			Index = v.Index
-							RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
-                			prints("Overrided for Map")
- 							break
-						end
-					end
-				elseif currentVeto.Text == `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
-					prints("Not Private Intermission")
+     				prints("Checking for Private Intermission")
+     				local IntermissionButtons = LocalPlayer.PlayerGui:WaitForChild("ReactGameIntermission"):WaitForChild("Frame"):WaitForChild("buttons")
+     				local currentVeto = IntermissionButtons:WaitForChild("veto"):WaitForChild("value")
+     				if currentVeto.Text ~= `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
+  						prints("Checking finished, Start Overriding for Map")
+      					MapProps = v.Map.Lists[#v.Map.Lists]
+                  		Index = v.Index
+  						RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
+                  		prints("Overrided for Map")
+   						break
+     				elseif currentVeto.Text == `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
+     					prints("Not Private Intermission")
+     				end
 				end
 			end
 			task.wait(1)
