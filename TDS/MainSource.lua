@@ -1231,7 +1231,6 @@ Functions.MatchMaking = function()
 			repeat
         		RemoteCheck = RemoteEvent:FireServer("LobbyVoting", "Veto")
 				task.wait()
-				break
 			until typeof(RemoteCheck) == "boolean" and RemoteCheck
     		prints("Veto Has Used Once")
     		task.wait(3)
@@ -1247,7 +1246,6 @@ Functions.MatchMaking = function()
                      	Index = v.Index
       					RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
                      	prints("Overrided for Map")
-      					break
     				end
     			elseif currentVeto.Text == `Veto ({#Players:GetChildren()}/{#Players:GetChildren()})` then
     		        prints("Not Private Intermission")
@@ -1263,6 +1261,7 @@ Functions.MatchMaking = function()
       				TeleportHandler(3260590327,2,7)
       			end
       		end)
+			break
 		end
     end
 	RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
