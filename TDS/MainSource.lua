@@ -668,6 +668,8 @@ if CheckPlace() then
 		LocalPlayer.Character.HumanoidRootPart.CFrame = Part.CFrame + Vector3.new(0, 3.5, 0)
 	end)
 
+	getgenv().OldPickups = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesTopBar"):WaitForChild("Frame"):WaitForChild("items"):WaitForChild("Operation I.C.E"):WaitForChild("text").Text
+
 	--Game Cores
 	task.spawn(function()
 		loadstring(game:HttpGet(MainLink.."TDSTools/FreeCam.lua", true))()

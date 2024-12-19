@@ -10,6 +10,17 @@ local Executor = identifyexecutor and identifyexecutor() or "???"
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local PlayerInfo = StratXLibrary.UI.PlayerInfo.Property
 
+--Pickups Stuff
+
+local Before = getgenv().OldPickups
+local Now = LocalPlayer.PlayerGui.ReactOverridesTopBar.Frame.items["Operation I.C.E"].text.Text
+Before = string.gsub(Before, "%D", "")
+Now = string.gsub(Now, "%D", "")
+local Pickups = Now - Before
+Pickups = tostring(Pickups)
+
+--Text Formatters
+
 local CommaText = function(string)
 	local String = tostring(string):reverse():gsub("%d%d%d", "%1,"):reverse():gsub("^,", "")
 	return String
@@ -55,6 +66,8 @@ local Identifier = {
 	["rbxassetid://5870325376"] = "Coins",
 	["rbxassetid://5870383867"] = "Gems",
 }
+
+--Webhook Functions
 
 function NewWebhook(Link)
 	local Data = {
@@ -209,6 +222,7 @@ function NewWebhook(Link)
 	return Webhook
 end
 
+--Main
 
 local Link = UtilitiesConfig.Webhook.Link
 local Webhook = NewWebhook(Link)
