@@ -33,12 +33,12 @@ return function(self, p1)
             if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
                 return
             end
-            repeat
-                SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-                task.wait()
-            until SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
-            SetActionInfo("Skip")
-            ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
         end)
+        repeat
+            SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+            task.wait()
+        until SkipCheck or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
+        SetActionInfo("Skip")
+        ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
     end)
 end
