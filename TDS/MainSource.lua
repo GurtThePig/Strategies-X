@@ -1210,7 +1210,7 @@ Functions.MatchMaking = function()
 			if MapProps then
 				break
 			end
-			if table.find(CurrentMapList,v.Map.Lists[1].Map) then
+			if table.find(CurrentMapList, v.Map.Lists[1].Map) then
 				MapProps = v.Map.Lists[#v.Map.Lists]
 				Index = v.Index
 				break
@@ -1222,7 +1222,7 @@ Functions.MatchMaking = function()
 				break
 			end
 		end
-		if not VetoUsedOnce and not CanChangeMap then
+		if not (VetoUsedOnce and CanChangeMap and #CurrentMapList == 0) then
 			VetoUsedOnce = true
 			RemoteEvent:FireServer("LobbyVoting", "Veto")
 			prints("Veto Has Used Once")
