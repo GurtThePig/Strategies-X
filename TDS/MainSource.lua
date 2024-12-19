@@ -1256,6 +1256,7 @@ Functions.MatchMaking = function()
         			end
         		end)
     		end
+		break
 	    end
 	end
 	RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
