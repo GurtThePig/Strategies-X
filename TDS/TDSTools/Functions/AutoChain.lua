@@ -11,9 +11,8 @@ local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("Remote
 }]]
 function Chain(Tower)
     local Tower = TowersContained[Tower].Instance
-    local TowerTable = TowersContained[Tower]
     local AutoChainCheck
-    if Tower and TowerTable.TopPathUpgrade >= 2 then
+    if Tower and TowersContained[Tower].TopPathUpgrade >= 2 then
         if not Tower then
             return
         end

@@ -172,6 +172,8 @@ return function(self, p1)
         ["Rotation"] = Rotation,
         ["OldPosition"] = Position,
         ["PassedTimer"] = false,
+        ["TopPathUpgrade"] = 0,
+        ["BottomPathUpgrade"] = 0
     }
 
     local CurrentCount = StratXLibrary.CurrentCount
