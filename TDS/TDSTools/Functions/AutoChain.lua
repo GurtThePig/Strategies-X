@@ -11,22 +11,23 @@ local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("Remote
 }]]
 function Chain(Tower)
     local Tower = TowersContained[Tower].Instance
-    if Tower and Tower:FindFirstChild("Replicator") and Tower:FindFirstChild("Replicator"):GetAttribute("Upgrade") >= 2 then
-        if Tower.Replicator.Stuns:GetAttribute("1") or Tower.Replicator.Stuns:GetAttribute("1") ~= false then
-            repeat task.wait() 
-            until not Tower.Replicator.Stuns:GetAttribute("1") or Tower.Replicator.Stuns:GetAttribute("1") == false or not Tower
-            if not Tower then
-                return
-            end
+    local TowerTable = TowersContained[Tower]
+    local AutoChainCheck
+    if Tower and TowerTable.TopPathUpgrade >= 2 then
+        if not Tower then
+            return
         end
-        RemoteFunction:InvokeServer("Troops","Abilities","Activate",{["Troop"] = Tower ,["Name"] = "Call Of Arms"})
+        repeat
+            AutoChainCheck = RemoteFunction:InvokeServer("Troops","Abilities","Activate",{["Troop"] = Tower ,["Name"] = "Call Of Arms"})
+            task.wait()
+        until AutoChainCheck
         task.wait(10)
     end
 end
 return function(self, p1)
     local tableinfo = p1--ParametersPatch("AutoChain",...)
     local Tower1,Tower2,Tower3 = tableinfo["TowerIndex1"], tableinfo["TowerIndex2"], tableinfo["TowerIndex3"]
-    local Wave,Min,Sec,InWave = tableinfo["Wave"] or 0, tableinfo["Minute"] or 0, tableinfo["Second"] or 0, tableinfo["InBetween"] or false 
+    local Wave,Min,Sec,InWave = tableinfo["Wave"] or 0, tableinfo["Minute"] or 0, tableinfo["Second"] or 0, tableinfo["InBetween"] or false
     if not CheckPlace() then
         return
     end

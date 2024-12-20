@@ -231,11 +231,12 @@ return function(self, p1)
         TowerTable.TypeIndex = PlaceCheck:GetAttribute("TypeIndex")
         TowerTable.Placed = true
         TowerTable.Target = "First"
-        TowerTable.Upgrade = 0
+        TowerTable.TopPathUpgrade = 0
+        TowerTable.BottomPathUpgrade = 0
         TowerModel.Parent = PreviewHolder
         TowerTable.DebugTag = DebugTower(TowerTable.Instance,Color3.new(0.35, 0.7, 0.3))
         if not UtilitiesTab.flags.TowersPreview then
-            TowerTable.DebugTag.Enabled = false 
+            TowerTable.DebugTag.Enabled = false
         end
         if ErrorModel then
             ErrorModel.Parent = PreviewHolder
