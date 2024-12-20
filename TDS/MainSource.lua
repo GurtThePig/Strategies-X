@@ -227,6 +227,8 @@ local PreviewErrorFolder = Instance.new("Folder")
 PreviewErrorFolder.Parent = Workspace
 PreviewErrorFolder.Name = "PreviewErrorFolder"
 
+local BeautyTable = loadstring(game:HttpGet("https://raw.githubusercontent.com/GurtThePig/TableBeauty/master/repr.lua"))()
+
 function prints(...)
 	local TableText = {...}
 	for i,v in next, TableText do
@@ -800,9 +802,9 @@ if CheckPlace() then
 			prints("GameOver Changed2")
 			if UtilitiesConfig.RestartMatch and RSHealthCurrent.Value == 0 then --StratXLibrary.RestartCount <= UtilitiesConfig.RestartTimes
 				prints(`Match Lose. Strat Will Restart Shortly`)
+				print(BeautyTable(TowersContained))
 				StratXLibrary.ReadyState = false
 				task.wait(3)
-				prints("TowersContained", TowersContained)
 				for i,v in ipairs(TowersContained) do
 					if v.TowerModel then
 						v.TowerModel:Destroy()
