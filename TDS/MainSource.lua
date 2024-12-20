@@ -771,6 +771,7 @@ if CheckPlace() then
 		end
 		warn("Connected?")
 		StratXLibrary.SignalMatchEnd = MatchGui:GetPropertyChangedSignal("Visible"):Connect(function()
+			warn(TowersContained)
 			warn("Connection Ran!?")
 			prints("GameOver Changed")
 			if not MatchGui.Visible then
@@ -803,7 +804,6 @@ if CheckPlace() then
 				StratXLibrary.ReadyState = false
 				task.wait(3)
 				for i,v in ipairs(TowersContained) do
-					print(TowersContained)
 					if v.TowerModel then
 						v.TowerModel:Destroy()
 					end
