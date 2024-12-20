@@ -37,7 +37,7 @@ return function(self, p1)
                 return
             end
             UpgradeCheck = RemoteFunction:InvokeServer("Troops","Upgrade","Set",{
-                ["Troop"] = TowerTable.Instance,
+                ["Troop"] = TowersContained[Tower].Instance,
                 ["Path"] = Path
             })
             task.wait()
