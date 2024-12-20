@@ -803,6 +803,7 @@ if CheckPlace() then
 				StratXLibrary.ReadyState = false
 				task.wait(3)
 				for i,v in ipairs(TowersContained) do
+					print(TowersContained)
 					if v.TowerModel then
 						v.TowerModel:Destroy()
 					end
