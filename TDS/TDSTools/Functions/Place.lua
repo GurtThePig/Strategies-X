@@ -6,8 +6,6 @@ local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("Rem
 local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("RemoteEvent") else SpoofEvent
 local TowerProps = {}
 
-local BeautyTable = loadstring(game:HttpGet("https://raw.githubusercontent.com/GurtThePig/TableBeauty/master/repr.lua"))()
-
 local PreviewHolder = ReplicatedStorage.PreviewHolder
 local AssetsHologram = PreviewHolder.AssetsHologram
 local AssetsError = PreviewHolder.AssetsError
@@ -253,5 +251,4 @@ return function(self, p1)
         local StackingCheck = (TowerTable.Position - TowerTable.OldPosition).magnitude > 1
         ConsoleInfo(`Placed {Tower} Index: {PlaceCheck.Name}, Type: \"{TowerType}\", (Wave {Wave}, Min: {Min}, Sec: {Sec}, InBetween: {InWave}, Time Error: {ReplicatedStorage.State.Timer.Time.Value - Min*60+Sec}) {if StackingCheck then ", Stacked Position" else ", Original Position"}`)
     end)
-    print(BeautyTable(TowersContained))
 end
