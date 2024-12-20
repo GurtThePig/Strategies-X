@@ -19,7 +19,6 @@ return function(self, p1)
     end
     local CurrentCount = StratXLibrary.CurrentCount
     SetActionInfo("Upgrade","Total")
-    local TowerTable = TowersContained[Tower]
     task.spawn(function()
         local TimerCheck = TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"])
         if not TimerCheck then
@@ -43,9 +42,9 @@ return function(self, p1)
             task.wait()
         until UpgradeCheck or SkipCheck
         if Path == 2 then
-            TowerTable.BottomPathUpgrade += 1
+            TowersContained[Tower].BottomPathUpgrade += 1
         elseif Path == 1 then
-            TowerTable.TopPathUpgrade += 1
+            TowersContained[Tower].TopPathUpgrade += 1
         end
         local TowerType = GetTypeIndex(tableinfo["TypeIndex"],Tower)
         if CurrentCount ~= StratXLibrary.RestartCount then
