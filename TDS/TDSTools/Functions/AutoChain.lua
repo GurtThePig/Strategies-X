@@ -19,8 +19,7 @@ function Chain(Tower)
         repeat
             AutoChainCheck = RemoteFunction:InvokeServer("Troops","Abilities","Activate",{["Troop"] = Tower.Instance ,["Name"] = "Call Of Arms"})
             task.wait()
-            print(AutoChainCheck)
-        until AutoChainCheck
+        until typeof(AutoChainCheck) == "boolean" and AutoChainCheck
         task.wait(10)
     end
 end

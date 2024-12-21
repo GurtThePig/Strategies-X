@@ -1,9 +1,6 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("RemoteFunction") else SpoofEvent
 local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("RemoteEvent") else SpoofEvent
-
-local BeautyTable = loadstring(game:HttpGet("https://raw.githubusercontent.com/GurtThePig/TableBeauty/master/repr.lua"))()
-
 --[[{
     ["TowerIndex"] = ""
     ["TypeIndex"] = "",
@@ -43,7 +40,7 @@ return function(self, p1)
                 ["Path"] = Path
             })
             task.wait()
-        until UpgradeCheck or SkipCheck
+        until typeof(UpgradeCheck) == "boolean" and UpgradeCheck or SkipCheck
         if Path == 1 then
             TowersContained[Tower].TopPathUpgrade += 1
         elseif Path == 2 then
