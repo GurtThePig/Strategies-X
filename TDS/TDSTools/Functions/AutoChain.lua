@@ -12,10 +12,10 @@ local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("Remote
 function Chain(Tower)
     local Tower = TowersContained[Tower]
     local AutoChainCheck
+    if not Tower then
+        return
+    end
     if Tower.Instance and Tower.TopPathUpgrade >= 2 then
-        if not Tower then
-            return
-        end
         repeat
             AutoChainCheck = RemoteFunction:InvokeServer("Troops","Abilities","Activate",{["Troop"] = Tower ,["Name"] = "Call Of Arms"})
             task.wait()
