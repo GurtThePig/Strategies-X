@@ -41,7 +41,7 @@ return function(self, p1)
     local MapName = tableinfo["Map"]
     local Solo = tableinfo["Solo"]
     local Mode = tableinfo["Mode"]
-    local Difficulty = tableinfo.Name
+    local Difficulty = tableinfo["Difficulty"]
     --local MapProps = self.Map
     local MapGlobal = StratXLibrary.Global.Map --Not use self.Map since this function acts like global so if using self in each strat, it will duplicate the value and conflicts
     tableinfo.Index = self.Index
