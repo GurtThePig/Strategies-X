@@ -15,11 +15,11 @@ function Chain(Tower)
     if not Tower.Instance then
         return
     end
-    print(Tower.TopPathUpgrade)
     if Tower.Instance and Tower.TopPathUpgrade >= 2 then
         repeat
             AutoChainCheck = RemoteFunction:InvokeServer("Troops","Abilities","Activate",{["Troop"] = Tower.Instance ,["Name"] = "Call Of Arms"})
             task.wait()
+            print(AutoChainCheck)
         until AutoChainCheck
         task.wait(10)
     end
