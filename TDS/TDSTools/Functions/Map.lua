@@ -123,7 +123,7 @@ return function(self, p1)
                     })
                 elseif SpecialTable.mode == "frostInvasion" then
                     RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                        ["difficulty"] = if not table.find(SpecialTable.difficulty, Difficulty) then "Easy" else "Hard",
+                        ["difficulty"] = if not table.find(Difficulty,SpecialTable.difficulty) then "Easy" else "Hard",
                         ["mode"] = SpecialTable.mode,
                         ["count"] = 1,
                     })
