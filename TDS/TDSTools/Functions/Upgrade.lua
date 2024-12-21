@@ -44,12 +44,11 @@ return function(self, p1)
             })
             task.wait()
         until UpgradeCheck or SkipCheck
-        if Path == 2 then
-            TowersContained[Tower].BottomPathUpgrade += 1
-        elseif Path == 1 then
+        if Path == 1 then
             TowersContained[Tower].TopPathUpgrade += 1
+        elseif Path == 2 then
+            TowersContained[Tower].BottomPathUpgrade += 1
         end
-        print(TowersContained[Tower].BottomPathUpgrade, TowersContained[Tower].TopPathUpgrade)
         local TowerType = GetTypeIndex(tableinfo["TypeIndex"],Tower)
         if CurrentCount ~= StratXLibrary.RestartCount then
             return
