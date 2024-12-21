@@ -181,7 +181,8 @@ return function(self, p1)
 			end)
 			if not Passed then
 				ElevatorType = if v:GetAttribute("Level") == 50 then "Hardcore" else "Survival"
-			end
+			end]]
+            local ElevatorType = v:GetAttribute("Type")
 			if not Elevators[ElevatorType] then
 				Elevators[ElevatorType] = {}
 			end
@@ -191,14 +192,7 @@ return function(self, p1)
 				["Time"] = v:GetAttribute("Timer"),
 				["Playing"] = v:GetAttribute("Players"),
 				["Mode"] = ElevatorType,
-			})]]
-            table.insert(Elevators[v:GetAttribute("Type")],{
-				["Object"] = v,
-				["Map"] = v:GetAttribute("Map"),
-				["Timer"] = v:GetAttribute("Timer"),
-				["Players"] = v:GetAttribute("Players"),
-				["Mode"] = v:GetAttribute("Type"),
-            })
+			})
         end
         --prints("Found",#Elevators,"Elevators")
         for i,v in next, Elevators do
