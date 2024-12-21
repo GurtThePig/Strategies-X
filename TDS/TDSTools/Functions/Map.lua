@@ -41,7 +41,7 @@ return function(self, p1)
     local MapName = tableinfo["Map"]
     local Solo = tableinfo["Solo"]
     local Mode = tableinfo["Mode"]
-    local Difficulty = tableinfo["Difficulty"]
+    local Difficulty = tableinfo.Name
     --local MapProps = self.Map
     local MapGlobal = StratXLibrary.Global.Map --Not use self.Map since this function acts like global so if using self in each strat, it will duplicate the value and conflicts
     tableinfo.Index = self.Index
@@ -123,7 +123,7 @@ return function(self, p1)
                     })
                 elseif SpecialTable.mode == "frostInvasion" then
                     RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                        ["difficulty"] = if not table.find(Mode,SpecialTable.difficulty) then "Easy" else "Hard",
+                        ["difficulty"] = if not table.find(Difficulty,SpecialTable.difficulty) then "Easy" else "Hard",
                         ["mode"] = SpecialTable.mode,
                         ["count"] = 1,
                     })
