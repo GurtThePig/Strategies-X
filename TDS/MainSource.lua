@@ -850,7 +850,7 @@ if CheckPlace() then
 				if RSDifficulty.Value == "Hardcore" then
 					return
 				end
-				--[[local TimeScaleUI = LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):WaitForChild("timescale")
+				local TimeScaleUI = LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):WaitForChild("timescale")
 				if UtilitiesConfig.UseTimeScale then
 					if TimeScaleUI:FindFirstChild("Lock") then
        					task.spawn(function()
@@ -859,7 +859,7 @@ if CheckPlace() then
        						ReplicatedStorage.RemoteEvent:FireServer("TicketsManager", "CycleTimeScale")
        					end)
 					end
-				end]]
+				end
 			else
 				prints(`Match {if MatchGui:WaitForChild("banner"):WaitForChild("textLabel").Text == "TRIUMPH!" then "Won" else "Lose"}`)
 				if AutoSkipCheck then
@@ -999,7 +999,7 @@ if CheckPlace() then
 	end)
 	local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
 	local Lobby = if GameMode == "Survival" then "IntermissionLobby" else "HardcoreIntermissionLobby"
-	--[[UtilitiesTab:Toggle("Use Timescale", {flag = "UseTimeScale", default = UtilitiesConfig.UseTimeScale}, function(bool)
+	UtilitiesTab:Toggle("Use Timescale", {flag = "UseTimeScale", default = UtilitiesConfig.UseTimeScale}, function(bool)
 		if (bool and ReplicatedStorage.State.Difficulty.Value == "Hardcore") or (bool and Workspace:FindFirstChild(Lobby) == "HardcoreIntermissionLobby") then
 			prints("Timescale Is Not Supported In Hardcore!")
 			return
@@ -1015,7 +1015,7 @@ if CheckPlace() then
      		    end)
 		    end
 		end
-	end)]]
+	end)
 
 	if Items.Enabled then
 		task.spawn(function()
