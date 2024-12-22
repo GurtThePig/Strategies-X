@@ -264,7 +264,7 @@ return function(self, p1)
                             UI.MapFind.Text = "Map: "..MapElevator
                             UI.CurrentPlayer.Text = "Player Joined: "..PlayersElevator
                             prints("Checking Elevator",i,"Info [ Map:","\""..MapElevator.."\"",", Players Joined:","\""..PlayersElevator.."\"",", Mode:",ModeElevator,"]")
-                            local MapTableName = MapElevator..":"..ModeElevator
+                            local MapTableName = MapName..":"..Mode
                             local MapTable = MapGlobal[MapTableName]
                             if MapTable and TimerElevator > 5 and PlayersElevator < 4 then
                                 if MapTable.Solo and PlayersElevator ~= 0 then
