@@ -150,7 +150,7 @@ return function(self, p1)
                         ["challenge"] = SpecialTable.challenge,
                     })
                 end
-                prints(`Using MatchMaking To Teleport To Special GameMode: {SpecialTable.mode}`)
+                prints(`Using MatchMaking To Teleport To Special GameMode: {SpecialTable.mode}{if getgenv().EventEasyMode then "Easy Mode" elseif getgenv().WeeklyChallenge then "Weekly Challenge" else nil}`)
                 return
             elseif UtilitiesConfig.PreferMatchmaking or Workspace:GetAttribute("IsPrivateServer") or game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
                 UI.JoiningStatus.Text = `Matchmaking Enabled. Checking Loadout`
