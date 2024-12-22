@@ -35,6 +35,14 @@ local ElevatorSettings = {
     ["Event"] = {Enabled = false},
     ["FrostInvasion"] = {Enabled = false}
 }
+local WeekChallenge = {
+    "BackToBasics",
+    --[["JailedTowers",
+    "Juggernaut",
+    "Legion",
+    "OopsAllSlimes",
+    "Vanguard"]]
+}
 
 return function(self, p1)
     local tableinfo = p1
@@ -123,12 +131,18 @@ return function(self, p1)
                     })
                 elseif SpecialTable.mode == "frostInvasion" then
                     RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                        ["difficulty"] = if string.find(Difficulty,SpecialTable.difficulty) then "Hard" else "Hard",
+                        ["difficulty"] = if getgenv().EventEasyMode then "Easy" else SpecialTable.difficulty,
                         ["mode"] = SpecialTable.mode,
                         ["count"] = 1,
                     })
                 elseif SpecialTable.mode == "Event" then
                     RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+                elseif getgenv().WeeklyChallenge then
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                        ["mode"] = "weeklyChallengeMap",
+                        ["count"] = 1,
+                        ["challenge"] = WeekChallenge,
+                    })
                 else
                     RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["count"] = 1,
