@@ -26,6 +26,7 @@ local SpecialGameMode = {
     ["Huevous Hunt"] = {""},
     --The Hunt Event Maps [NO LONGER EXIST IN GAME FILES]
 }
+
 local ElevatorSettings = {
     ["Survival"] = {Enabled = false, ChangeMap = true, JoinMap = true, WaitTimeToChange = .1, WaitTimeToJoin = .25},
     ["Hardcore"] = {Enabled = false, ChangeMap = true, JoinMap = true, WaitTimeToChange = 4.2, WaitTimeToJoin = 1.7},
@@ -35,6 +36,7 @@ local ElevatorSettings = {
     ["Event"] = {Enabled = false},
     ["FrostInvasion"] = {Enabled = false}
 }
+
 local WeeklyChallenge = {
     "BackToBasics",
     --[["JailedTowers",

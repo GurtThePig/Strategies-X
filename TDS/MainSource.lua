@@ -127,8 +127,11 @@ local SpecialMaps = {
 	"Failed Gateway",
 	"The Nightmare Realm",
 	"Containment",
+	--Halloween 2024 Maps ^^^^^^
 	"Pls Donate",
-	--Temporary Special Maps ^^^^^^
+	--Pls Donate Collaboration Map
+	"Outpost 32",
+	--Frost Invasion 2024 Map
 	"Classic Candy Cane Lane",
 	"Classic Winter",
 	"Classic Forest Camp",
@@ -142,12 +145,13 @@ local SpecialMaps = {
 local SpecialGameMode = {
     ["Pizza Party"] = {mode = "halloween", challenge = "PizzaParty"},
     ["Badlands II"] = {mode = "badlands", challenge = "Badlands"},
-    ["Polluted Wastelands II"] = {mode = "polluted", challenge = "PollutedWasteland"},
+    ["Polluted Wasteland II"] = {mode = "polluted", challenge = "PollutedWasteland"},
     --Current Special Maps ^^^^^^
     ["Failed Gateway"] = {mode = "halloween2024", difficulty = "Act1", night = 1},
     ["The Nightmare Realm"] = {mode = "halloween2024", difficulty = "Act2", night = 2},
     ["Containment"] = {mode = "halloween2024", difficulty = "Act3", night = 3},
     ["Pls Donate"] = {mode = "plsDonate", difficulty = "PlsDonateHard"},
+    ["Outpost 32"] = {mode = "frostInvasion", difficulty = "Hard" },
     --Temporary Special Maps ^^^^^^
     ["Classic Candy Cane Lane"] = {mode = "Event", part = "ClassicRobloxPart1"},
     ["Classic Winter"] = {mode = "Event", part = "ClassicRobloxPart2"},
@@ -157,6 +161,15 @@ local SpecialGameMode = {
     --The Classic Event Maps ^^^^^^ [STILL EXIST IN GAME FILES]
     ["Huevous Hunt"] = {""},
     --The Hunt Event Maps [NO LONGER EXIST IN GAME FILES]
+}
+
+local WeeklyChallenge = {
+    "BackToBasics",
+    --[["JailedTowers",
+    "Juggernaut",
+    "Legion",
+    "OopsAllSlimes",
+    "Vanguard"]]
 }
 
 local Workspace = game:GetService("Workspace")
@@ -908,6 +921,18 @@ if CheckPlace() then
          						["count"] = 1,
          						["mode"] = SpecialTable.mode,
     						})
+						elseif SpecialTable.mode == "frostInvasion" then
+							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+								["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
+								["mode"] = SpecialTable.mode,
+								["count"] = 1,
+							})
+						elseif getgenv().WeeklyChallenge then
+							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+								["mode"] = "weeklyChallengeMap",
+								["count"] = 1,
+								["challenge"] = WeeklyChallenge,
+							})
     					elseif SpecialTable.mode == "Event" then
 							RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
 						else
