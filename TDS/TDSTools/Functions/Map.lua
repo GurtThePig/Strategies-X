@@ -75,7 +75,7 @@ return function(self, p1)
     MapGlobal.ChangeCheck = false
     task.spawn(function()
         if CheckPlace() then
-            local RSMode = ReplicatedStorage:WaitForChild("State"):WaitForChild("Mode") -- Main Mode
+            local RSMode = ReplicatedStorage:WaitForChild("State"):WaitForChild("Mode") -- Survival or Hardcore
             local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
             repeat task.wait() until RSMap.Value and typeof(RSMap.Value) == "string" and RSMode.Value --#ReplicatedStorage.State.Map.Value > 1
             local GameMapName = RSMap.Value
