@@ -6,7 +6,6 @@ local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("Rem
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local GameTime = UtilitiesConfig.RejoinSetting.GameTime or tonumber(getgenv().GameTime) or 25
 local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or tonumber(getgenv().LobbyTime) or 5
-local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
 
 function MinutesToSeconds(minutes)
     return minutes*60
@@ -86,6 +85,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
         local Remote
         if CheckPlace() then
             task.wait(MinutesToSeconds(GameTime))
+            local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
             if table.find(SpecialMaps, RSMap) then
 				local SpecialTable = SpecialGameMode[RSMap]
     			if SpecialTable.mode == "halloween2024" then
