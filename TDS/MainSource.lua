@@ -1140,13 +1140,13 @@ end
 
 UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
 local RejoinSetting = UI.RejoinSetting
-RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinSettingEnabled or true, flag = "RejoinSettingEnabled"}, function(bool)
+RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinTime.RejoinSettingEnabled or true, flag = "RejoinSettingEnabled"}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 RejoinSetting:Section("Game Time (in minutes)                     ")
-RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
+RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinTime.GameTime, cleartext = false, flag = "GameTime"})
 RejoinSetting:Section("Lobby Time (in minutes)                    ")
-RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
+RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinTime.LobbyTime, cleartext = false, flag = "LobbyTime"})
 
 UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
 local WebhookSetting = UI.WebhookSetting
