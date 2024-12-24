@@ -151,8 +151,6 @@ StratXLibrary.RejoinAfterTime = function(bool)
             SafeTeleport(Remote)
         end
 		return
-	else
-		return
 	end
     prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 end
