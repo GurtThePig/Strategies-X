@@ -1140,7 +1140,7 @@ end
 
 UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
 local RejoinSetting = UI.RejoinSetting
-RejoinSetting:Toggle("Enabled", {flag = "RejoinAfterTime", default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or true, location = StratXLibrary}, function(bool)
+RejoinSetting:Toggle("Enabled", {flag = "RejoinAfterTime", default = UtilitiesConfig.RejoinSetting.RejoinAfterTime},function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 RejoinSetting:Section("Game Time (in minutes)                     ")
