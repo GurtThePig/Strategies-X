@@ -70,7 +70,7 @@ StratXLibrary.LowGraphics = function(bool)
     end
     if bool then
         if Location == "NewLobby" and not CheckPlace() then
-            for i,v in Workspace[Location]:GetChildren(), Workspace.Terrain:GetChildren() do
+            for i,v in Workspace:WaitForChild(Location):GetChildren(), Workspace.Terrain:GetChildren() do
                 v:Destroy()
                 --v.Parent = Folder
             end
@@ -81,7 +81,7 @@ StratXLibrary.LowGraphics = function(bool)
             Terrain.WaterWaveSize = 0
             Terrain.WaterWaveSpeed = 0
         elseif Location == "Map" and CheckPlace() then
-            for i,v in next, Workspace[Location]:GetChildren() do
+            for i,v in next, Workspace:WaitForChild(Location):GetChildren() do
                 if v.Name ~= "Paths" then
                     v:Destroy()
                 end
