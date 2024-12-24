@@ -6,16 +6,7 @@ local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("Rem
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local GameTime = UtilitiesConfig.RejoinSetting.GameTime or tonumber(getgenv().GameTime) or 25
 local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or tonumber(getgenv().LobbyTime) or 5
-
-local Map, Mode, Difficulty
-for i,v in ipairs(StratXLibrary.Strat) do
-    Map = v.Map.Lists[#v.Map.Lists].Map
-    print(Map)
-    Mode = v.Map.Lists[#v.Map.Lists].Mode
-    print(Mode)
-    Difficulty = v.Mode.Lists[#v.Map.Lists].Name
-    print(Difficulty)
-end
+local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
 
 function MinutesToSeconds(minutes)
     return minutes*60
@@ -95,8 +86,8 @@ StratXLibrary.RejoinAfterTime = function(bool)
         local Remote
         if CheckPlace() then
             task.wait(MinutesToSeconds(GameTime))
-            if table.find(SpecialMaps, Map) then
-				local SpecialTable = SpecialGameMode[Map]
+            if table.find(SpecialMaps, RSMap) then
+				local SpecialTable = SpecialGameMode[RSMap]
     			if SpecialTable.mode == "halloween2024" then
 					Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     					["difficulty"] = SpecialTable.difficulty,
@@ -145,10 +136,10 @@ StratXLibrary.RejoinAfterTime = function(bool)
 					["Molten"] = "Molten",
     				["Fallen"] = "Fallen",
     			}
-    			local DifficultyName = v.Mode.Lists[1] and DiffTable[v.Mode.Lists[1].Name]
+    			local DifficultyName = StratXLibrary.Strat.Mode.Lists[1] and DiffTable[StratXLibrary.Strat.Mode.Lists[1].Name]
 				Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     				["count"] = 1,
-    				["mode"] = string.lower(v.Map.Lists[1].Mode),
+    				["mode"] = string.lower(StratXLibrary.Strat.Map.Lists[1].Mode),
     				["difficulty"] = DifficultyName,
     			})
 				SafeTeleport(Remote)
