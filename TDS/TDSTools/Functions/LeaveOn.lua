@@ -57,22 +57,6 @@ local WeeklyChallenge = {
     "Vanguard"]]
 }
 
-function SafeTeleport(Remote)
-    local attemptIndex = 0
-    local success, result
-    local ATTEMPT_LIMIT = 25
-    local RETRY_DELAY = 5
-    repeat
-        success, result = pcall(function()
-            return Remote
-        end)
-        attemptIndex += 1
-        if not success then
-            task.wait(RETRY_DELAY)
-        end
-    until success or attemptIndex == ATTEMPT_LIMIT
-end
-
 return function(self, p1)
     local tableinfo = p1--ParametersPatch("LeaveOn",...)
     local MapInStrat = tableinfo["Map"]

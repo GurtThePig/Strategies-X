@@ -946,7 +946,7 @@ if CheckPlace() then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
 							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-    							["difficulty"] = SpecialTable.difficulty,
+    							["difficulty"] = if getgenv().EventEasyMode then `{SpecialTable.difficulty}..Easy`else SpecialTable.difficulty,
     							["night"] = SpecialTable.night,
     							["count"] = 1,
     							["mode"] = SpecialTable.mode,
@@ -954,7 +954,7 @@ if CheckPlace() then
 							SafeTeleport(Remote)
     					elseif SpecialTable.mode == "plsDonate" then
 							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-         						["difficulty"] = SpecialTable.difficulty,
+         						["difficulty"] = if getgenv().EventEasyMode then "PlsDonateHard" else SpecialTable.difficulty,
          						["count"] = 1,
          						["mode"] = SpecialTable.mode,
     						})
