@@ -65,8 +65,8 @@ StratXLibrary.UtilitiesConfig = {
 	AutoSkip = getgenv().AutoSkip or false,
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
-	RejoinSetting = {
-		RejoinAfterTime = true,
+	RejoinTime = {
+		RejoinSettingEnabled = true,
 		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
 		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
 	},
@@ -323,12 +323,12 @@ function SaveUtilitiesConfig()
 		AutoSkip = UtilitiesTab.flags.AutoSkip,
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
-		RejoinSetting = {
-			RejoinAfterTime = RejoinSetting.flags.RejoinAfterTime or true,
+		RejoinTime = {
+			RejoinSettingEnabled = RejoinSetting.flags.RejoinSettingEnabled or false,
 			GameTime = RejoinSetting.flags.GameTime or 25,
 			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
 		},
-		WebhookSetting = {
+		Webhook = {
 			WebhookSettingEnabled = WebhookSetting.flags.WebhookSettingEnabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
 			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) then tostring(getgenv().WebhookLink) else "",
@@ -1140,7 +1140,7 @@ end
 
 UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
 local RejoinSetting = UI.RejoinSetting
-RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or true, flag = "RejoinAfterTime"}, function(bool)
+RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinSettingEnabled or true, flag = "RejoinSettingEnabled"}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 RejoinSetting:Section("Game Time (in minutes)                     ")
