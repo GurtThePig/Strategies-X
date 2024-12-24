@@ -66,7 +66,7 @@ StratXLibrary.UtilitiesConfig = {
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
 	RejoinSetting = {
-		RejoinSettingEnabled = true,
+		RejoinAfterTime = true,
 		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
 		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
 	},
@@ -324,7 +324,7 @@ function SaveUtilitiesConfig()
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
 		RejoinSetting = {
-			RejoinSettingEnabled = RejoinSetting.flags.RejoinAfterTime or true,
+			RejoinAfterTime = RejoinSetting.flags.RejoinAfterTime or true,
 			GameTime = RejoinSetting.flags.GameTime or 25,
 			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
 		},
@@ -1140,7 +1140,7 @@ end
 
 UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
 local RejoinSetting = UI.RejoinSetting
-RejoinSetting:Toggle("Enabled",{default = UtilitiesConfig.RejoinSetting.RejoinSettingEnabled or false, flag = "RejoinAfterTime"}, function(bool)
+RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or false, flag = "RejoinAfterTime"}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 RejoinSetting:Section("Game Time (in minutes)                     ")
