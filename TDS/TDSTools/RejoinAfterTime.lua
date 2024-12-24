@@ -152,7 +152,6 @@ StratXLibrary.RejoinAfterTime = function(bool)
         end
 		return
 	else
-		repeat task.wait() until bool == true
 		return
 	end
     prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
