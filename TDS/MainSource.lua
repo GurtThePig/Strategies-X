@@ -1188,7 +1188,7 @@ RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinSetting.Lob
 
 UI.Webhook = UtilitiesTab:DropSection("Webhook Settings")
 local Webhook = UI.Webhook
-Webhook:Toggle("Enabled",{default = UtilitiesConfig.Webhook.WebhookEnabled or false, flag = "WebhookEnabled"})
+Webhook:Toggle("Enabled", {default = UtilitiesConfig.Webhook.WebhookEnabled or false, flag = "WebhookEnabled"})
 Webhook:Toggle("Apply New Format", {default = UtilitiesConfig.Webhook.UseNewFormat or false, flag = "UseNewFormat"})
 Webhook:Section("Webhook Link:                             ")
 Webhook:TypeBox("Webhook Link", {default = UtilitiesConfig.Webhook.Link, cleartext = false, flag = "Link"})
