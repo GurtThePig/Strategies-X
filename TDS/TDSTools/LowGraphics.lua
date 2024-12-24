@@ -44,30 +44,22 @@ getgenv().MinimizeClient = getgenv().MinimizeClient or function(boolean)
     end
 end
 
-local Folder = Instance.new("Folder")
+--[[local Folder = Instance.new("Folder")
 Folder.Parent = ReplicatedStorage
-Folder.Name = "Map"
+Folder.Name = "Map"]]
 StratXLibrary.LowGraphics = function(bool)
     local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
 	local Lobby = if GameMode == "Survival" then "IntermissionLobby" else "HardcoreIntermissionLobby"
-    local Location = if not CheckPlace() then "Lobby" elseif Workspace:FindFirstChild(Lobby) then "Environment" else "Map"
+    local Location = if not CheckPlace() then "NewLobby" elseif Workspace:FindFirstChild(Lobby) then "MatchmakingPlace" else "Map"
     if Location == "Environment" then
-        if not Workspace:FindFirstChild(Lobby):FindFirstChild(Location) then
+        if not Workspace:WaitForChild(Lobby):FindFirstChild(Location) then
             prints("Waiting Map Loaded to Use LowGraphics")
             repeat
                 task.wait()
-            until Workspace:FindFirstChild(Lobby):FindFirstChild(Location)
+            until Workspace:WaitForChild(Lobby):FindFirstChild(Location)
             task.wait(1)
         end
-    elseif Location == "Lobby" then
-        if not Workspace:WaitForChild("NewLobby"):WaitForChild("Areas"):FindFirstChild(Location) then
-            prints("Waiting Map Loaded to Use LowGraphics")
-            repeat
-                task.wait()
-            until Workspace:WaitForChild("NewLobby"):WaitForChild("Areas"):FindFirstChild(Location)
-            task.wait(1)
-        end
-    elseif Location == "Map" then
+    elseif Location == "Map" or Location == "NewLobby" then
         if not Workspace:FindFirstChild(Location) then
             prints("Waiting Map Loaded to Use LowGraphics")
             repeat
@@ -77,23 +69,48 @@ StratXLibrary.LowGraphics = function(bool)
         end
     end
     if bool then
-        if Location == "Lobby" and not CheckPlace() then
-            for i,v in next, Workspace:WaitForChild("NewLobby"):WaitForChild("Areas")[Location]:GetChildren() do
-                v.Parent = Folder
+        if Location == "NewLobby" and not CheckPlace() then
+            for i,v in Workspace[Location]:GetChildren(), Workspace.Terrain:GetChildren() do
+                v:Destroy()
+                --v.Parent = Folder
             end
+            local Terrain = Workspace.Terrain
+            Terrain.Transparency = 0
+            Terrain.WaterReflectance = 0
+            Terrain.WaterTransparency = 0
+            Terrain.WaterWaveSize = 0
+            Terrain.WaterWaveSpeed = 0
         elseif Location == "Map" and CheckPlace() then
             for i,v in next, Workspace[Location]:GetChildren() do
-                if v.Name == "Paths" then
+                if v.Name ~= "Paths" then
+                    v:Destroy()
+                end
+                --[[if v.Name == "Paths" then
                     continue
                 end
-                v.Parent = Folder
+                v.Parent = Folder]]
             end
-        elseif Location == "Environment" and CheckPlace() then
-            for i,v in next, Workspace:WaitForChild(Lobby)[Location]:GetChildren() do
-                v.Parent = Folder
+            local Terrain = Workspace.Terrain
+            Terrain.Transparency = 0
+            Terrain.WaterReflectance = 0
+            Terrain.WaterTransparency = 0
+            Terrain.WaterWaveSize = 0
+            Terrain.WaterWaveSpeed = 0
+            for i,v in Workspace.Terrain:GetChildren(), Workspace:WaitForChild("Folder"):GetChildren() do
+                v:Destroy()
+            end
+        elseif Location == "MatchmakingPlace" and CheckPlace() then
+            local Terrain = Workspace.Terrain
+            Terrain.Transparency = 0
+            Terrain.WaterReflectance = 0
+            Terrain.WaterTransparency = 0
+            Terrain.WaterWaveSize = 0
+            Terrain.WaterWaveSpeed = 0
+            for i,v in Workspace[Lobby]:GetChildren(), Workspace:WaitForChild("Folder"):GetChildren(), Workspace.Terrain:GetChildren() do
+                v:Destroy()
             end
         end
-    else
+    --[[else
         if Location == "Lobby" and not CheckPlace() then
             for i,v in next, Folder:GetChildren() do
                 v.Parent = Workspace:WaitForChild("NewLobby"):WaitForChild("Areas")[Location]
@@ -106,7 +123,7 @@ StratXLibrary.LowGraphics = function(bool)
             for i,v in next, Folder:GetChildren() do
                 v.Parent = Workspace:WaitForChild(Lobby)[Location]
             end
-        end
+        end]]
     end
     MinimizeClient(bool)
     prints(`{if bool then "Enabled" else "Disabled"} Low Graphics Mode`)

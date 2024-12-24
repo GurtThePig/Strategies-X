@@ -664,18 +664,28 @@ if CheckPlace() then
 		if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
 			return
 		end
+		local RemoteCheck
 		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
-   		if currentPrompt == "Ready?" or currentPrompt == "Skip Cutscene?" then --Event GameMode
-   			task.wait(3)
-   			RemoteFunction:InvokeServer("Voting", "Skip")
+   		if currentPrompt == "Ready?" then --Event GameMode
+   			task.wait(2)
+			repeat
+   			    RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+				task.wait()
+				print(RemoteCheck)
+			until typeof(RemoteCheck) == "boolean" and RemoteCheck
    			StratXLibrary.ReadyState = true
-			if currentPrompt == "Ready?" then
-    			prints("Ready Signal Fired")
-			elseif currentPrompt == "Skip Cutscene?" then
-				prints("Skipped Cutscene")
-			end
+    		prints("Ready Signal Fired")
    			return
-   		end
+	    elseif currentPrompt == "Skip Cutscene?" then
+			task.wait(2)
+			repeat
+				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+			    task.wait()
+			    print(RemoteCheck)
+		    until typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0
+			prints("Skipped Cutscene")
+			return
+		end
    		if not UtilitiesConfig.AutoSkip then
    			repeat
    				task.wait()
@@ -692,7 +702,7 @@ if CheckPlace() then
    		end
 	end)
 
-	--Platform Stand
+	--Platform Stand InGame
 	task.spawn(function()
 		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
 		local Part = Instance.new("Part")
@@ -1012,6 +1022,31 @@ end
 --UI Setup
 --getgenv().PlayersSection = {}
 if not CheckPlace() then
+
+	--Platform Stand InLobby
+	task.spawn(function()
+		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
+		local Part = Instance.new("Part")
+		Part.Size = Vector3.new(10, 2, 10)
+		Part.CFrame = CFrame.new(0, 102, 0) --Workspace.Map.Environment:FindFirstChild("SpawnLocation").CFrame + Vector3.new(0, 30, 0)
+		Part.Anchored = true
+		Part.CanCollide = true
+		Part.Transparency = 1
+		Part.Parent = Workspace
+		Part.Name = "PlatformPart"
+		StratXLibrary.PlatformPart = Part
+
+		local OutlineBox = Instance.new("SelectionBox")
+		OutlineBox.Parent = Part
+		OutlineBox.Adornee = Part
+		OutlineBox.LineThickness = 0.05
+
+		repeat task.wait() until LocalPlayer.Character and LocalPlayer.Character:FindFirstChild("HumanoidRootPart") and LocalPlayer.Character:FindFirstChild("Humanoid")
+		LocalPlayer.Character.Humanoid.PlatformStand = true
+		LocalPlayer.Character.HumanoidRootPart.Anchored = true
+		LocalPlayer.Character.HumanoidRootPart.CFrame = Part.CFrame + Vector3.new(0, 3.5, 0)
+	end)
+
 	ReplicatedStorage:WaitForChild("Network"):WaitForChild("DailySpin"):WaitForChild("RedeemReward"):InvokeServer()
 
 	UI.EquipStatus = maintab:DropSection("Troops Loadout Status")
