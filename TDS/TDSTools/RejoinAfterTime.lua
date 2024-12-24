@@ -10,8 +10,11 @@ local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or tonumber(getgenv().
 local Map, Mode, Difficulty
 for i,v in ipairs(StratXLibrary.Strat) do
     Map = v.Map.Lists[#v.Map.Lists].Map
-    Mode = v.Map.Lists[1].Mode
-    Difficulty = v.Mode.Lists[1].Name
+    print(Map)
+    Mode = v.Map.Lists[#v.Map.Lists].Mode
+    print(Mode)
+    Difficulty = v.Mode.Lists[#v.Map.Lists].Name
+    print(Difficulty)
 end
 
 function MinutesToSeconds(minutes)
