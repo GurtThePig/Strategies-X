@@ -60,11 +60,11 @@ StratXLibrary.LowGraphics = function(bool)
             task.wait(1)
         end
     elseif Location == "Lobby" then
-        if not Workspace:WaitForChild("NewLobby"):FindFirstChild(Location) then
+        if not Workspace:WaitForChild("NewLobby"):WaitForChild("Areas"):FindFirstChild(Location) then
             prints("Waiting Map Loaded to Use LowGraphics")
             repeat
                 task.wait()
-            until Workspace.NewLobby:FindFirstChild(Location)
+            until Workspace:WaitForChild("NewLobby"):WaitForChild("Areas"):FindFirstChild(Location)
             task.wait(1)
         end
     elseif Location == "Map" then
