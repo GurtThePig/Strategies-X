@@ -65,14 +65,14 @@ StratXLibrary.UtilitiesConfig = {
 	AutoSkip = getgenv().AutoSkip or false,
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
-	RejoinTime = {
-		RejoinSettingEnabled = true,
-		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
-		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
+	RejoinSetting = {
+		RejoinAfterTime = true,
+		GameTime = (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25,
+		LobbyTime = (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5,
 	},
-	WebhookSetting = {
-		WebhookSettingEnabled = true,
-		Link = if getgenv().WebhookLink and tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
+	Webhook = {
+		WebhookEnabled = true,
+		Link = (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) or "",
 		HideUser = false,
 		UseNewFormat = false,
 		PlayerInfo = true,
@@ -274,13 +274,13 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 		UtilitiesConfig.Camera = tonumber(getgenv().DefaultCam)
 	end
 	if getgenv().GameTime and type(tonumber(getgenv().GameTime)) == "number" then
-		UtilitiesConfig.RejoinTime.GameTime = tonumber(getgenv().GameTime)
+		UtilitiesConfig.RejoinSetting.GameTime = tonumber(getgenv().GameTime)
 	end
 	if getgenv().LobbyTime and type(tonumber(getgenv().LobbyTime)) == "number" then
-		UtilitiesConfig.RejoinTime.LobbyTime = tonumber(getgenv().LobbyTime)
+		UtilitiesConfig.RejoinSetting.LobbyTime = tonumber(getgenv().LobbyTime)
 	end
 	if getgenv().WebhookLink and type(tostring(getgenv().WebhookLink)) == "string" then
-		UtilitiesConfig.WebhookSetting.Link = tostring(getgenv().WebhookLink)
+		UtilitiesConfig.Webhook.Link = tostring(getgenv().WebhookLink)
 	end
 	if type(getgenv().PotatoPC) == "boolean" then
 		UtilitiesConfig.LowGraphics = getgenv().PotatoPC
@@ -311,8 +311,8 @@ end
 
 function SaveUtilitiesConfig()
 	UtilitiesTab = UI.UtilitiesTab
-	local WebhookSetting = UI.WebhookSetting
-	local RejoinTime = UI.RejoinTime
+	local Webhook = UI.Webhook
+	local RejoinSetting = UI.RejoinSetting
 	StratXLibrary.UtilitiesConfig = {
 		Camera = tonumber(getgenv().DefaultCam) or 2,
 		LowGraphics = UtilitiesTab.flags.LowGraphics,
@@ -323,20 +323,20 @@ function SaveUtilitiesConfig()
 		AutoSkip = UtilitiesTab.flags.AutoSkip,
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
-		RejoinTime = {
-			RejoinSettingEnabled = RejoinTime.flags.RejoinSettingEnabled or false,
-			GameTime = RejoinTime.flags.GameTime or 25,
-			LobbyTime = RejoinTime.flags.LobbyTime or 5,
+		RejoinSetting = {
+			RejoinAfterTime = RejoinSetting.flags.RejoinAfterTime or false,
+			GameTime = RejoinSetting.flags.GameTime or 25,
+			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
 		},
 		Webhook = {
-			WebhookSettingEnabled = WebhookSetting.flags.WebhookSettingEnabled or false,
-			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
-			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) then tostring(getgenv().WebhookLink) else "",
-			HideUser = WebhookSetting.flags.HideUser or false,
-			PlayerInfo = if type(WebhookSetting.flags.PlayerInfo) == "boolean" then WebhookSetting.flags.PlayerInfo else true,
-			GameInfo = if type(WebhookSetting.flags.GameInfo) == "boolean" then WebhookSetting.flags.GameInfo else true,
-			TroopsInfo = if type(WebhookSetting.flags.TroopsInfo) == "boolean" then WebhookSetting.flags.TroopsInfo else true,
-			DisableCustomLog = if type(WebhookSetting.flags.DisableCustomLog) == "boolean" then WebhookSetting.flags.DisableCustomLog else true,
+			WebhookEnabled = Webhook.flags.WebhookEnabled or false,
+			UseNewFormat = Webhook.flags.UseNewFormat or false,
+			Link = (#Webhook.flags.Link ~= 0 and Webhook.flags.Link) or (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) or "",
+			HideUser = Webhook.flags.HideUser or false,
+			PlayerInfo = if type(Webhook.flags.PlayerInfo) == "boolean" then Webhook.flags.PlayerInfo else true,
+			GameInfo = if type(Webhook.flags.GameInfo) == "boolean" then Webhook.flags.GameInfo else true,
+			TroopsInfo = if type(Webhook.flags.TroopsInfo) == "boolean" then Webhook.flags.TroopsInfo else true,
+			DisableCustomLog = if type(Webhook.flags.DisableCustomLog) == "boolean" then Webhook.flags.DisableCustomLog else true,
 		},
 	}
 	UtilitiesConfig = StratXLibrary.UtilitiesConfig
@@ -833,7 +833,7 @@ if CheckPlace() then
 			--[[for i,v in next, PlayerInfo.Property do
 				PlayerInfo[i].Text = `{i}: {v}`
 			end]]
-			if UtilitiesConfig.WebhookSetting.WebhookSettingEnabled then
+			if UtilitiesConfig.Webhook.WebhookEnabled then
 				task.spawn(function()
 					loadstring(game:HttpGet(MainLink.."TDSTools/Webhook.lua", true))()
 					repeat task.wait() until type(getgenv().SendCheck) == "table"
@@ -1138,29 +1138,29 @@ if CheckPlace() then
 	end)
 end
 
-UI.RejoinTime = UtilitiesTab:DropSection("Rejoin After Time")
-local RejoinTime = UI.RejoinTime
-RejoinTime:Toggle("Enabled", {default = UtilitiesConfig.RejoinTime.RejoinSettingEnabled or true, flag = "RejoinSettingEnabled"}, function(bool)
+UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
+local RejoinSetting = UI.RejoinSetting
+RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or true, flag = "RejoinAfterTime"}, function(bool)
 	StratXLibrary.RejoinAfterTime(bool)
 end)
-RejoinTime:Section("Game Time (in minutes)                     ")
-RejoinTime:TypeBox("Game Time", {default = UtilitiesConfig.RejoinTime.GameTime, cleartext = false, flag = "GameTime"})
-RejoinTime:Section("Lobby Time (in minutes)                    ")
-RejoinTime:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinTime.LobbyTime, cleartext = false, flag = "LobbyTime"})
+RejoinSetting:Section("Game Time (in minutes)                     ")
+RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
+RejoinSetting:Section("Lobby Time (in minutes)                    ")
+RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
 
-UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
-local WebhookSetting = UI.WebhookSetting
-WebhookSetting:Toggle("Enabled",{default = UtilitiesConfig.WebhookSetting.WebhookSettingEnabled or false, flag = "WebhookSettingEnabled"})
-WebhookSetting:Toggle("Apply New Format", {default = UtilitiesConfig.WebhookSetting.UseNewFormat or false, flag = "UseNewFormat"})
-WebhookSetting:Section("Webhook Link:                             ")
-WebhookSetting:TypeBox("Webhook Link", {default = UtilitiesConfig.WebhookSetting.Link, cleartext = false, flag = "Link"})
+UI.Webhook = UtilitiesTab:DropSection("Webhook Settings")
+local Webhook = UI.Webhook
+Webhook:Toggle("Enabled",{default = UtilitiesConfig.Webhook.WebhookEnabled or false, flag = "WebhookEnabled"})
+Webhook:Toggle("Apply New Format", {default = UtilitiesConfig.Webhook.UseNewFormat or false, flag = "UseNewFormat"})
+Webhook:Section("Webhook Link:                             ")
+Webhook:TypeBox("Webhook Link", {default = UtilitiesConfig.Webhook.Link, cleartext = false, flag = "Link"})
 if getgenv().FeatureConfig and getgenv().FeatureConfig.CustomLog then
-	WebhookSetting:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.WebhookSetting.DisableCustomLog or false, flag = "DisableCustomLog"})
+	Webhook:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.Webhook.DisableCustomLog or false, flag = "DisableCustomLog"})
 end
-WebhookSetting:Toggle("Hide Username", {default = UtilitiesConfig.WebhookSetting.HideUser or false, flag = "HideUser"})
-WebhookSetting:Toggle("Player Info", {default = UtilitiesConfig.WebhookSetting.PlayerInfo or false, flag = "PlayerInfo"})
-WebhookSetting:Toggle("Game Info", {default = UtilitiesConfig.WebhookSetting.GameInfo or false, flag = "GameInfo"})
-WebhookSetting:Toggle("Troops Info", {default = UtilitiesConfig.WebhookSetting.TroopsInfo or false, flag = "TroopsInfo"})
+Webhook:Toggle("Hide Username", {default = UtilitiesConfig.Webhook.HideUser or false, flag = "HideUser"})
+Webhook:Toggle("Player Info", {default = UtilitiesConfig.Webhook.PlayerInfo or false, flag = "PlayerInfo"})
+Webhook:Toggle("Game Info", {default = UtilitiesConfig.Webhook.GameInfo or false, flag = "GameInfo"})
+Webhook:Toggle("Troops Info", {default = UtilitiesConfig.Webhook.TroopsInfo or false, flag = "TroopsInfo"})
 
 UtilitiesTab:Section("Universal Settings")
 UtilitiesTab:Toggle("Prefer Matchmaking", {flag = "PreferMatchmaking", default = UtilitiesConfig.PreferMatchmaking})
