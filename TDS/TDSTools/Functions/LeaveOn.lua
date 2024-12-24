@@ -68,6 +68,9 @@ return function(self, p1)
     end
     SetActionInfo("LeaveOn", "Total")
     task.spawn(function()
+        if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
+            return UtilitiesConfig.RestartMatch == true
+        end
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
