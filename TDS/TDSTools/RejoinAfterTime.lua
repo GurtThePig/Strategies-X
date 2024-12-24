@@ -6,10 +6,13 @@ local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("Rem
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local GameTime = UtilitiesConfig.RejoinSetting.GameTime or tonumber(getgenv().GameTime) or 25
 local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or tonumber(getgenv().LobbyTime) or 5
-local Strat = StratXLibrary.Strat
-local Map = Strat.Map.Lists[#Strat.Map.Lists].Map
-local Mode = Strat.Map.Lists[1].Mode
-local Difficulty = Strat.Mode.Lists[1].Name
+
+local Map, Mode, Difficulty
+for i,v in ipairs(StratXLibrary.Strat) do
+    Map = v.Map.Lists[#v.Map.Lists].Map
+    Mode = v.Map.Lists[1].Mode
+    Difficulty = v.Mode.Lists[1].Name
+end
 
 function MinutesToSeconds(minutes)
     return minutes*60
