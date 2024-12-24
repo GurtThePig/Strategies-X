@@ -1144,9 +1144,9 @@ RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinS
 	StratXLibrary.RejoinAfterTime(bool)
 end)
 RejoinSetting:Section("Game Time (in minutes)                     ")
-RejoinSetting:TypeBox("Game Time",{default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
+RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
 RejoinSetting:Section("Lobby Time (in minutes)                    ")
-RejoinSetting:TypeBox("Lobby Time",{default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
+RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
 
 UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
 local WebhookSetting = UI.WebhookSetting
