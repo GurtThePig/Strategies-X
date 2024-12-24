@@ -312,7 +312,7 @@ end
 function SaveUtilitiesConfig()
 	UtilitiesTab = UI.UtilitiesTab
 	local WebhookSetting = UI.WebhookSetting
-	local RejoinSetting = UI.RejoinSetting
+	local RejoinTime = UI.RejoinTime
 	StratXLibrary.UtilitiesConfig = {
 		Camera = tonumber(getgenv().DefaultCam) or 2,
 		LowGraphics = UtilitiesTab.flags.LowGraphics,
@@ -324,9 +324,9 @@ function SaveUtilitiesConfig()
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
 		RejoinTime = {
-			RejoinSettingEnabled = RejoinSetting.flags.RejoinSettingEnabled or false,
-			GameTime = RejoinSetting.flags.GameTime or 25,
-			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
+			RejoinSettingEnabled = RejoinTime.flags.RejoinSettingEnabled or false,
+			GameTime = RejoinTime.flags.GameTime or 25,
+			LobbyTime = RejoinTime.flags.LobbyTime or 5,
 		},
 		Webhook = {
 			WebhookSettingEnabled = WebhookSetting.flags.WebhookSettingEnabled or false,
