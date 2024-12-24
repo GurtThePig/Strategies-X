@@ -666,7 +666,7 @@ if CheckPlace() then
 		end
 		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
    		if currentPrompt == "Ready?" or currentPrompt == "Skip Cutscene?" then --Event GameMode
-   			task.wait(2)
+   			task.wait(3)
    			RemoteFunction:InvokeServer("Voting", "Skip")
    			StratXLibrary.ReadyState = true
 			if currentPrompt == "Ready?" then
