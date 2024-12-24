@@ -3,9 +3,8 @@ local Players = game:GetService("Players")
 local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("RemoteFunction") else SpoofEvent
-local UtilitiesConfig = StratXLibrary.UtilitiesConfig
-local GameTime = UtilitiesConfig.RejoinSetting.GameTime or (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25
-local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5
+local GameTime = StratXLibrary.UtilitiesConfig.RejoinSetting.GameTime or (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25
+local LobbyTime = StratXLibrary.UtilitiesConfig.RejoinSetting.LobbyTime or (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5
 
 function MinutesToSeconds(minutes)
     return minutes*60
