@@ -55,7 +55,7 @@ StratXLibrary.CurrentCount = StratXLibrary.RestartCount
 getgenv().GameSpoof = "Lobby"]]
 
 StratXLibrary.UtilitiesConfig = {
-	Camera = tonumber(getgenv().DefaultCam) or 2,
+	Camera = (getgenv().DefaultCam and tonumber(getgenv().DefaultCam)) or 2,
 	LowGraphics = getgenv().PotatoPC or false,
 	BypassGroup = getgenv().GroupBypass or false,
 	AutoBuyMissing = getgenv().BuyMissingTowers or false,
