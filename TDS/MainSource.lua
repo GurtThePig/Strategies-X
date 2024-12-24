@@ -42,9 +42,10 @@ StratXLibrary["ActionInfo"] = {
 	["Skip"] = {0,0},
 	["Ability"] = {0,0},
 	["Target"] = {0,0},
+	["Option"] = {0,0},
+	["LeaveOn"] = {0,0},
 	["AutoChain"] = {0,0},
 	["SellAllFarms"] = {0,0},
-	["Option"] = {0,0},
 }
 StratXLibrary.UI = {}
 StratXLibrary.RestartCount = 0
@@ -64,8 +65,13 @@ StratXLibrary.UtilitiesConfig = {
 	AutoSkip = getgenv().AutoSkip or false,
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
-	Webhook = {
-		Enabled = true,
+	RejoinSetting = {
+		RejoinSettingEnabled = true,
+		GameTime = if getgenv().GameTime and tonumber(getgenv().GameTime) then tonumber(getgenv().GameTime) else 25,
+		LobbyTime = if getgenv().LobbyTime and tonumber(getgenv().LobbyTime) then tonumber(getgenv().LobbyTime) else 5,
+	},
+	WebhookSetting = {
+		WebhookSettingEnabled = true,
 		Link = if getgenv().WebhookLink and tostring(getgenv().WebhookLink) then tostring(getgenv().WebhookLink) else "",
 		HideUser = false,
 		UseNewFormat = false,
@@ -267,8 +273,14 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 	if tonumber(getgenv().DefaultCam) and tonumber(getgenv().DefaultCam) <= 3 then
 		UtilitiesConfig.Camera = tonumber(getgenv().DefaultCam)
 	end
+	if getgenv().GameTime and type(tonumber(getgenv().GameTime)) == "number" then
+		UtilitiesConfig.RejoinSetting.GameTime = tonumber(getgenv().GameTime)
+	end
+	if getgenv().LobbyTime and type(tonumber(getgenv().LobbyTime)) == "number" then
+		UtilitiesConfig.RejoinSetting.LobbyTime = tonumber(getgenv().LobbyTime)
+	end
 	if getgenv().WebhookLink and type(tostring(getgenv().WebhookLink)) == "string" then
-		UtilitiesConfig.Webhook.Link = tostring(getgenv().WebhookLink)
+		UtilitiesConfig.WebhookSetting.Link = tostring(getgenv().WebhookLink)
 	end
 	if type(getgenv().PotatoPC) == "boolean" then
 		UtilitiesConfig.LowGraphics = getgenv().PotatoPC
@@ -300,6 +312,7 @@ end
 function SaveUtilitiesConfig()
 	UtilitiesTab = UI.UtilitiesTab
 	local WebhookSetting = UI.WebhookSetting
+	local RejoinSetting = UI.RejoinSetting
 	StratXLibrary.UtilitiesConfig = {
 		Camera = tonumber(getgenv().DefaultCam) or 2,
 		LowGraphics = UtilitiesTab.flags.LowGraphics,
@@ -310,8 +323,13 @@ function SaveUtilitiesConfig()
 		AutoSkip = UtilitiesTab.flags.AutoSkip,
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
-		Webhook = {
-			Enabled = WebhookSetting.flags.Enabled or false,
+		RejoinSetting = {
+			RejoinSettingEnabled = RejoinSetting.flags.RejoinSettingEnabled or false,
+			GameTime = RejoinSetting.flags.GameTime or 25,
+			LobbyTime = RejoinSetting.flags.LobbyTime or 5,
+		},
+		WebhookSetting = {
+			WebhookSettingEnabled = WebhookSetting.flags.WebhookSettingEnabled or false,
 			UseNewFormat = WebhookSetting.flags.UseNewFormat or false,
 			Link = (#WebhookSetting.flags.Link ~= 0 and WebhookSetting.flags.Link) or if (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) then tostring(getgenv().WebhookLink) else "",
 			HideUser = WebhookSetting.flags.HideUser or false,
@@ -330,6 +348,7 @@ function CheckPlace()
 end
 
 loadstring(game:HttpGet(MainLink.."TDSTools/LowGraphics.lua", true))()
+loadstring(game:HttpGet(MainLink.."TDSTools/RejoinAfterTime.lua", true))()
 
 --[[local GameInfo
 getgenv().GetGameState = function()
@@ -442,6 +461,22 @@ end
 
 function ConvertTimer(number : number)
 	return math.floor(number/60), number % 60
+end
+
+function SafeTeleport(Remote)
+    local attemptIndex = 0
+    local success, result
+    local ATTEMPT_LIMIT = 25
+    local RETRY_DELAY = 5
+    repeat
+        success, result = pcall(function()
+            return Remote
+        end)
+        attemptIndex += 1
+        if not success then
+            task.wait(RETRY_DELAY)
+        end
+    until success or attemptIndex == ATTEMPT_LIMIT
 end
 
 function TimeWaveWait(Wave,Min,Sec,InWave,Debug)
@@ -798,7 +833,7 @@ if CheckPlace() then
 			--[[for i,v in next, PlayerInfo.Property do
 				PlayerInfo[i].Text = `{i}: {v}`
 			end]]
-			if UtilitiesConfig.Webhook.Enabled then
+			if UtilitiesConfig.WebhookSetting.WebhookSettingEnabled then
 				task.spawn(function()
 					loadstring(game:HttpGet(MainLink.."TDSTools/Webhook.lua", true))()
 					repeat task.wait() until type(getgenv().SendCheck) == "table"
@@ -893,7 +928,7 @@ if CheckPlace() then
    				local attemptIndex = 0
    				local success, result
    				local ATTEMPT_LIMIT = 25
-   				local RETRY_DELAY = 3
+   				local RETRY_DELAY = 5
    				repeat
    					success, result = pcall(function()
    						return TeleportHandler(3260590327,2,7)
@@ -906,55 +941,64 @@ if CheckPlace() then
 				prints("Starting a New Match")
 				for i,v in ipairs(StratXLibrary.Strat) do
 					local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
+					local Remote
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
-							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     							["difficulty"] = SpecialTable.difficulty,
     							["night"] = SpecialTable.night,
     							["count"] = 1,
     							["mode"] = SpecialTable.mode,
     						})
+							SafeTeleport(Remote)
     					elseif SpecialTable.mode == "plsDonate" then
-							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
          						["difficulty"] = SpecialTable.difficulty,
          						["count"] = 1,
          						["mode"] = SpecialTable.mode,
     						})
+							SafeTeleport(Remote)
 						elseif SpecialTable.mode == "frostInvasion" then
-							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
 								["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
 								["mode"] = SpecialTable.mode,
 								["count"] = 1,
 							})
+							SafeTeleport(Remote)
 						elseif getgenv().WeeklyChallenge then
-							RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+							Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
 								["mode"] = "weeklyChallengeMap",
 								["count"] = 1,
 								["challenge"] = WeeklyChallenge,
 							})
+							SafeTeleport(Remote)
     					elseif SpecialTable.mode == "Event" then
-							RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+							Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+							SafeTeleport(Remote)
 						else
-    						RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+    						Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     							["count"] = 1,
     							["mode"] = SpecialTable.mode,
     							["challenge"] = SpecialTable.challenge,
     						})
+							SafeTeleport(Remote)
     					end
     				else
 						local DiffTable = {
     						["Easy"] = "Easy",
     						["Normal"] = "Molten",
     						["Intermediate"] = "Intermediate",
+							["Molten"] = "Molten",
     						["Fallen"] = "Fallen",
     					}
     					local DifficultyName = v.Mode.Lists[1] and DiffTable[v.Mode.Lists[1].Name]
-						RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+						Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
     						["count"] = 1,
     						["mode"] = string.lower(v.Map.Lists[1].Mode),
     						["difficulty"] = DifficultyName,
     					})
+						SafeTeleport(Remote)
     				end
     			end
 				--TeleportHandler(3260590327,2,7)
@@ -1094,19 +1138,29 @@ if CheckPlace() then
 	end)
 end
 
+UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
+local RejoinSetting = UI.RejoinSetting
+RejoinSetting:Toggle("Enabled",{default = UtilitiesConfig.RejoinSetting.RejoinSettingEnabled or false, flag = "RejoinSettingEnabled"}, function(bool)
+	StratXLibrary.RejoinAfterTime(bool)
+end)
+RejoinSetting:Section("Game Time (in minutes)                     ")
+RejoinSetting:TypeBox("Game Time",{default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
+RejoinSetting:Section("Lobby Time (in minutes)                    ")
+RejoinSetting:TypeBox("Lobby Time",{default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
+
 UI.WebhookSetting = UtilitiesTab:DropSection("Webhook Settings")
 local WebhookSetting = UI.WebhookSetting
-WebhookSetting:Toggle("Enabled",{default = UtilitiesConfig.Webhook.Enabled or false, flag = "Enabled"})
-WebhookSetting:Toggle("Apply New Format", {default = UtilitiesConfig.Webhook.UseNewFormat or false, flag = "UseNewFormat"})
+WebhookSetting:Toggle("Enabled",{default = UtilitiesConfig.WebhookSetting.WebhookSettingEnabled or false, flag = "WebhookSettingEnabled"})
+WebhookSetting:Toggle("Apply New Format", {default = UtilitiesConfig.WebhookSetting.UseNewFormat or false, flag = "UseNewFormat"})
 WebhookSetting:Section("Webhook Link:                             ")
-WebhookSetting:TypeBox("Webhook Link", {default = UtilitiesConfig.Webhook.Link, cleartext = false, flag = "Link"})
+WebhookSetting:TypeBox("Webhook Link", {default = UtilitiesConfig.WebhookSetting.Link, cleartext = false, flag = "Link"})
 if getgenv().FeatureConfig and getgenv().FeatureConfig.CustomLog then
-	WebhookSetting:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.Webhook.DisableCustomLog or false, flag = "DisableCustomLog"})
+	WebhookSetting:Toggle("Disable SL's Custom Log", {default = UtilitiesConfig.WebhookSetting.DisableCustomLog or false, flag = "DisableCustomLog"})
 end
-WebhookSetting:Toggle("Hide Username", {default = UtilitiesConfig.Webhook.HideUser or false, flag = "HideUser"})
-WebhookSetting:Toggle("Player Info", {default = UtilitiesConfig.Webhook.PlayerInfo or false, flag = "PlayerInfo"})
-WebhookSetting:Toggle("Game Info", {default = UtilitiesConfig.Webhook.GameInfo or false, flag = "GameInfo"})
-WebhookSetting:Toggle("Troops Info", {default = UtilitiesConfig.Webhook.TroopsInfo or false, flag = "TroopsInfo"})
+WebhookSetting:Toggle("Hide Username", {default = UtilitiesConfig.WebhookSetting.HideUser or false, flag = "HideUser"})
+WebhookSetting:Toggle("Player Info", {default = UtilitiesConfig.WebhookSetting.PlayerInfo or false, flag = "PlayerInfo"})
+WebhookSetting:Toggle("Game Info", {default = UtilitiesConfig.WebhookSetting.GameInfo or false, flag = "GameInfo"})
+WebhookSetting:Toggle("Troops Info", {default = UtilitiesConfig.WebhookSetting.TroopsInfo or false, flag = "TroopsInfo"})
 
 UtilitiesTab:Section("Universal Settings")
 UtilitiesTab:Toggle("Prefer Matchmaking", {flag = "PreferMatchmaking", default = UtilitiesConfig.PreferMatchmaking})
@@ -1190,6 +1244,7 @@ Functions.Target = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/Target.
 Functions.AutoChain = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/AutoChain.lua", true))()
 Functions.SellAllFarms = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/SellAllFarms.lua", true))()
 Functions.Option = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/Option.lua", true))()
+Functions.LeaveOn = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/LeaveOn.lua", true))()
 Functions.SelectLoadout = loadstring(game:HttpGet(MainLink.."TDSTools/Functions/SelectLoadout.lua", true))()
 
 Functions.MatchMaking = function()
@@ -1294,6 +1349,7 @@ end
 function Tutorial()
 	loadstring(game:HttpGet(MainLink.."TDSTools/Tutorial.lua", true))()
 end
+
 prints("Loaded Functions")
 
 --[[local GetConnects = getconnections or get_signal_cons
