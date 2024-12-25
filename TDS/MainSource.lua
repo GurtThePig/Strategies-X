@@ -656,58 +656,40 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
-		task.wait(.7)
-		local RemoteCheck, hasSkipped
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
-				task.wait()
-			until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
+                task.wait()
+            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		if VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) then
-    		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
-			if not hasSkipped then
-          		if currentPrompt == "Ready?" then --Event GameMode
-          			task.wait(2)
-           			repeat
-              			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-           				task.wait()
-           			until typeof(RemoteCheck) == "boolean" and RemoteCheck
-            		StratXLibrary.ReadyState = true
-         			hasSkipped = true
-               		prints("Ready Signal Fired")
-          			return
-       	        elseif currentPrompt == "Skip Cutscene?" then
-        			task.wait(2)
-            		repeat
-            			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-            		    task.wait()
-            		until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
-            		hasSkipped = true
-            		prints("Skipped Cutscene")
-        			return
-				end
-         		if not UtilitiesConfig.AutoSkip then
-         			repeat
-         				task.wait()
-         				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
-         					return
-         				end
-         			until UtilitiesConfig.AutoSkip
-         		end
-         	    if currentPrompt == "Skip Wave?" then
-        			repeat
-        				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-        			    task.wait()
-        		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
-    				hasSkipped = true
-        			SetActionInfo("Skip","Total")
-             		SetActionInfo("Skip")
-             		prints(`Skipped Wave {tonumber(GameWave.Text)}`)
-				end
-       		end
-		else
-			hasSkipped = false
+		if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
+			return
 		end
+		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
+   		if currentPrompt == "Ready?" or currentPrompt == "Skip Cutscene?" then --Event GameMode
+   			task.wait(2)
+   			RemoteFunction:InvokeServer("Voting", "Skip")
+   			StratXLibrary.ReadyState = true
+			if currentPrompt == "Ready?" then
+    			prints("Ready Signal Fired")
+			elseif currentPrompt == "Skip Cutscene?" then
+				prints("Skipped Cutscene")
+			end
+   			return
+   		end
+   		if not UtilitiesConfig.AutoSkip then
+   			repeat
+   				task.wait()
+   				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+   					return
+   				end
+   			until UtilitiesConfig.AutoSkip
+   		end
+   	    if currentPrompt == "Skip Wave?" then
+   			RemoteFunction:InvokeServer("Voting", "Skip")
+   			SetActionInfo("Skip","Total")
+   			SetActionInfo("Skip")
+   			ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+   		end
 	end)
 
 	--Platform Stand InGame
