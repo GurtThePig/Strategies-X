@@ -59,7 +59,7 @@ local WeeklyChallenge = {
 
 return function(self, p1)
     local tableinfo = p1--ParametersPatch("LeaveOn",...)
-    local MapInStrat = tableinfo["Map"]
+    local Map = tableinfo["Map"]
     local Mode = tableinfo["Mode"]
     local Difficulty = tableinfo["Difficulty"]
     local Wave,Min,Sec,InWave = tableinfo["Wave"] or 0, tableinfo["Minute"] or 0, tableinfo["Second"] or 0, tableinfo["InBetween"] or false
@@ -69,15 +69,17 @@ return function(self, p1)
     SetActionInfo("LeaveOn", "Total")
     task.spawn(function()
         if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
-            return UtilitiesConfig.RestartMatch == true
+            getgenv().AutoRestart = true
+            SaveUtilitiesConfig()
+            return
         end
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
         SetActionInfo("LeaveOn")
-        ConsoleInfo(`Leave On Wave: {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
-        if table.find(SpecialMaps, MapInStrat) then
-            local SpecialTable = SpecialGameMode[MapInStrat]
+        ConsoleInfo(`Left On Wave: {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
+        if table.find(SpecialMaps, Map) then
+            local SpecialTable = SpecialGameMode[Map]
 			if SpecialTable.mode == "halloween2024" then
 				Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
 			        ["difficulty"] = SpecialTable.difficulty,
