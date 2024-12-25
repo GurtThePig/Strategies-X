@@ -1028,7 +1028,7 @@ if not CheckPlace() then
 		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
 		local Part = Instance.new("Part")
 		Part.Size = Vector3.new(10, 2, 10)
-		Part.CFrame = CFrame.new(0, 105, 0) --Workspace.Map.Environment:FindFirstChild("SpawnLocation").CFrame + Vector3.new(0, 30, 0)
+		Part.CFrame = CFrame.new(0, 104, 0) --Workspace.Map.Environment:FindFirstChild("SpawnLocation").CFrame + Vector3.new(0, 30, 0)
 		Part.Anchored = true
 		Part.CanCollide = true
 		Part.Transparency = 1
