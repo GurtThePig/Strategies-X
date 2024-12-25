@@ -66,13 +66,12 @@ return function(self, p1)
     if not CheckPlace() then
         return
     end
+    if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
+        UtilitiesTab.flags.RestartMatch = true
+        SaveUtilitiesConfig()
+    end
     SetActionInfo("LeaveOn", "Total")
     task.spawn(function()
-        if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
-            getgenv().AutoRestart = true
-            SaveUtilitiesConfig()
-            return
-        end
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
@@ -119,7 +118,7 @@ return function(self, p1)
 				})
 			    SafeTeleport(Remote)
 			end
-        else
+        elseif game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
             local DiffTable = {
                 ["Easy"] = "Easy",
                 ["Normal"] = "Molten",
