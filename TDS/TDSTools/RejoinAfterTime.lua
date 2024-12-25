@@ -149,8 +149,6 @@ StratXLibrary.RejoinAfterTime = function(bool)
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
     	end
-	else
-		repeat task.wait() until bool
 	end
     prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 end
