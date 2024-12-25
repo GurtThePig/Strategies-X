@@ -662,10 +662,9 @@ if CheckPlace() then
 				task.wait()
 			until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
 		if VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) then
 			if not hasSkipped then
-          		if currentPrompt == "Ready?" then --Event GameMode
+          		if VoteGUI:WaitForChild("prompt").Text == "Ready?" then --Event GameMode
           			task.wait(2)
            			repeat
               			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
@@ -675,7 +674,7 @@ if CheckPlace() then
          			hasSkipped = true
                		prints("Ready Signal Fired")
           			return
-       	        elseif currentPrompt == "Skip Cutscene?" then
+       	        elseif VoteGUI:WaitForChild("prompt").Text == "Skip Cutscene?" then
         			task.wait(2)
             		repeat
             			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
@@ -693,7 +692,7 @@ if CheckPlace() then
          				end
          			until UtilitiesConfig.AutoSkip
          		end
-         	    if currentPrompt == "Skip Wave?" then
+         	    if VoteGUI:WaitForChild("prompt").Text == "Skip Wave?" then
         			repeat
         				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
         			    task.wait()
