@@ -65,92 +65,93 @@ local WeeklyChallenge = {
 }
 
 function SafeTeleport(Remote)
-    local attemptIndex = 0
-    local success, result
-    local ATTEMPT_LIMIT = 25
-    local RETRY_DELAY = 5
-    repeat
-        success, result = pcall(function()
-            return Remote
-        end)
-        attemptIndex += 1
-        if not success then
-            task.wait(RETRY_DELAY)
-        end
-    until success or attemptIndex == ATTEMPT_LIMIT
+	if canTeleport then
+        local attemptIndex = 0
+        local success, result
+        local ATTEMPT_LIMIT = 25
+        local RETRY_DELAY = 5
+        repeat
+            success, result = pcall(function()
+                return Remote
+            end)
+            attemptIndex += 1
+            if not success then
+                task.wait(RETRY_DELAY)
+            end
+        until success or attemptIndex == ATTEMPT_LIMIT
+	else
+		prints("Disabled")
+    end
 end
 
 StratXLibrary.RejoinAfterTime = function(bool)
 	local Remote
-	local boolean = bool
-	print(boolean)
-    if typeof(boolean) == "boolean" and boolean == true then
-        if CheckPlace() then
-            task.wait(MinutesToSeconds(GameTime))
-            local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
-            if table.find(SpecialMaps, RSMap) then
-            	local SpecialTable = SpecialGameMode[RSMap]
-            	if SpecialTable.mode == "halloween2024" then
-                	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-            			["difficulty"] = SpecialTable.difficulty,
-            			["night"] = SpecialTable.night,
-            			["count"] = 1,
-            			["mode"] = SpecialTable.mode,
-            		})
-            		SafeTeleport(Remote)
-            	elseif SpecialTable.mode == "plsDonate" then
-            		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-            			["difficulty"] = SpecialTable.difficulty,
-            			["count"] = 1,
-            			["mode"] = SpecialTable.mode,
-            		})
-            		SafeTeleport(Remote)
-            	elseif SpecialTable.mode == "frostInvasion" then
-            		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-            			["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
-            			["mode"] = SpecialTable.mode,
-            			["count"] = 1,
-            		})
-            		SafeTeleport(Remote)
-            	elseif getgenv().WeeklyChallenge then
-            		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-            			["mode"] = "weeklyChallengeMap",
-            			["count"] = 1,
-            			["challenge"] = WeeklyChallenge,
-            		})
-            		SafeTeleport(Remote)
-            	elseif SpecialTable.mode == "Event" then
-            		Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-            		SafeTeleport(Remote)
-            	else
-            		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-            			["count"] = 1,
-            			["mode"] = SpecialTable.mode,
-            			["challenge"] = SpecialTable.challenge,
-            		})
-            		SafeTeleport(Remote)
-            	end
-            else
-            	local DiffTable = {
-            		["Easy"] = "Easy",
-            		["Normal"] = "Molten",
-            		["Intermediate"] = "Intermediate",
-            		["Molten"] = "Molten",
-            		["Fallen"] = "Fallen",
-            	}
-            	local DifficultyName = StratXLibrary.Strat.Mode.Lists[1] and DiffTable[StratXLibrary.Strat.Mode.Lists[1].Name]
-            	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+	local canTeleport = bool
+    if CheckPlace() then
+        task.wait(MinutesToSeconds(GameTime))
+        local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
+        if table.find(SpecialMaps, RSMap) then
+           	local SpecialTable = SpecialGameMode[RSMap]
+           	if SpecialTable.mode == "halloween2024" then
+               	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+           			["difficulty"] = SpecialTable.difficulty,
+           			["night"] = SpecialTable.night,
+         			["count"] = 1,
+           			["mode"] = SpecialTable.mode,
+           		})
+           		SafeTeleport(Remote)
+           	elseif SpecialTable.mode == "plsDonate" then
+           		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+           			["difficulty"] = SpecialTable.difficulty,
+           			["count"] = 1,
+           			["mode"] = SpecialTable.mode,
+           		})
+         		SafeTeleport(Remote)
+           	elseif SpecialTable.mode == "frostInvasion" then
+           		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+           			["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
+           			["mode"] = SpecialTable.mode,
+           			["count"] = 1,
+           		})
+           		SafeTeleport(Remote)
+           	elseif getgenv().WeeklyChallenge then
+           		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+           			["mode"] = "weeklyChallengeMap",
+           			["count"] = 1,
+           			["challenge"] = WeeklyChallenge,
+           		})
+           		SafeTeleport(Remote)
+           	elseif SpecialTable.mode == "Event" then
+           		Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+           		SafeTeleport(Remote)
+           	else
+           		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
             		["count"] = 1,
-            		["mode"] = string.lower(StratXLibrary.Strat.Map.Lists[1].Mode),
-            		["difficulty"] = DifficultyName,
-            	})
-            	SafeTeleport(Remote)
-            end
-        elseif not CheckPlace() then
-            task.wait(MinutesToSeconds(LobbyTime))
-            Remote = TeleportHandler(3260590327,2,7)
-            SafeTeleport(Remote)
+           			["mode"] = SpecialTable.mode,
+           			["challenge"] = SpecialTable.challenge,
+           		})
+           		SafeTeleport(Remote)
+           	end
+        else
+           	local DiffTable = {
+           		["Easy"] = "Easy",
+           		["Normal"] = "Molten",
+           		["Intermediate"] = "Intermediate",
+           		["Molten"] = "Molten",
+           		["Fallen"] = "Fallen",
+           	}
+           	local DifficultyName = StratXLibrary.Strat.Mode.Lists[1] and DiffTable[StratXLibrary.Strat.Mode.Lists[1].Name]
+           	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+           		["count"] = 1,
+           		["mode"] = string.lower(StratXLibrary.Strat.Map.Lists[1].Mode),
+           		["difficulty"] = DifficultyName,
+           	})
+           	SafeTeleport(Remote)
         end
+    elseif not CheckPlace() then
+        task.wait(MinutesToSeconds(LobbyTime))
+        Remote = TeleportHandler(3260590327,2,7)
+        SafeTeleport(Remote)
 	end
-    prints(`{if typeof(boolean) == "boolean" and boolean == true then "Enabled" else "Disabled"} Rejoin After Time`)
+    prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 end
