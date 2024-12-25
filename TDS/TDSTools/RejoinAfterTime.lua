@@ -7,10 +7,6 @@ local UtilitiesConfig = StratXLibrary.UtilitiesConfig
 local GameTime = UtilitiesConfig.RejoinSetting.GameTime or (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25
 local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5
 
-function MinutesToSeconds(minutes)
-    return minutes*60
-end
-
 local SpecialMaps = {
 	"Pizza Party",
 	"Badlands II",
@@ -80,11 +76,16 @@ function SafeTeleport(Remote)
     until success or attemptIndex == ATTEMPT_LIMIT
 end
 
+function WaitForTime(Minutes)
+	local Seconds = Minutes*60
+	task.wait(Seconds)
+end
+
 StratXLibrary.RejoinAfterTime = function(bool)
 	local Remote
 	if bool then
         if CheckPlace() then
-            task.wait(MinutesToSeconds(GameTime))
+            coroutine.wrap(WaitForTime(GameTime))
             local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
             if table.find(SpecialMaps, RSMap) then
                	local SpecialTable = SpecialGameMode[RSMap]
@@ -145,6 +146,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
                	SafeTeleport(Remote)
             end
         elseif not CheckPlace() then
+			coroutine.wrap(WaitForTime(LobbyTime))
             task.wait(MinutesToSeconds(LobbyTime))
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
