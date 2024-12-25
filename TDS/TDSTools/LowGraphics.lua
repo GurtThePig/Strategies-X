@@ -69,6 +69,7 @@ StratXLibrary.LowGraphics = function(bool)
         end
     end
     if bool then
+        MinimizeClient(bool)
         if Location == "NewLobby" and not CheckPlace() then
             for i,v in Workspace:WaitForChild(Location):GetChildren(), Workspace.Terrain:GetChildren() do
                 v:Destroy()
@@ -125,6 +126,5 @@ StratXLibrary.LowGraphics = function(bool)
             end
         end]]
     end
-    MinimizeClient(bool)
     prints(`{if bool then "Enabled" else "Disabled"} Low Graphics Mode`)
 end
