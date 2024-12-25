@@ -1345,7 +1345,7 @@ Functions.MatchMaking = function()
 				prints("Overrided Map")
 				RemoteFunction:InvokeServer("LobbyVoting", "Override", MapProps.Map)
 				break
-		    elseif not VetoUsedOnce and not CanChangeMap and not table.find(CurrentMapList, v.Map.Lists[1].Map) then
+		    elseif not (VetoUsedOnce and CanChangeMap and table.find(CurrentMapList, v.Map.Lists[1].Map)) then
            		VetoUsedOnce = true
                	RemoteEvent:FireServer("LobbyVoting", "Veto")
            		prints("Veto Has Used Once")

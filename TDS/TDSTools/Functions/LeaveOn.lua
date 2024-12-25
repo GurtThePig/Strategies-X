@@ -133,6 +133,8 @@ return function(self, p1)
                 ["difficulty"] = DifficultyConvert,
             })
             SafeTeleport(Remote)
+        else
+            TeleportHandler(3260590327,2,7)
         end
     end)
 end
