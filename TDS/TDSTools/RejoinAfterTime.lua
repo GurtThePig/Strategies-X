@@ -65,23 +65,22 @@ local WeeklyChallenge = {
 }
 
 function SafeTeleport(Remote)
-	if canTeleport then
-        local attemptIndex = 0
-        local success, result
-        local ATTEMPT_LIMIT = 25
-        local RETRY_DELAY = 5
-        repeat
-            success, result = pcall(function()
-                return Remote
-            end)
-            attemptIndex += 1
-            if not success then
-                task.wait(RETRY_DELAY)
-            end
-        until success or attemptIndex == ATTEMPT_LIMIT
-	else
-		return nil
-    end
+	if not canTeleport then
+		return
+	end
+    local attemptIndex = 0
+    local success, result
+    local ATTEMPT_LIMIT = 25
+    local RETRY_DELAY = 5
+    repeat
+        success, result = pcall(function()
+            return Remote
+        end)
+        attemptIndex += 1
+        if not success then
+            task.wait(RETRY_DELAY)
+        end
+    until success or attemptIndex == ATTEMPT_LIMIT
 end
 
 StratXLibrary.RejoinAfterTime = function(bool)
