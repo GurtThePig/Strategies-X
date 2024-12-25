@@ -66,7 +66,7 @@ StratXLibrary.UtilitiesConfig = {
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
 	RejoinSetting = {
-		RejoinAfterTime = getgenv().RejoinIfError or false,
+		RejoinAfterTime = true,
 		GameTime = (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25,
 		LobbyTime = (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5,
 	},
