@@ -24,10 +24,10 @@ return function(self, p1)
             return
         end
         local SkipCheck, hasSkipped
-        if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) then
+        if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) or hasSkipped then
             repeat
                 task.wait()
-            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0)
+            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) or not hasSkipped
         end
         if not hasSkipped then
             repeat
