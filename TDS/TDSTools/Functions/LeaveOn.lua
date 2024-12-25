@@ -59,9 +59,9 @@ local WeeklyChallenge = {
 
 return function(self, p1)
     local tableinfo = p1--ParametersPatch("LeaveOn",...)
-    local Map = tableinfo["Map"]
-    local Mode = tableinfo["Mode"]
-    local Difficulty = tableinfo["Difficulty"]
+    local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
+    local RSMode = ReplicatedStorage:WaitForChild("State"):WaitForChild("Mode") -- Survival or Hardcore or Event types
+    local RSDifficulty = ReplicatedStorage:WaitForChild("State"):WaitForChild("Difficulty") -- Survival's gamemodes
     local Wave,Min,Sec,InWave = tableinfo["Wave"] or 0, tableinfo["Minute"] or 0, tableinfo["Second"] or 0, tableinfo["InBetween"] or false
     if not CheckPlace() then
         return
@@ -77,8 +77,8 @@ return function(self, p1)
         end
         SetActionInfo("LeaveOn")
         ConsoleInfo(`Left On Wave: {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
-        if table.find(SpecialMaps, Map) then
-            local SpecialTable = SpecialGameMode[Map]
+        if table.find(SpecialMaps, RSMap) then
+            local SpecialTable = SpecialGameMode[RSMap]
 			if SpecialTable.mode == "halloween2024" then
 				Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
 			        ["difficulty"] = SpecialTable.difficulty,
@@ -126,10 +126,10 @@ return function(self, p1)
                 ["Molten"] = "Molten",
                 ["Fallen"] = "Fallen",
             }
-            local DifficultyConvert = DiffTable[Difficulty]
+            local DifficultyConvert = DiffTable[RSDifficulty]
             Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                 ["count"] = 1,
-                ["mode"] = string.lower(Mode),
+                ["mode"] = string.lower(RSMode),
                 ["difficulty"] = DifficultyConvert,
             })
             SafeTeleport(Remote)
