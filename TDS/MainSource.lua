@@ -128,7 +128,7 @@ end]]
 local SpecialMaps = {
 	"Pizza Party",
 	"Badlands II",
-	"Polluted Wastelands II",
+	"Polluted Wasteland II",
 	--Current Special Maps ^^^^^^
 	"Failed Gateway",
 	"The Nightmare Realm",

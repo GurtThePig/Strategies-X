@@ -7,7 +7,7 @@ local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("Remote
 local SpecialMaps = {
 	"Pizza Party",
 	"Badlands II",
-	"Polluted Wastelands II",
+	"Polluted Wasteland II",
 	--Current Special Maps ^^^^^^
 	"Failed Gateway",
 	"The Nightmare Realm",
