@@ -114,24 +114,26 @@ return function(self, p1)
 				})
 			    SafeTeleport(Remote)
 			end
-        elseif game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
-            local DiffTable = {
-                ["Easy"] = "Easy",
-                ["Normal"] = "Molten",
-                ["Intermediate"] = "Intermediate",
-                ["Molten"] = "Molten",
-                ["Fallen"] = "Fallen",
-            }
-            local DifficultyConvert = DiffTable[RSDifficulty.Value]
-            Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                ["count"] = 1,
-                ["mode"] = string.lower(RSMode.Value),
-                ["difficulty"] = DifficultyConvert,
-            })
-            SafeTeleport(Remote)
-        elseif not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
-            UtilitiesTab.flags.RestartMatch = true
-            SaveUtilitiesConfig()
+        else
+            if game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
+                local DiffTable = {
+                    ["Easy"] = "Easy",
+                    ["Normal"] = "Molten",
+                    ["Intermediate"] = "Intermediate",
+                    ["Molten"] = "Molten",
+                    ["Fallen"] = "Fallen",
+                }
+                local DifficultyConvert = DiffTable[RSDifficulty.Value]
+                Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    ["count"] = 1,
+                    ["mode"] = string.lower(RSMode.Value),
+                    ["difficulty"] = DifficultyConvert,
+                })
+                SafeTeleport(Remote)
+            else
+                UtilitiesTab.flags.RestartMatch = true
+                SaveUtilitiesConfig()
+            end
         end
     end)
 end
