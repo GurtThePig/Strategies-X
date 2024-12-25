@@ -17,19 +17,19 @@ return function(self, p1)
     local VoteGUI = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesVote"):WaitForChild("Frame"):WaitForChild("votes"):WaitForChild("vote") -- it is what it is
     SetActionInfo("Skip","Total")
     task.spawn(function()
+        local SkipCheck, hasSkipped
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 then
+        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 or hasSkipped then
             return
         end
-        local SkipCheck, hasSkipped
         if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) then
             repeat
                 task.wait()
             until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required` or VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0)
         end
-        if not hasSkipped then
+        if not hasSkipped and VoteGUI:WaitForChild("prompt").Text == "Skip Wave?" then
             repeat
                 SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
                 task.wait()
