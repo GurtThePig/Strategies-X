@@ -83,9 +83,10 @@ end
 
 StratXLibrary.RejoinAfterTime = function(bool)
 	local Remote
+	local TaskWait = coroutine.wrap(WaitForTime)
 	if bool then
         if CheckPlace() then
-            coroutine.wrap(WaitForTime(GameTime))
+            TaskWait(GameTime)
             local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
             if table.find(SpecialMaps, RSMap) then
                	local SpecialTable = SpecialGameMode[RSMap]
@@ -146,8 +147,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
                	SafeTeleport(Remote)
             end
         elseif not CheckPlace() then
-			coroutine.wrap(WaitForTime(LobbyTime))
-            task.wait(MinutesToSeconds(LobbyTime))
+			TaskWait(LobbyTime)
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
     	end
