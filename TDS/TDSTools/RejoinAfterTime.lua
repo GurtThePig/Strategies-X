@@ -80,7 +80,7 @@ function SafeTeleport(Remote)
             end
         until success or attemptIndex == ATTEMPT_LIMIT
 	else
-		prints("Disabled")
+		return nil
     end
 end
 
