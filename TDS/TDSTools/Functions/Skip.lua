@@ -35,7 +35,6 @@ return function(self, p1)
                 task.wait()
             until (typeof(SkipCheck) == "boolean" and SkipCheck) or VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required`
             hasSkipped = true
-            task.wait(0.1)
             SetActionInfo("Skip")
             ConsoleInfo(`Skipped Wave {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
         else
