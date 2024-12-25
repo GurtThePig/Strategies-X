@@ -656,35 +656,43 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
+		local RemoteCheck, hasSkipped
+		if VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) or hasSkipped then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
+			return
+		end
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
                 task.wait()
             until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
-			return
-		end
-		local RemoteCheck
 		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
    		if currentPrompt == "Ready?" then --Event GameMode
    			task.wait(2)
-			repeat
-   			    RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-				task.wait()
-				print(RemoteCheck)
-			until typeof(RemoteCheck) == "boolean" and RemoteCheck
-   			StratXLibrary.ReadyState = true
-    		prints("Ready Signal Fired")
-   			return
+			if not hasSkipped then
+    			repeat
+       			    RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+    				task.wait()
+					hasSkipped = true
+    			until typeof(RemoteCheck) == "boolean" and RemoteCheck
+				StratXLibrary.ReadyState, hasSkipped = true, true
+        		prints("Ready Signal Fired")
+   			    return
+			else
+				hasSkipped = false
+		    end
 	    elseif currentPrompt == "Skip Cutscene?" then
 			task.wait(2)
-			repeat
-				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-			    task.wait()
-			    print(RemoteCheck)
-		    until typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0
-			prints("Skipped Cutscene")
-			return
+			if not hasSkipped then
+    			repeat
+    				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+    			    task.wait()
+    		    until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
+				hasSkipped = true
+    			prints("Skipped Cutscene")
+			    return
+			else
+				hasSkipped = false
+			end
 		end
    		if not UtilitiesConfig.AutoSkip then
    			repeat
@@ -695,10 +703,18 @@ if CheckPlace() then
    			until UtilitiesConfig.AutoSkip
    		end
    	    if currentPrompt == "Skip Wave?" then
-   			RemoteFunction:InvokeServer("Voting", "Skip")
-   			SetActionInfo("Skip","Total")
-   			SetActionInfo("Skip")
-   			ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+			if not hasSkipped then
+    			repeat
+    				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+    			    task.wait()
+    		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
+				hasSkipped = true
+    			SetActionInfo("Skip","Total")
+         		SetActionInfo("Skip")
+         		ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+		    else
+				hasSkipped = false
+			end
    		end
 	end)
 
