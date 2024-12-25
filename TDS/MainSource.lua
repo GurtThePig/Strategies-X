@@ -657,65 +657,59 @@ if CheckPlace() then
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
 		local RemoteCheck, hasSkipped
-		if VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) or hasSkipped then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
-			return
-		end
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
-                task.wait()
-            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
+				task.wait()
+			until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
-   		if currentPrompt == "Ready?" then --Event GameMode
-   			task.wait(2)
+		if VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) then
+    		local currentPrompt = VoteGUI:WaitForChild("prompt")
 			if not hasSkipped then
-    			repeat
-       			    RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-    				task.wait()
-					hasSkipped = true
-    			until typeof(RemoteCheck) == "boolean" and RemoteCheck
-				StratXLibrary.ReadyState, hasSkipped = true, true
-        		prints("Ready Signal Fired")
-   			    return
-			else
-				hasSkipped = false
-		    end
-	    elseif currentPrompt == "Skip Cutscene?" then
-			task.wait(2)
-			if not hasSkipped then
-    			repeat
-    				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-    			    task.wait()
-    		    until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
-				hasSkipped = true
-    			prints("Skipped Cutscene")
-			    return
-			else
-				hasSkipped = false
-			end
+          		if currentPrompt.Text == "Ready?" then --Event GameMode
+          			task.wait(2)
+           			repeat
+              			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+           				task.wait()
+           			until typeof(RemoteCheck) == "boolean" and RemoteCheck
+            		StratXLibrary.ReadyState = true
+         			hasSkipped = true
+					    task.wait(0.1)
+               		prints("Ready Signal Fired")
+          			return
+       	        elseif currentPrompt.Text == "Skip Cutscene?" then
+        			task.wait(2)
+            		repeat
+            			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+            		    task.wait()
+            		until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
+            		hasSkipped = true
+					    task.wait(0.1)
+            		prints("Skipped Cutscene")
+        			return
+				end
+         		if not UtilitiesConfig.AutoSkip then
+         			repeat
+         				task.wait()
+         				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+         					return
+         				end
+         			until UtilitiesConfig.AutoSkip
+         		end
+         	    if currentPrompt.Text == "Skip Wave?" then
+        			repeat
+        				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
+        			    task.wait()
+        		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
+    				hasSkipped = true
+    					task.wait(0.1)
+        			SetActionInfo("Skip","Total")
+             		SetActionInfo("Skip")
+             		ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+				end
+       		end
+		else
+			hasSkipped = false
 		end
-   		if not UtilitiesConfig.AutoSkip then
-   			repeat
-   				task.wait()
-   				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
-   					return
-   				end
-   			until UtilitiesConfig.AutoSkip
-   		end
-   	    if currentPrompt == "Skip Wave?" then
-			if not hasSkipped then
-    			repeat
-    				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-    			    task.wait()
-    		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
-				hasSkipped = true
-    			SetActionInfo("Skip","Total")
-         		SetActionInfo("Skip")
-         		ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
-		    else
-				hasSkipped = false
-			end
-   		end
 	end)
 
 	--Platform Stand InGame
