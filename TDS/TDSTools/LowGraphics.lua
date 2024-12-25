@@ -69,7 +69,6 @@ StratXLibrary.LowGraphics = function(bool)
         end
     end
     if bool then
-        game:GetService("RunService"):Set3dRenderingEnabled(false)
         if Location == "NewLobby" and not CheckPlace() then
             for i,v in Workspace:WaitForChild(Location):GetChildren(), Workspace.Terrain:GetChildren() do
                 v:Destroy()
