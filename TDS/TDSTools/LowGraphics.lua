@@ -69,8 +69,13 @@ StratXLibrary.LowGraphics = function(bool)
         end
     end
     if bool then
+        game:GetService("RunService"):Set3dRenderingEnabled(false)
         if Location == "NewLobby" and not CheckPlace() then
-            for i,v in Workspace:WaitForChild(Location):GetChildren(), Workspace.Terrain:GetChildren() do
+            for i,v in next, Workspace:WaitForChild(Location):GetChildren() do
+                v:Destroy()
+                --v.Parent = Folder
+            end
+            for i,v in next, Workspace.Terrain:GetChildren() do
                 v:Destroy()
                 --v.Parent = Folder
             end
@@ -96,7 +101,10 @@ StratXLibrary.LowGraphics = function(bool)
             Terrain.WaterTransparency = 0
             Terrain.WaterWaveSize = 0
             Terrain.WaterWaveSpeed = 0
-            for i,v in Workspace.Terrain:GetChildren(), Workspace:WaitForChild("Folder"):GetChildren() do
+            for i,v in Workspace.Terrain:GetChildren() do
+                v:Destroy()
+            end
+            for i,v in Workspace:WaitForChild("Folder"):GetChildren() do
                 v:Destroy()
             end
         elseif Location == "MatchmakingPlace" and CheckPlace() then
@@ -106,7 +114,13 @@ StratXLibrary.LowGraphics = function(bool)
             Terrain.WaterTransparency = 0
             Terrain.WaterWaveSize = 0
             Terrain.WaterWaveSpeed = 0
-            for i,v in Workspace[Lobby]:GetChildren(), Workspace:WaitForChild("Folder"):GetChildren(), Workspace.Terrain:GetChildren() do
+            for i,v in Workspace[Lobby]:GetChildren() do
+                v:Destroy()
+            end
+            for i,v in Workspace:WaitForChild("Folder"):GetChildren() do
+                v:Destroy()
+            end
+            for i,v in Workspace.Terrain:GetChildren() do
                 v:Destroy()
             end
         end
