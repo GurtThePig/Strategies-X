@@ -66,10 +66,6 @@ return function(self, p1)
     if not CheckPlace() then
         return
     end
-    if not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
-        UtilitiesTab.flags.RestartMatch = true
-        SaveUtilitiesConfig()
-    end
     SetActionInfo("LeaveOn", "Total")
     task.spawn(function()
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
@@ -133,6 +129,9 @@ return function(self, p1)
                 ["difficulty"] = DifficultyConvert,
             })
             SafeTeleport(Remote)
+        elseif not game:GetService("MarketplaceService"):UserOwnsGamePassAsync(LocalPlayer.UserId, 10518590) then
+            UtilitiesTab.flags.RestartMatch = true
+            SaveUtilitiesConfig()
         end
     end)
 end
