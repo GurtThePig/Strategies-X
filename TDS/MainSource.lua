@@ -656,7 +656,7 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
-		task.wait(0.1)
+		task.wait(0.5)
 		local RemoteCheck, hasSkipped
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
@@ -702,7 +702,7 @@ if CheckPlace() then
     				hasSkipped = true
         			SetActionInfo("Skip","Total")
              		SetActionInfo("Skip")
-             		ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+             		prints(`Skipped Wave {tonumber(GameWave.Text)}`)
 				end
        		end
 		else
