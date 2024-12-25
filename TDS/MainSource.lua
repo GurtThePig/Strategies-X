@@ -656,6 +656,7 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
+		task.wait(0.1)
 		local RemoteCheck, hasSkipped
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
@@ -673,7 +674,6 @@ if CheckPlace() then
            			until typeof(RemoteCheck) == "boolean" and RemoteCheck
             		StratXLibrary.ReadyState = true
          			hasSkipped = true
-					    task.wait(0.1)
                		prints("Ready Signal Fired")
           			return
        	        elseif currentPrompt.Text == "Skip Cutscene?" then
@@ -683,7 +683,6 @@ if CheckPlace() then
             		    task.wait()
             		until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
             		hasSkipped = true
-					    task.wait(0.1)
             		prints("Skipped Cutscene")
         			return
 				end
@@ -701,7 +700,6 @@ if CheckPlace() then
         			    task.wait()
         		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
     				hasSkipped = true
-    					task.wait(0.1)
         			SetActionInfo("Skip","Total")
              		SetActionInfo("Skip")
              		ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
