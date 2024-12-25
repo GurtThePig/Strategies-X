@@ -4,10 +4,6 @@ local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Lighting = game:GetService("Lighting")
 
-if not Lighting:FindFirstChild("Technology") then
-    repeat task.wait() until Lighting:FindFirstChild("Technology")
-end
-
 local MinimizeConfig = {
     [true] = {
         fps = 25,
