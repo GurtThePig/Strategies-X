@@ -656,15 +656,14 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
-		task.wait(.7)
 		local RemoteCheck, hasSkipped
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
 				task.wait()
 			until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
+		local currentPrompt = VoteGUI:WaitForChild("prompt"):GetPropertyChangedSignal("Text")
 		if VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) then
-    		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
 			if not hasSkipped then
           		if currentPrompt == "Ready?" then --Event GameMode
           			task.wait(2)
