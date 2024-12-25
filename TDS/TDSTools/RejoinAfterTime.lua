@@ -81,8 +81,10 @@ function SafeTeleport(Remote)
 end
 
 StratXLibrary.RejoinAfterTime = function(bool)
-    if bool then
-        local Remote
+	local Remote
+	local boolean = bool
+	print(boolean)
+    if typeof(boolean) == "boolean" and boolean == true then
         if CheckPlace() then
             task.wait(MinutesToSeconds(GameTime))
             local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
@@ -144,15 +146,11 @@ StratXLibrary.RejoinAfterTime = function(bool)
             	})
             	SafeTeleport(Remote)
             end
-			return
         elseif not CheckPlace() then
             task.wait(MinutesToSeconds(LobbyTime))
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
         end
-		return
-	else
-		UtilitiesConfig.RejoinSetting.RejoinAfterTime = false
 	end
-    prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
+    prints(`{if typeof(boolean) == "boolean" and boolean == true then "Enabled" else "Disabled"} Rejoin After Time`)
 end
