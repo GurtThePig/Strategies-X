@@ -77,8 +77,8 @@ return function(self, p1)
         end
         SetActionInfo("LeaveOn")
         ConsoleInfo(`Left On Wave: {Wave} (Min: {Min}, Sec: {Sec}, InBetween: {InWave})`)
-        if table.find(SpecialMaps, RSMap) then
-            local SpecialTable = SpecialGameMode[RSMap]
+        if table.find(SpecialMaps, RSMap.Value) then
+            local SpecialTable = SpecialGameMode[RSMap.Value]
 			if SpecialTable.mode == "halloween2024" then
 				Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
 			        ["difficulty"] = SpecialTable.difficulty,
@@ -126,10 +126,10 @@ return function(self, p1)
                 ["Molten"] = "Molten",
                 ["Fallen"] = "Fallen",
             }
-            local DifficultyConvert = DiffTable[RSDifficulty]
+            local DifficultyConvert = DiffTable[RSDifficulty.Value]
             Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                 ["count"] = 1,
-                ["mode"] = string.lower(RSMode),
+                ["mode"] = string.lower(RSMode.Value),
                 ["difficulty"] = DifficultyConvert,
             })
             SafeTeleport(Remote)
