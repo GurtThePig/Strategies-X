@@ -21,7 +21,7 @@ return function(self, p1)
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 or hasSkipped then
+        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 then
             return
         end
         if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` or VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) then
