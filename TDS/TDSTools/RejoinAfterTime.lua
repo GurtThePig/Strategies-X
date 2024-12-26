@@ -4,8 +4,8 @@ local LocalPlayer = Players.LocalPlayer
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local RemoteFunction = if not GameSpoof then ReplicatedStorage:WaitForChild("RemoteFunction") else SpoofEvent
 local UtilitiesConfig = StratXLibrary.UtilitiesConfig
-local GameTime = UtilitiesConfig.RejoinSetting.GameTime or (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25
-local LobbyTime = UtilitiesConfig.RejoinSetting.LobbyTime or (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5
+local GameTime = (getgenv().GameTime and tonumber(getgenv().GameTime)) or UtilitiesConfig.RejoinSetting.GameTime or 25
+local LobbyTime = (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or UtilitiesConfig.RejoinSetting.LobbyTime or 5
 
 function MinutesToSeconds(Minutes)
 	return Minutes*60
@@ -87,9 +87,23 @@ StratXLibrary.RejoinAfterTime = function(bool)
 			ErrorCheck = true
 		end)
 		if bool and ErrorCheck then
-            local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
-            if table.find(SpecialMaps, RSMap) then
-               	local SpecialTable = SpecialGameMode[RSMap]
+			if not StratXLibrary.Strat.ChosenID then
+				prints("Strat ID Not Set. Now Checking")
+				repeat
+					task.wait()
+					for i,v in ipairs(StratXLibrary.Strat) do
+						local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
+						if v.Map.Lists[#v.Map.Lists] and typeof(RSMap.Value) == "string" and v.Map.Lists[#v.Map.Lists].Map == RSMap.Value and not StratXLibrary.Strat.ChosenID then -- not apply same map dfferent mode
+							StratXLibrary.Strat.ChosenID = i
+							break
+						end
+					end
+				until StratXLibrary.Strat.ChosenID
+			end
+			local Strat = StratXLibrary.Strat[StratXLibrary.Strat.ChosenID]
+			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
+            if table.find(SpecialMaps, MapInStrat) then
+               	local SpecialTable = SpecialGameMode[MapInStrat]
                	if SpecialTable.mode == "halloween2024" then
                    	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                			["difficulty"] = SpecialTable.difficulty,
@@ -138,10 +152,10 @@ StratXLibrary.RejoinAfterTime = function(bool)
                		["Molten"] = "Molten",
                		["Fallen"] = "Fallen",
                	}
-               	local DifficultyName = StratXLibrary.Strat.Mode.Lists[1] and DiffTable[StratXLibrary.Strat.Mode.Lists[1].Name]
+               	local DifficultyName = Strat.Mode.Lists[1] and DiffTable[Strat.Mode.Lists[1].Name]
                	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                		["count"] = 1,
-               		["mode"] = string.lower(StratXLibrary.Strat.Map.Lists[1].Mode),
+               		["mode"] = string.lower(Strat.Map.Lists[1].Mode),
                		["difficulty"] = DifficultyName,
                	})
                	SafeTeleport(Remote)
