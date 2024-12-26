@@ -11,6 +11,10 @@ function MinutesToSeconds(Minutes)
 	return Minutes*60
 end
 
+function CheckPlace()
+	return if not GameSpoof then (game.PlaceId == 5591597781) else if GameSpoof == "Ingame" then true else false
+end
+
 local SpecialMaps = {
 	"Pizza Party",
 	"Badlands II",
