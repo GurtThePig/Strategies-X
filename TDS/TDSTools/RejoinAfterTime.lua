@@ -172,7 +172,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
 		elseif not bool and ErrorCheck then
-			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {GameTime} Minutes`)
+			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {LobbyTime} Minutes`)
 		end
 		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 	end
