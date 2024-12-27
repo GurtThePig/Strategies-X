@@ -1190,8 +1190,7 @@ RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinA
 			ErrorCheck = true
 		end)
 		if bool and ErrorCheck then
-			local Strat = StratXLibrary.Strat
-			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
+			local MapInStrat = StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists] and StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists].Map
             if table.find(SpecialMaps, MapInStrat) then
                	local SpecialTable = SpecialGameMode[MapInStrat]
                	if SpecialTable.mode == "halloween2024" then
@@ -1242,10 +1241,10 @@ RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinA
                		["Molten"] = "Molten",
                		["Fallen"] = "Fallen",
                	}
-               	local DifficultyName = Strat.Mode.Lists[1] and DiffTable[Strat.Mode.Lists[1].Name]
+               	local DifficultyName = StratXLibrary.Strat.Mode.Lists[1] and DiffTable[StratXLibrary.Strat.Mode.Lists[1].Name]
                	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                		["count"] = 1,
-               		["mode"] = string.lower(Strat.Map.Lists[1].Mode),
+               		["mode"] = string.lower(StratXLibrary.Strat.Map.Lists[1].Mode),
                		["difficulty"] = DifficultyName,
                	})
                	SafeTeleport(Remote)
