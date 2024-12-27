@@ -91,19 +91,6 @@ StratXLibrary.RejoinAfterTime = function(bool)
 			ErrorCheck = true
 		end)
 		if bool and ErrorCheck then
-			if not StratXLibrary.Strat.ChosenID then
-				prints("Strat ID Not Set. Now Checking")
-				repeat
-					task.wait()
-					for i,v in ipairs(StratXLibrary.Strat) do
-						local RSMap = ReplicatedStorage:WaitForChild("State"):WaitForChild("Map") --map's Name
-						if v.Map.Lists[#v.Map.Lists] and typeof(RSMap.Value) == "string" and v.Map.Lists[#v.Map.Lists].Map == RSMap.Value and not StratXLibrary.Strat.ChosenID then -- not apply same map dfferent mode
-							StratXLibrary.Strat.ChosenID = i
-							break
-						end
-					end
-				until StratXLibrary.Strat.ChosenID
-			end
 			local Strat = StratXLibrary.Strat[StratXLibrary.Strat.ChosenID]
 			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
             if table.find(SpecialMaps, MapInStrat) then
