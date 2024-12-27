@@ -91,7 +91,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
 			ErrorCheck = true
 		end)
 		if bool and ErrorCheck then
-			local Strat = StratXLibrary.Strat[StratXLibrary.Strat.ChosenID]
+			local Strat = StratXLibrary.Strat
 			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
             if table.find(SpecialMaps, MapInStrat) then
                	local SpecialTable = SpecialGameMode[MapInStrat]
