@@ -1185,88 +1185,87 @@ UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
 local RejoinSetting = UI.RejoinSetting
 RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or false, flag = "RejoinAfterTime"}, function(bool)
 	local Remote, ErrorCheck
-	for i,v in ipairs(StratXLibrary.Strat) do
-        if CheckPlace() then
-    		task.delay(UtilitiesConfig.RejoinSetting.GameTime*60, function()
-    			ErrorCheck = true
-    		end)
-    		if bool and ErrorCheck then
-    			local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
-                if table.find(SpecialMaps, MapInStrat) then
-                   	local SpecialTable = SpecialGameMode[MapInStrat]
-                   	if SpecialTable.mode == "halloween2024" then
-                       	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                   			["difficulty"] = SpecialTable.difficulty,
-                   			["night"] = SpecialTable.night,
-                 			["count"] = 1,
-                   			["mode"] = SpecialTable.mode,
-                   		})
-                   		SafeTeleport(Remote)
-                   	elseif SpecialTable.mode == "plsDonate" then
-                   		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                   			["difficulty"] = SpecialTable.difficulty,
-                   			["count"] = 1,
-                   			["mode"] = SpecialTable.mode,
-                   		})
-                 		SafeTeleport(Remote)
-                   	elseif SpecialTable.mode == "frostInvasion" then
-                   		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                   			["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
-                   			["mode"] = SpecialTable.mode,
-                   			["count"] = 1,
-                   		})
-                   		SafeTeleport(Remote)
-                   	elseif getgenv().WeeklyChallenge then
-                   		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                   			["mode"] = "weeklyChallengeMap",
-                   			["count"] = 1,
-                   			["challenge"] = WeeklyChallenge,
-                   		})
-                   		SafeTeleport(Remote)
-                   	elseif SpecialTable.mode == "Event" then
-                   		Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-                   		SafeTeleport(Remote)
-                   	else
-                   		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                    		["count"] = 1,
-                   			["mode"] = SpecialTable.mode,
-                   			["challenge"] = SpecialTable.challenge,
-                   		})
-                   		SafeTeleport(Remote)
-                   	end
-                else
-                   	local DiffTable = {
-                   		["Easy"] = "Easy",
-                   		["Normal"] = "Molten",
-                   		["Intermediate"] = "Intermediate",
-                   		["Molten"] = "Molten",
-                   		["Fallen"] = "Fallen",
-                   	}
-                   	local DifficultyName = v.Mode.Lists[1] and DiffTable[v.Mode.Lists[1].Name]
+    if CheckPlace() then
+		task.delay(UtilitiesConfig.RejoinSetting.GameTime*60, function()
+			ErrorCheck = true
+		end)
+		if bool and ErrorCheck then
+			local Strat = StratXLibrary.Strat
+			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
+            if table.find(SpecialMaps, MapInStrat) then
+               	local SpecialTable = SpecialGameMode[MapInStrat]
+               	if SpecialTable.mode == "halloween2024" then
                    	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                   		["count"] = 1,
-                   		["mode"] = string.lower(v.Map.Lists[1].Mode),
-                   		["difficulty"] = DifficultyName,
-                   	})
-                   	SafeTeleport(Remote)
-                end
-    		elseif not bool and ErrorCheck then
-    			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Game Hasn't Finished"} for {UtilitiesConfig.RejoinSetting.GameTime} Minutes`)
-    		end
-    		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
-        elseif not CheckPlace() then
-    		task.delay(UtilitiesConfig.RejoinSetting.LobbyTime*60, function()
-    			ErrorCheck = true
-    		end)
-    		if bool and ErrorCheck then
-                Remote = TeleportHandler(3260590327,2,7)
-                SafeTeleport(Remote)
-    		elseif not bool and ErrorCheck then
-    			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {UtilitiesConfig.RejoinSetting.LobbyTime} Minutes`)
-    		end
-    		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
-    	end
-    end
+               			["difficulty"] = SpecialTable.difficulty,
+               			["night"] = SpecialTable.night,
+             			["count"] = 1,
+               			["mode"] = SpecialTable.mode,
+               		})
+               		SafeTeleport(Remote)
+               	elseif SpecialTable.mode == "plsDonate" then
+               		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+               			["difficulty"] = SpecialTable.difficulty,
+               			["count"] = 1,
+               			["mode"] = SpecialTable.mode,
+               		})
+             		SafeTeleport(Remote)
+               	elseif SpecialTable.mode == "frostInvasion" then
+               		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+               			["difficulty"] = if getgenv().EventEasyMode then "Easy" else "Hard",
+               			["mode"] = SpecialTable.mode,
+               			["count"] = 1,
+               		})
+               		SafeTeleport(Remote)
+               	elseif getgenv().WeeklyChallenge then
+               		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+               			["mode"] = "weeklyChallengeMap",
+               			["count"] = 1,
+               			["challenge"] = WeeklyChallenge,
+               		})
+               		SafeTeleport(Remote)
+               	elseif SpecialTable.mode == "Event" then
+               		Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
+               		SafeTeleport(Remote)
+               	else
+               		Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                		["count"] = 1,
+               			["mode"] = SpecialTable.mode,
+               			["challenge"] = SpecialTable.challenge,
+               		})
+               		SafeTeleport(Remote)
+               	end
+            else
+               	local DiffTable = {
+               		["Easy"] = "Easy",
+               		["Normal"] = "Molten",
+               		["Intermediate"] = "Intermediate",
+               		["Molten"] = "Molten",
+               		["Fallen"] = "Fallen",
+               	}
+               	local DifficultyName = Strat.Mode.Lists[1] and DiffTable[Strat.Mode.Lists[1].Name]
+               	Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+               		["count"] = 1,
+               		["mode"] = string.lower(Strat.Map.Lists[1].Mode),
+               		["difficulty"] = DifficultyName,
+               	})
+               	SafeTeleport(Remote)
+            end
+		elseif not bool and ErrorCheck then
+			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Game Hasn't Finished"} for {UtilitiesConfig.RejoinSetting.GameTime} Minutes`)
+		end
+		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
+    elseif not CheckPlace() then
+		task.delay(UtilitiesConfig.RejoinSetting.LobbyTime*60, function()
+			ErrorCheck = true
+		end)
+		if bool and ErrorCheck then
+            Remote = TeleportHandler(3260590327,2,7)
+            SafeTeleport(Remote)
+		elseif not bool and ErrorCheck then
+			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {UtilitiesConfig.RejoinSetting.LobbyTime} Minutes`)
+		end
+		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
+	end
 end)
 RejoinSetting:Section("Game Time (in minutes)")
 RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
