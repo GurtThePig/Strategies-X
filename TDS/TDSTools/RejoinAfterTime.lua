@@ -43,5 +43,8 @@ StratXLibrary.RejoinAfterTime = function(bool)
 		if ErrorCheck then
 		    prints(`Lobby Timed Out! ({LobbyTime} Minutes)`)
 		end
-    end
+    elseif not bool then
+		UtilitiesConfig.RejoinSetting.RejoinAfterTime = false
+		SaveUtilitiesConfig()
+	end
 end
