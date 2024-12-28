@@ -11,10 +11,6 @@ function MinutesToSeconds(Minutes)
 	return Minutes*60
 end
 
-function CheckPlace()
-	return if not GameSpoof then (game.PlaceId == 5591597781) else if GameSpoof == "Ingame" then true else false
-end
-
 local SpecialMaps = {
 	"Pizza Party",
 	"Badlands II",
@@ -86,15 +82,13 @@ end
 
 StratXLibrary.RejoinAfterTime = function(bool)
 	local Remote, ErrorCheck
-    if CheckPlace() then
+    if bool and CheckPlace() then
 		task.delay(MinutesToSeconds(GameTime), function()
 			ErrorCheck = true
 		end)
-		if not StratXLibrary.Strat.ChosenID then
-			repeat task.wait() until StratXLibrary.Strat.ChosenID
-		end
-		if bool and ErrorCheck then
-			local Strat = StratXLibrary.Strat[StratXLibrary.Strat.ChosenID]
+		if ErrorCheck then
+			prints(`Game Timed Out! ({GameTime} Minutes)`)
+			local Strat = StratXLibrary.Strat
 			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
             if table.find(SpecialMaps, MapInStrat) then
                	local SpecialTable = SpecialGameMode[MapInStrat]
@@ -154,20 +148,16 @@ StratXLibrary.RejoinAfterTime = function(bool)
                	})
                	SafeTeleport(Remote)
             end
-		elseif not bool and ErrorCheck then
-			prints(`{if not StratXLibrary.Strat[#StratXLibrary.Strat].Active then "Script Hasn't Loaded" else "Game Hasn't Finished"} for {GameTime} Minutes`)
 		end
-		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
-    elseif not CheckPlace() then
+    elseif bool and not CheckPlace() then
 		task.delay(MinutesToSeconds(LobbyTime), function()
 			ErrorCheck = true
 		end)
-		if bool and ErrorCheck then
+		if ErrorCheck then
+			prints(`Lobby Timed Out! ({LobbyTime} Minutes)`)
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
-		elseif not bool and ErrorCheck then
-			prints(`{if not StratXLibrary.Strat[#StratXLibrary.Strat].Active then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {LobbyTime} Minutes`)
 		end
-		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 	end
+	prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 end

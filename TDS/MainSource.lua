@@ -575,8 +575,8 @@ if not UtilitiesConfig.BypassGroup then
 	until Success ~= nil or UtilitiesConfig.BypassGroup
 	if not (UtilitiesConfig.BypassGroup or IsPlayerInGroup) then
 		if CheckPlace() then
-			maintab:Section("[WARN] Extra Money Not Actived")
-			maintab:Section("Strat May Broken Due To This")
+			maintab:Section("[WARN] Extra Money Not Activated")
+			maintab:Section("Strat May Break Due To This")
 		else
 			maintab:Section("You Need To Join")
 			maintab:Section("Paradoxum Games Group")
