@@ -121,14 +121,6 @@ local Patcher = {
             ["InBetween"] = inbetween or false,
         }
     end,
-    ["LeaveOn"] = function(wave, min, sec, inbetween)
-        return {
-            ["Wave"] = wave,
-            ["Minute"] = min,
-            ["Second"] = sec,
-            ["InBetween"] = inbetween or false,
-        }
-    end,
     ["SelectLoadout"] = function(gamesetloadout)
         return {
             ["GameSetLoadout"] = gamesetloadout

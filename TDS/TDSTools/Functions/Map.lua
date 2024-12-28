@@ -119,44 +119,38 @@ return function(self, p1)
                 UI.JoiningStatus.Text = `Teleporting to Special Gamemode`
                 RemoteFunction:InvokeServer("Multiplayer","single_create")
                 if SpecialTable.mode == "halloween2024" then
-                    Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                        ["difficulty"] = if getgenv().EventEasyMode then `{SpecialTable.difficulty}..Easy`else SpecialTable.difficulty,
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                        ["difficulty"] = if getgenv().EventEasyMode then `{SpecialTable.difficulty}..Easy` else SpecialTable.difficulty,
                         ["night"] = SpecialTable.night,
                         ["count"] = 1,
                         ["mode"] = SpecialTable.mode,
                     })
-                    SafeTeleport(Remote)
                 elseif SpecialTable.mode == "plsDonate" then
-                    Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
-                         ["difficulty"] = if getgenv().EventEasyMode then "PlsDonateHard" else SpecialTable.difficulty,
-                         ["count"] = 1,
-                         ["mode"] = SpecialTable.mode,
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                        ["difficulty"] = if getgenv().EventEasyMode then "PlsDonate" else SpecialTable.difficulty,
+                        ["count"] = 1,
+                        ["mode"] = SpecialTable.mode,
                     })
-                    SafeTeleport(Remote)
                 elseif SpecialTable.mode == "frostInvasion" then
-                    Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["difficulty"] = if getgenv().EventEasyMode then "Easy" else SpecialTable.difficulty,
                         ["mode"] = SpecialTable.mode,
                         ["count"] = 1,
                     })
-                    SafeTeleport(Remote)
                 elseif SpecialTable.mode == "Event" then
-                    Remote = RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
-                    SafeTeleport(Remote)
+                    RemoteFunction:InvokeServer("EventMissions","Start", SpecialTable.part)
                 elseif getgenv().WeeklyChallenge then
-                    Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["mode"] = "weeklyChallengeMap",
                         ["count"] = 1,
                         ["challenge"] = WeeklyChallenge,
                     })
-                    SafeTeleport(Remote)
                 else
-                    Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                    RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                         ["count"] = 1,
                         ["mode"] = SpecialTable.mode,
                         ["challenge"] = SpecialTable.challenge,
                     })
-                    SafeTeleport(Remote)
                 end
                 prints(`Using MatchMaking To Teleport To Special GameMode: {SpecialTable.mode}`)
                 return
@@ -190,12 +184,11 @@ return function(self, p1)
                 task.wait(2)
                 UI.JoiningStatus.Text = `Teleporting to Matchmaking Place`
                 RemoteFunction:InvokeServer("Multiplayer","single_create")
-                Remote = RemoteFunction:InvokeServer("Multiplayer","v2:start",{
+                RemoteFunction:InvokeServer("Multiplayer","v2:start",{
                     ["count"] = 1,
                     ["mode"] = string.lower(MapProps.Mode),
                     ["difficulty"] = DifficultyName,
                 })
-                SafeTeleport(Remote)
                 prints("Teleporting To Matchmaking Place")
                 return
             end
