@@ -26,16 +26,16 @@ return function(self, p1)
                 task.wait()
             until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
         end
-        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" or Wave == 0 then
-            return
-        end
         if VoteGUI.Position == UDim2.new(2, 30, 0.5, 0) then
             repeat
                 task.wait()
             until VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0)
         end
-        if VoteGUI:WaitForChild("prompt").Text == "Skip Cutscene?" then
-            task.wait(2)
+        if Wave == 0 then
+            return
+        end
+        if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
+            return
         end
         repeat
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
