@@ -649,7 +649,7 @@ if CheckPlace() then
                 task.wait()
             until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		if VoteGUI.Position == UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
+		if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
 			return
 		end
 		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
