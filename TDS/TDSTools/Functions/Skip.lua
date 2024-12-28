@@ -34,6 +34,9 @@ return function(self, p1)
                 task.wait()
             until VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0)
         end
+        if VoteGUI:WaitForChild("prompt").Text == "Skip Cutscene?" then
+            task.wait(2)
+        end
         repeat
             SkipCheck = RemoteFunction:InvokeServer("Voting", "Skip")
             task.wait()
