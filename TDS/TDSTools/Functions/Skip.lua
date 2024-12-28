@@ -18,6 +18,9 @@ return function(self, p1)
     task.spawn(function()
         local SkipCheck
         local VoteGUI = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesVote"):WaitForChild("Frame"):WaitForChild("votes"):WaitForChild("vote") -- it is what it is
+        if Wave == 0 then
+            return
+        end
         if not TimeWaveWait(Wave, Min, Sec, InWave, tableinfo["Debug"]) then
             return
         end
@@ -30,9 +33,6 @@ return function(self, p1)
             repeat
                 task.wait()
             until VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0)
-        end
-        if Wave == 0 then
-            return
         end
         if VoteGUI:WaitForChild("prompt").Text ~= "Skip Wave?" then
             return
