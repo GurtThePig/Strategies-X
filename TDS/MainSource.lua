@@ -882,7 +882,7 @@ if CheckPlace() then
 				task.wait(5)
 				getgenv().OldPickups = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesTopBar"):WaitForChild("Frame"):WaitForChild("items"):WaitForChild("Operation I.C.E"):WaitForChild("text").Text
 				StratXLibrary.ReadyState = false
-				if not LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):FindFirstChild("timescale") then
+				if RSMode.Value == "Hardcore" or not LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):FindFirstChild("timescale") then
 					return
 				end
 				local TimeScaleUI = LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):WaitForChild("timescale")
@@ -1078,27 +1078,25 @@ if CheckPlace() then
 	UtilitiesTab:Button("Teleport Back To Platform",function()
 		LocalPlayer.Character:FindFirstChild("HumanoidRootPart").CFrame = StratXLibrary.PlatformPart.CFrame + Vector3.new(0, 3.3, 0)
 	end)
-	if LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):FindFirstChild("timescale") then
-    	local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
-    	local Lobby = if GameMode == "Survival" then "IntermissionLobby" else "HardcoreIntermissionLobby"
-    	UtilitiesTab:Toggle("Use Timescale", {flag = "UseTimeScale", default = UtilitiesConfig.UseTimeScale}, function(bool)
-    		if (bool and ReplicatedStorage.State.Difficulty.Value == "Hardcore") or (bool and Workspace:FindFirstChild(Lobby) == "HardcoreIntermissionLobby") then
-    			prints("Timescale Is Not Supported In Hardcore!")
-    			return
-    		end
-    		local TimeScaleUI = LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):WaitForChild("timescale")
-    		prints(`{if bool then "Enabled" else "Disabled"} Timescale`)
-          	if TimeScaleUI.Visible and bool then
-    		    if TimeScaleUI:FindFirstChild("Lock") then
-         		    task.spawn(function()
-         			    ReplicatedStorage.RemoteFunction:InvokeServer("TicketsManager", "UnlockTimeScale")
-         			task.wait(0.5)
-         				ReplicatedStorage.RemoteEvent:FireServer("TicketsManager", "CycleTimeScale")
-         		    end)
-    		    end
-    		end
-    	end)
-	end
+  	local GameMode = if Workspace:FindFirstChild("IntermissionLobby") then "Survival" else "Hardcore"
+  	local Lobby = if GameMode == "Survival" then "IntermissionLobby" else "HardcoreIntermissionLobby"
+  	UtilitiesTab:Toggle("Use Timescale", {flag = "UseTimeScale", default = UtilitiesConfig.UseTimeScale}, function(bool)
+  		if (bool and ReplicatedStorage.State.Mode.Value == "Hardcore") or (bool and Workspace:FindFirstChild(Lobby) == "HardcoreIntermissionLobby") then
+  			prints("Timescale Is Not Supported In Hardcore!")
+  			return
+  		end
+  		local TimeScaleUI = LocalPlayer.PlayerGui:WaitForChild("ReactUniversalHotbar"):WaitForChild("Frame"):WaitForChild("timescale")
+  		prints(`{if bool then "Enabled" else "Disabled"} Timescale`)
+        if TimeScaleUI.Visible and bool then
+  		    if TimeScaleUI:FindFirstChild("Lock") then
+       		    task.spawn(function()
+       			    ReplicatedStorage.RemoteFunction:InvokeServer("TicketsManager", "UnlockTimeScale")
+       			task.wait(0.5)
+       				ReplicatedStorage.RemoteEvent:FireServer("TicketsManager", "CycleTimeScale")
+       		    end)
+  		    end
+  		end
+  	end)
 
 	if Items.Enabled then
 		task.spawn(function()
