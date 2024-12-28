@@ -83,6 +83,7 @@ end
 StratXLibrary.RejoinAfterTime = function(bool)
 	local Remote, ErrorCheck
     if bool and CheckPlace() then
+		print(GameTime)
 		task.delay(MinutesToSeconds(GameTime), function()
 			ErrorCheck = true
 		end)
@@ -150,6 +151,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
             end
 		end
     elseif bool and not CheckPlace() then
+		print(LobbyTime)
 		task.delay(MinutesToSeconds(LobbyTime), function()
 			ErrorCheck = true
 		end)
