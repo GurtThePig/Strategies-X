@@ -11,14 +11,14 @@ function MinutesToSeconds(Minutes)
 	return Minutes*60
 end
 
-function SafeTeleport(Remote)
+function SafeTeleport()
     local attemptIndex = 0
     local success, result
     local ATTEMPT_LIMIT = 25
     local RETRY_DELAY = 5
     repeat
         success, result = pcall(function()
-            return Remote
+            return TeleportHandler(3260590327,2,7)
         end)
         attemptIndex += 1
         if not success then
@@ -35,6 +35,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
 		end)
 		if ErrorCheck then
 		    prints(`Game Timed Out! ({GameTime} Minutes)`)
+			SafeTeleport()
 		end
 	elseif bool and not CheckPlace() then
 		task.delay(MinutesToSeconds(GameTime), function()
@@ -42,6 +43,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
 		end)
 		if ErrorCheck then
 		    prints(`Lobby Timed Out! ({LobbyTime} Minutes)`)
+			SafeTeleport()
 		end
     elseif not bool then
 		UtilitiesConfig.RejoinSetting.RejoinAfterTime = false
