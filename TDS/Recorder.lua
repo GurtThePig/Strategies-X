@@ -79,7 +79,7 @@ local writestrat = function(...)
         end
         local Text = table.concat(TableText, " ")
         print(Text)
-        return WriteFile(true,LocalPlayer.Name.."'s strat","StrategiesX/TDS/Recorder",tostring(Text).."\n")
+        return WriteFile(true,LocalPlayer.Name.."'s strat",LocalFolder.."Recorder",tostring(Text).."\n")
     end)
 end
 local appendstrat = function(...)
@@ -95,7 +95,7 @@ local appendstrat = function(...)
         end
         local Text = table.concat(TableText, " ")
         print(Text)
-        return AppendFile(true,LocalPlayer.Name.."'s strat","StrategiesX/TDS/Recorder",tostring(Text).."\n")
+        return AppendFile(true,LocalPlayer.Name.."'s strat",LocalFolder.."Recorder",tostring(Text).."\n")
     end)
 end
 getgenv().Recorder = {
