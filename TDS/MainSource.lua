@@ -69,11 +69,6 @@ StratXLibrary.UtilitiesConfig = {
 	AutoSkip = getgenv().AutoSkip or false,
 	UseTimeScale = getgenv().UseTimeScale or false,
 	PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking or false,
-	RejoinSetting = {
-		RejoinAfterTime = true,
-		GameTime = (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25,
-		LobbyTime = (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5,
-	},
 	Webhook = {
 		WebhookEnabled = true,
 		Link = (getgenv().WebhookLink and tostring(getgenv().WebhookLink)) or "",
@@ -327,11 +322,6 @@ function SaveUtilitiesConfig()
 		AutoSkip = UtilitiesTab.flags.AutoSkip,
 		UseTimeScale = UtilitiesTab.flags.UseTimeScale,
 		PreferMatchmaking = UtilitiesTab.flags.PreferMatchmaking,
-		RejoinSetting = {
-			RejoinAfterTime = RejoinSetting.flags.RejoinAfterTime or false,
-			GameTime = RejoinSetting.flags.GameTime or (getgenv().GameTime and tonumber(getgenv().GameTime)) or 25,
-			LobbyTime = RejoinSetting.flags.LobbyTime or (getgenv().LobbyTime and tonumber(getgenv().LobbyTime)) or 5,
-		},
 		Webhook = {
 			WebhookEnabled = Webhook.flags.WebhookEnabled or false,
 			UseNewFormat = Webhook.flags.UseNewFormat or false,
@@ -352,7 +342,6 @@ function CheckPlace()
 end
 
 loadstring(game:HttpGet(MainLink.."TDSTools/LowGraphics.lua", true))()
-loadstring(game:HttpGet(MainLink.."TDSTools/RejoinAfterTime.lua", true))()
 
 --[[local GameInfo
 getgenv().GetGameState = function()
@@ -1168,16 +1157,6 @@ if CheckPlace() then
 		LocalPlayer.DevCameraOcclusionMode = OldCameraOcclusionMode
 	end)
 end
-
-UI.RejoinSetting = UtilitiesTab:DropSection("Rejoin After Time")
-local RejoinSetting = UI.RejoinSetting
-RejoinSetting:Toggle("Enabled", {default = UtilitiesConfig.RejoinSetting.RejoinAfterTime or false, flag = "RejoinAfterTime"}, function(bool)
-	StratXLibrary.RejoinAfterTime(bool)
-end)
-RejoinSetting:Section("Game Time (in minutes)")
-RejoinSetting:TypeBox("Game Time", {default = UtilitiesConfig.RejoinSetting.GameTime, cleartext = false, flag = "GameTime"})
-RejoinSetting:Section("Lobby Time (in minutes)")
-RejoinSetting:TypeBox("Lobby Time", {default = UtilitiesConfig.RejoinSetting.LobbyTime, cleartext = false, flag = "LobbyTime"})
 
 UI.Webhook = UtilitiesTab:DropSection("Webhook Settings")
 local Webhook = UI.Webhook
