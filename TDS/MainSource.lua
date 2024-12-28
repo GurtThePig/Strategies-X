@@ -12,20 +12,24 @@ local Items = {
 	Name = {"Bell", "Lorebook"}
 }
 
-local LoadLocal = false
-local MainLink = LoadLocal and "" or "https://raw.githubusercontent.com/GurtThePig/Strategies-X/refs/heads/main/TDS/"
+local LoadLocal = true
+local MainLink = LoadLocal and "https://raw.githubusercontent.com/GurtThePig/Strategies-X/refs/heads/main/TDS/" or "https://raw.githubusercontent.com/Sigmanic/Strategies-X/refs/heads/main/TDS/"
 
 local OldTime = os.clock()
 
-if not isfolder("StrategiesX/TDS") then
-	makefolder("StrategiesX/TDS")
-	makefolder("StrategiesX/TDS/UserLogs")
-	makefolder("StrategiesX/TDS/UserConfig")
-elseif not isfolder("StrategiesX/TDS/UserLogs") then
-	makefolder("StrategiesX/TDS/UserLogs")
-elseif not isfolder("StrategiesX/TDS/UserConfig") then
-	makefolder("StrategiesX/TDS/UserConfig")
+-- // Folder Stuffs
+
+local function CheckFolderExists(folder_path)
+    if not isfolder(folder_path) then
+		makefolder(folder_path)
+    end
 end
+
+local LocalFolder = "StrategiesX/TDS/"
+CheckFolderExists("StrategiesX")
+CheckFolderExists(LocalFolder)
+CheckFolderExists(LocalFolder.."UserConfig")
+CheckFolderExists(LocalFolder.."UserLogs")
 
 local StratXLibrary = {Functions = {}}
 getgenv().StratXLibrary = StratXLibrary
@@ -191,12 +195,12 @@ local Mouse = LocalPlayer:GetMouse()
 local CurrentCamera = Workspace.CurrentCamera
 local OldCameraOcclusionMode = LocalPlayer.DevCameraOcclusionMode
 local VirtualUser = game:GetService("VirtualUser")
-local UILibrary = getgenv().UILibrary or loadstring(game:HttpGet("https://raw.githubusercontent.com/GurtThePig/ROBLOX/main/WallyUI.lua", true))()
+local UILibrary = getgenv().UILibrary or loadstring(game:HttpGet("https://raw.githubusercontent.com/Sigmanic/ROBLOX/main/WallyUI.lua", true))()
 UILibrary.options.toggledisplay = 'Fill'
 UI = StratXLibrary.UI
 UtilitiesConfig = StratXLibrary.UtilitiesConfig
 
-local Patcher = loadstring(game:HttpGet(MainLink.."TDSTools/ConvertFunc.lua", true))()--loadstring(game:HttpGet("https://raw.githubusercontent.com/GurtThePig/Strategies-X/main/ConvertFunc.lua", true))()
+local Patcher = loadstring(game:HttpGet(MainLink.."TDSTools/ConvertFunc.lua", true))()--loadstring(game:HttpGet("https://raw.githubusercontent.com/Sigmanic/Strategies-X/main/ConvertFunc.lua", true))()
 function ParametersPatch(FuncsName,...)
 	if type(...) == "table" and #{...} == 1 then --select("#",...)
 		return ...
@@ -227,7 +231,7 @@ function ConsoleWarn(...)
 end]]
 loadstring(game:HttpGet(MainLink.."TDSTools/JoinLessServer.lua", true))()
 
---Part of Place function
+-- // Part of Place function
 local PreviewHolder = Instance.new("Folder")
 PreviewHolder.Parent = ReplicatedStorage
 PreviewHolder.Name = "PreviewHolder"
@@ -263,9 +267,9 @@ getgenv().output = function(Text,Color)
 	ConsolePrint(Color,"Info",Text)
 end
 
-if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
+if isfile(LocalFolder.."UserConfig/UtilitiesConfig.txt") then
 	local Check, GetConfig = pcall(function()
-		return game:GetService("HttpService"):JSONDecode(readfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt"))
+		return game:GetService("HttpService"):JSONDecode(readfile(LocalFolder.."UserConfig/UtilitiesConfig.txt"))
 	end)
 	if Check then
 		UtilitiesConfig = GetConfig
@@ -304,7 +308,7 @@ if isfile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt") then
 		UtilitiesConfig.PreferMatchmaking = getgenv().PreferMatchmaking or getgenv().Matchmaking
 	end
 else
-	writefile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt", game:GetService("HttpService"):JSONEncode(UtilitiesConfig))
+	writefile(LocalFolder.."UserConfig/UtilitiesConfig.txt", game:GetService("HttpService"):JSONEncode(UtilitiesConfig))
 end
 
 --ConsolePrint("WHITE","Table",UtilitiesConfig)
@@ -340,7 +344,7 @@ function SaveUtilitiesConfig()
 		},
 	}
 	UtilitiesConfig = StratXLibrary.UtilitiesConfig
-	writefile("StrategiesX/TDS/UserConfig/UtilitiesConfig.txt", game:GetService("HttpService"):JSONEncode(UtilitiesConfig))
+	writefile(LocalFolder.."UserConfig/UtilitiesConfig.txt", game:GetService("HttpService"):JSONEncode(UtilitiesConfig))
 end
 
 function CheckPlace()
@@ -480,9 +484,9 @@ function SafeTeleport(Remote)
 end
 
 function TimeWaveWait(Wave,Min,Sec,InWave,Debug)
-	local GameWave = LocalPlayer.PlayerGui:WaitForChild("ReactGameTopGameDisplay"):WaitForChild("Frame"):WaitForChild("wave"):WaitForChild("container"):WaitForChild("value") -- Current wave you are on
-    local MatchGui = LocalPlayer.PlayerGui:WaitForChild("ReactGameRewards"):WaitForChild("Frame"):WaitForChild("gameOver") -- end result
-	local RSTimer = ReplicatedStorage:WaitForChild("State"):WaitForChild("Timer"):WaitForChild("Time") -- Current game's timer
+	local GameWave = LocalPlayer.PlayerGui:WaitForChild("ReactGameTopGameDisplay"):WaitForChild("Frame"):WaitForChild("wave"):WaitForChild("container"):WaitForChild("value") -- // Current wave you are on
+    local MatchGui = LocalPlayer.PlayerGui:WaitForChild("ReactGameRewards"):WaitForChild("Frame"):WaitForChild("gameOver") -- // end result
+	local RSTimer = ReplicatedStorage:WaitForChild("State"):WaitForChild("Timer"):WaitForChild("Time") -- // Current game's timer
 	if Debug or tonumber(GameWave.Text) > Wave and not MatchGui.Visible then
 		return true
 	end
@@ -492,7 +496,7 @@ function TimeWaveWait(Wave,Min,Sec,InWave,Debug)
 		if MatchGui.Visible or CurrentCount ~= StratXLibrary.RestartCount then
 			return false
 		end
-	until tonumber(GameWave.Text) == Wave and CheckTimer(InWave) --CheckTimer will return true when in wave and false when not in wave
+	until tonumber(GameWave.Text) == Wave and CheckTimer(InWave) -- // CheckTimer will return true when in wave and false when not in wave
 	if RSTimer.Value - TotalSec(Min,Sec) < -1 then
 		return true
 	end
@@ -554,7 +558,7 @@ function GetTowersInfo()
 	return GetResult
 end
 
---Main Ui Setup
+-- // Main Ui Setup
 StratXLibrary.UI.maintab = UILibrary:CreateWindow("Strategies X")
 maintab = StratXLibrary.UI.maintab
 local BypassGroup
@@ -601,7 +605,7 @@ maintab:Section(`Current Place: {CheckPlace() and "Ingame" or "Lobby"}`)
 UI.UtilitiesTab = UILibrary:CreateWindow("Utilities")
 UtilitiesTab = UI.UtilitiesTab
 
---InGame Core
+-- // InGame Core
 if CheckPlace() then
 	local GameWave = LocalPlayer.PlayerGui:WaitForChild("ReactGameTopGameDisplay"):WaitForChild("Frame"):WaitForChild("wave"):WaitForChild("container"):WaitForChild("value") -- Current wave you are on
     local RSTimer = ReplicatedStorage:WaitForChild("State"):WaitForChild("Timer"):WaitForChild("Time") -- Current game's timer
@@ -616,7 +620,7 @@ if CheckPlace() then
 		TeleportService:Teleport(3260590327, LocalPlayer)
 	end
 
-	--Disable Auto Skip Feature
+	-- // Disable InGame Auto Skip Feature
 	local AutoSkipCheck
 	task.spawn(function()
 		local Success, Skip
@@ -637,7 +641,7 @@ if CheckPlace() then
 		end
 	end)
 
-	--Check if InWave or not
+	-- // Check if InWave or not
 	StratXLibrary.TimerConnection = RSTimer.Changed:Connect(function(time)
 		if time == 5 then
 			TimerCheck = true
@@ -646,7 +650,7 @@ if CheckPlace() then
 		end
 	end)
 
-	--AutoSkip & Auto Start Game
+	-- // AutoSkip & Auto Start Game
 	if VoteGUI:WaitForChild("prompt").Text == "Ready?" then --Event GameMode
 		task.spawn(function()
 			repeat task.wait() until StratXLibrary.Executed
@@ -656,59 +660,43 @@ if CheckPlace() then
 	end
 	StratXLibrary.ReadyState = false
 	StratXLibrary.VoteState = VoteGUI:GetPropertyChangedSignal("Position"):Connect(function()
-		local RemoteCheck, hasSkipped
 		if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
 			repeat
-				task.wait()
-			until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
+                task.wait()
+            until VoteGUI:WaitForChild("count").Text == `0/{#Players:GetChildren()} Required`
 		end
-		if VoteGUI.Position ~= UDim2.new(2, 30, 0.5, 0) then
-			if not hasSkipped then
-          		if VoteGUI:WaitForChild("prompt").Text == "Ready?" then --Event GameMode
-          			task.wait(2)
-           			repeat
-              			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-           				task.wait()
-           			until typeof(RemoteCheck) == "boolean" and RemoteCheck
-            		StratXLibrary.ReadyState = true
-         			hasSkipped = true
-               		prints("Ready Signal Fired")
-          			return
-       	        elseif VoteGUI:WaitForChild("prompt").Text == "Skip Cutscene?" then
-        			task.wait(2)
-            		repeat
-            			RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-            		    task.wait()
-            		until (typeof(RemoteCheck) == "boolean" and RemoteCheck and #Workspace:WaitForChild("CutScene"):GetChildren() == 0)
-            		hasSkipped = true
-            		prints("Skipped Cutscene")
-        			return
-				end
-         		if not UtilitiesConfig.AutoSkip then
-         			repeat
-         				task.wait()
-         				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
-         					return
-         				end
-         			until UtilitiesConfig.AutoSkip
-         		end
-         	    if VoteGUI:WaitForChild("prompt").Text == "Skip Wave?" then
-        			repeat
-        				RemoteCheck = RemoteFunction:InvokeServer("Voting", "Skip")
-        			    task.wait()
-        		    until typeof(RemoteCheck) == "boolean" and RemoteCheck
-    				hasSkipped = true
-        			SetActionInfo("Skip","Total")
-             		SetActionInfo("Skip")
-             		prints(`Skipped Wave {tonumber(GameWave.Text)}`)
-				end
-       		end
-		else
-			hasSkipped = false
+		if VoteGUI.Position ~= UDim2.new(0.5, 0, 0.5, 0) then --UDim2.new(scale_x, offset_x, scale_y, offset_y)
+			return
 		end
+		local currentPrompt = VoteGUI:WaitForChild("prompt").Text
+   		if currentPrompt == "Ready?" or currentPrompt == "Skip Cutscene?" then --Event GameMode
+   			task.wait(2)
+   			RemoteFunction:InvokeServer("Voting", "Skip")
+   			StratXLibrary.ReadyState = true
+			if currentPrompt == "Ready?" then
+    			prints("Ready Signal Fired")
+			elseif currentPrompt == "Skip Cutscene?" then
+				prints("Skipped Cutscene")
+			end
+   			return
+   		end
+   		if not UtilitiesConfig.AutoSkip then
+   			repeat
+   				task.wait()
+   				if VoteGUI:WaitForChild("count").Text ~= `0/{#Players:GetChildren()} Required` then
+   					return
+   				end
+   			until UtilitiesConfig.AutoSkip
+   		end
+   	    if currentPrompt == "Skip Wave?" then
+   			RemoteFunction:InvokeServer("Voting", "Skip")
+   			SetActionInfo("Skip","Total")
+   			SetActionInfo("Skip")
+   			ConsoleInfo(`Skipped Wave {tonumber(GameWave.Text)}`)
+   		end
 	end)
 
-	--Platform Stand InGame
+	-- // Platform Stand InGame
 	task.spawn(function()
 		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
 		local Part = Instance.new("Part")
@@ -734,7 +722,7 @@ if CheckPlace() then
 
 	getgenv().OldPickups = LocalPlayer.PlayerGui:WaitForChild("ReactOverridesTopBar"):WaitForChild("Frame"):WaitForChild("items"):WaitForChild("Operation I.C.E"):WaitForChild("text").Text
 
-	--Game Cores
+	-- // Game Cores
 	task.spawn(function()
 		loadstring(game:HttpGet(MainLink.."TDSTools/FreeCam.lua", true))()
 
@@ -797,7 +785,7 @@ if CheckPlace() then
 				task.wait(.8)
 			end
 		end)
-		--End Of Match
+		-- // End Of Match
 		local Info = MatchGui:WaitForChild("content"):WaitForChild("info")
 		local Rewards = Info:WaitForChild("rewards")
 		function CheckReward()
@@ -1029,7 +1017,7 @@ end
 --getgenv().PlayersSection = {}
 if not CheckPlace() then
 
-	--Platform Stand InLobby
+	-- // Platform Stand InLobby
 	task.spawn(function()
 		--repeat task.wait() until Workspace.Map:FindFirstChild("Environment"):FindFirstChild("SpawnLocation")
 		local Part = Instance.new("Part")

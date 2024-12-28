@@ -90,8 +90,11 @@ StratXLibrary.RejoinAfterTime = function(bool)
 		task.delay(MinutesToSeconds(GameTime), function()
 			ErrorCheck = true
 		end)
+		if not StratXLibrary.Strat.ChosenID then
+			repeat task.wait() until StratXLibrary.Strat.ChosenID
+		end
 		if bool and ErrorCheck then
-			local Strat = StratXLibrary.Strat
+			local Strat = StratXLibrary.Strat[StratXLibrary.Strat.ChosenID]
 			local MapInStrat = Strat.Map.Lists[#Strat.Map.Lists] and Strat.Map.Lists[#Strat.Map.Lists].Map
             if table.find(SpecialMaps, MapInStrat) then
                	local SpecialTable = SpecialGameMode[MapInStrat]
@@ -152,7 +155,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
                	SafeTeleport(Remote)
             end
 		elseif not bool and ErrorCheck then
-			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Game Hasn't Finished"} for {GameTime} Minutes`)
+			prints(`{if not StratXLibrary.Strat[#StratXLibrary.Strat].Active then "Script Hasn't Loaded" else "Game Hasn't Finished"} for {GameTime} Minutes`)
 		end
 		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
     elseif not CheckPlace() then
@@ -163,7 +166,7 @@ StratXLibrary.RejoinAfterTime = function(bool)
             Remote = TeleportHandler(3260590327,2,7)
             SafeTeleport(Remote)
 		elseif not bool and ErrorCheck then
-			prints(`{if not StratxLibrary.Executed then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {LobbyTime} Minutes`)
+			prints(`{if not StratXLibrary.Strat[#StratXLibrary.Strat].Active then "Script Hasn't Loaded" else "Elevator Hasn't Found"} for {LobbyTime} Minutes`)
 		end
 		prints(`{if bool then "Enabled" else "Disabled"} Rejoin After Time`)
 	end
