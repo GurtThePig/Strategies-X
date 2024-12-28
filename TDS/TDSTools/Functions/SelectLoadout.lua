@@ -8,7 +8,11 @@ return function(self, p1)
     end
     task.spawn(function()
         local RemoteCheck
-        RemoteCheck = ReplicatedStorage.Network.PlayerManager.SelectLoadout:FireServer(GameSetLoadoutName)
+        repeat
+            RemoteCheck = ReplicatedStorage.Network.PlayerManager.SelectLoadout:FireServer(GameSetLoadoutName)
+            task.wait()
+            print(RemoteCheck)
+        until RemoteCheck
         ConsoleInfo("Choosen Loadout: "..GameSetLoadoutName)
     end)
 end
