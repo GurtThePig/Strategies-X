@@ -30,6 +30,7 @@ CheckFolderExists("StrategiesX")
 CheckFolderExists(LocalFolder)
 CheckFolderExists(LocalFolder.."UserConfig")
 CheckFolderExists(LocalFolder.."UserLogs")
+CheckFolderExists(LocalFolder.."Recorder")
 
 local StratXLibrary = {Functions = {}}
 getgenv().StratXLibrary = StratXLibrary
