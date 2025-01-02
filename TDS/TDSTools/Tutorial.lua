@@ -12,7 +12,7 @@ end
 function WaitSpotlight()
     repeat
         task.wait()
-    until LocalPlayer.PlayerGui.Tutorial.tutorial.Spotlight and LocalPlayer.PlayerGui.Tutorial.tutorial.Spotlight.Visible
+    until LocalPlayer.PlayerGui.ReactGameTutorial.Frame.Spotlight and LocalPlayer.PlayerGui.ReactGameTutorial.Frame.Spotlight.Visible
     task.wait(.5)
 end
 local SelectedTower = {"Scout","Sniper","Demoman","Medic","Minigunner",}
