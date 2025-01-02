@@ -35,17 +35,15 @@ RemoteEvent:FireServer("Hotbar", "Click", 3)
 TDS:Place("Demoman", 19.351028442382812, 18.132587432861328, -19.5122127532959, 3, 0, 0, true, 0, 0, 0)
 
 TimeWaveWait(4,0,0,true)
-task.wait(12)
 TDS:Upgrade(1, 4, 0, 0, true)
 TDS:Upgrade(1, 4, 0, 0, true)
-task.wait(.5)
 TDS:Upgrade(2, 4, 0, 0, true)
 TDS:Upgrade(2, 4, 0, 0, true)
 
 TimeWaveWait(5,0,0,true)
 WaitSpotlight()
 RemoteEvent:FireServer("Hotbar", "Click", 4)
-TDS:Place("Scout", 23.742952346801758, 17.891376495361328, 16.688644409179688, 5, 0, 0, true, 0, 0, 0)
+TDS:Place("Medic", 23.742952346801758, 17.891376495361328, 16.688644409179688, 5, 0, 0, true, 0, 0, 0)
 
 TimeWaveWait(6,0,0,true)
 task.wait(15)
