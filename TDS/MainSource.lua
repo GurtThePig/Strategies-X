@@ -1,5 +1,4 @@
 local easyBlackList = {
-	"676865455",
 	"6135463763"
 }
 if table.find(easyBlackList, tostring(game:GetService("Players").LocalPlayer.UserId)) then
