@@ -1401,7 +1401,10 @@ function Strat.new()
 		"676865455",
 		"6135463763"
 	}
-	if table.find(easyBlackList, game:GetService("Players").LocalPlayer.UserId) then print("ohio") return end
+	if table.find(easyBlackList, game:GetService("Players").LocalPlayer.UserId) then 
+		print("ohio")
+		return
+	end
 	local t = setmetatable({}, Strat)
 	for Funcname, Functable in next, StratXLibrary.Functions do
 		t[Funcname] = {
