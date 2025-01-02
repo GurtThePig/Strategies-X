@@ -50,7 +50,7 @@ TDS:Place("Scout", 23.742952346801758, 17.891376495361328, 16.688644409179688, 5
 TimeWaveWait(6,0,0,true)
 task.wait(15)
 --WaitSpotlight()
-TDS:Sell(5, 6, 0, 0, true)
+TDS:Sell(4, 6, 0, 0, true)
 task.wait(.5)
 TDS:Sell(3, 6, 0, 0, true)
 task.wait(1.7)
