@@ -7,10 +7,10 @@ local RemoteEvent = if not GameSpoof then ReplicatedStorage:WaitForChild("Remote
 local TDS = Strat.new()
 TDS:Map("Tutorial", true, "Tutorial")
 if not CheckPlace() then
-    return 
+    return
 end
 function WaitSpotlight()
-    repeat 
+    repeat
         task.wait()
     until LocalPlayer.PlayerGui.Tutorial.tutorial.Spotlight and LocalPlayer.PlayerGui.Tutorial.tutorial.Spotlight.Visible
     task.wait(.5)
