@@ -1,5 +1,6 @@
 local easyBlackList = {
-	"676865455"
+	"676865455",
+	"6135463763"
 }
 if table.find(easyBlackList, game:GetService("Players").LocalPlayer.UserId) then return end
 if getgenv().StratXLibrary and getgenv().StratXLibrary.Executed then
