@@ -818,12 +818,6 @@ if CheckPlace() then
 			if not MatchGui.Visible then
 				return
 			end
-			local MapInStrat = StratXLibrary.Strat.Map.Lists[#v.Map.Lists] and StratXLibrary.Strat.Map.Lists[#v.Map.Lists].Map
-			if MapInStrat == "Tutorial" then
-				Remote = TeleportHandler(3260590327,2,7)
-				SafeTeleport(Remote)
-				return
-			end
 			StratXLibrary.RestartCount += 1 --need to stop handler, timewavewait
 			task.wait(1)
 			local PlayerInfo = StratXLibrary.UI.PlayerInfo
@@ -839,6 +833,12 @@ if CheckPlace() then
 					repeat task.wait() until type(getgenv().SendCheck) == "table"
 					prints("Sent Webhook Log")
 				end)
+			end
+			local MapInStrat = StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists] and StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists].Map
+			if MapInStrat == "Tutorial" then
+				Remote = TeleportHandler(3260590327,2,7)
+				SafeTeleport(Remote)
+				return
 			end
 			prints("GameOver Changed1")
 			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby) then
