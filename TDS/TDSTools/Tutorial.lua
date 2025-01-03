@@ -22,7 +22,7 @@ end
 TimeWaveWait(1,0,0,true)
 WaitSpotlight()
 RemoteEvent:FireServer("Hotbar", "Click", 1)
-TDS:Place("Scout", 9.545458793640137, 17.707983016967773, -24.92185401916504, 1, 0, 0, true, 0, 0, 0)
+TDS:Place("Scout", 7.008869647979736, 17.643810272216797, -27.57561683654785, 1, 0, 0, true, 0, 0, 0)
 
 TimeWaveWait(2,0,0,true)
 WaitSpotlight()
