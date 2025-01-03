@@ -935,6 +935,11 @@ if CheckPlace() then
 				for i,v in ipairs(StratXLibrary.Strat) do
 					local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
 					local Remote
+					if MapInStrat == "Tutorial" then
+						Remote = RemoteEvent:FireServer("Tutorial", "Start")
+						SafeTeleport(Remote)
+						return
+					end
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
