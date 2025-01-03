@@ -936,7 +936,7 @@ if CheckPlace() then
 					local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
 					local Remote
 					if MapInStrat == "Tutorial" then
-						Remote = RemoteEvent:FireServer("Tutorial", "Start")
+						Remote = TeleportHandler(3260590327,2,7)
 						SafeTeleport(Remote)
 						return
 					end
