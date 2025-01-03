@@ -780,7 +780,6 @@ if CheckPlace() then
 		local Rewards = Info:WaitForChild("rewards")
 		function CheckReward()
 			local RewardType, RewardAmount
-
 			repeat task.wait() until Rewards:FindFirstChild(1) or (Rewards:FindFirstChild(1) and Rewards:FindFirstChild(2))--Rewards[1] or ( Rewards[1] and Rewards[2] )
 			for i,v in ipairs(Rewards:GetChildren()) do
 				if v:IsA("Frame") then
