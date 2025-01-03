@@ -457,14 +457,14 @@ function ConvertTimer(number : number)
 end
 
 local Remote
-function SafeTeleport(Remote)
+function SafeTeleport(remote)
     local attemptIndex = 0
     local success, result
     local ATTEMPT_LIMIT = 25
     local RETRY_DELAY = 5
     repeat
         success, result = pcall(function()
-            return Remote
+            return remote
         end)
         attemptIndex += 1
         if not success then
@@ -824,7 +824,6 @@ if CheckPlace() then
 			if MapInStrat == "Tutorial" then
 				Remote = TeleportHandler(3260590327,2,7)
 				SafeTeleport(Remote)
-				return
 			end
 			prints("GameOver Changed1")
 			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby) then
