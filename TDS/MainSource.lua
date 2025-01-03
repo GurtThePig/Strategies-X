@@ -787,15 +787,12 @@ if CheckPlace() then
 						if v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://5870325376" then
 							RewardType = "Coins"
 							RewardAmount = tonumber(v.content.textLabel.Text)
-							break
 						elseif v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://6794340240" then
 							RewardType = "Experience"
 							RewardAmount = tonumber(v.content.textLabel.Text)
-							break
 						elseif v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://5870383867" then
 							RewardType = "Gems"
 							RewardAmount = tonumber(v.content.textLabel.Text)
-							break
 						end
 					end
 				end
