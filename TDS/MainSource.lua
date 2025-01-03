@@ -456,6 +456,7 @@ function ConvertTimer(number : number)
 	return math.floor(number/60), number % 60
 end
 
+local Remote
 function SafeTeleport(Remote)
     local attemptIndex = 0
     local success, result
@@ -817,7 +818,6 @@ if CheckPlace() then
 			if not MatchGui.Visible then
 				return
 			end
-			local Remote
 			local MapInStrat = StratXLibrary.Strat.Map.Lists[#v.Map.Lists] and StratXLibrary.Strat.Map.Lists[#v.Map.Lists].Map
 			if MapInStrat == "Tutorial" then
 				Remote = TeleportHandler(3260590327,2,7)
