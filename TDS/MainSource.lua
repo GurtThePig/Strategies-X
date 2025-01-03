@@ -820,7 +820,6 @@ if CheckPlace() then
 					prints("Sent Webhook Log")
 				end)
 			end
-			local MapInStrat = StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists] and StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists].Map
 			prints("GameOver Changed1")
 			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby) then
 				repeat task.wait() until (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby)
