@@ -456,8 +456,7 @@ function ConvertTimer(number : number)
 	return math.floor(number/60), number % 60
 end
 
-local Remote
-function SafeTeleport(remote)
+function SafeTeleport(Remote)
     local attemptIndex = 0
     local success, result
     local ATTEMPT_LIMIT = 25
@@ -801,6 +800,7 @@ if CheckPlace() then
 		StratXLibrary.SignalMatchEnd = MatchGui:GetPropertyChangedSignal("Visible"):Connect(function()
 			warn("Connection Ran!?")
 			prints("GameOver Changed")
+			local Remote
 			if not MatchGui.Visible then
 				return
 			end
@@ -821,10 +821,6 @@ if CheckPlace() then
 				end)
 			end
 			local MapInStrat = StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists] and StratXLibrary.Strat.Map.Lists[#StratXLibrary.Strat.Map.Lists].Map
-			if MapInStrat == "Tutorial" then
-				Remote = TeleportHandler(3260590327,2,7)
-				SafeTeleport(Remote)
-			end
 			prints("GameOver Changed1")
 			if not (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby) then
 				repeat task.wait() until (UtilitiesConfig.RestartMatch or StratXLibrary.RejoinLobby)
@@ -968,7 +964,10 @@ if CheckPlace() then
     						})
 							SafeTeleport(Remote)
     					end
-    				else
+    				elseif MapInStrat == "Tutorial" then
+						Remote = TeleportHandler(3260590327,2,7)
+						SafeTeleport(Remote)
+					else
 						local DiffTable = {
     						["Easy"] = "Easy",
     						["Normal"] = "Molten",
