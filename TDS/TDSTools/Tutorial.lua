@@ -35,7 +35,7 @@ RemoteEvent:FireServer("Hotbar", "Click", 3)
 TDS:Place("Demoman", 19.351028442382812, 18.132587432861328, -19.5122127532959, 3, 0, 0, true, 0, 0, 0)
 
 TimeWaveWait(4,0,0,true)
-task.wait(10)
+task.wait(12)
 TDS:Upgrade(1, 4, 0, 0, true)
 TDS:Upgrade(1, 4, 0, 0, true)
 TDS:Upgrade(2, 4, 0, 0, true)
