@@ -802,7 +802,7 @@ if CheckPlace() then
 			prints("GameOver Changed")
 			local Remote
 			if not MatchGui.Visible then
-				return
+				repeat task.wait() until MatchGui.Visible
 			end
 			StratXLibrary.RestartCount += 1 --need to stop handler, timewavewait
 			task.wait(1)
