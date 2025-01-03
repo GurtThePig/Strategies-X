@@ -817,6 +817,13 @@ if CheckPlace() then
 			if not MatchGui.Visible then
 				return
 			end
+			local Remote
+			local MapInStrat = StratXLibrary.Strat.Map.Lists[#v.Map.Lists] and StratXLibrary.Strat.Map.Lists[#v.Map.Lists].Map
+			if MapInStrat == "Tutorial" then
+				Remote = TeleportHandler(3260590327,2,7)
+				SafeTeleport(Remote)
+				return
+			end
 			StratXLibrary.RestartCount += 1 --need to stop handler, timewavewait
 			task.wait(1)
 			local PlayerInfo = StratXLibrary.UI.PlayerInfo
@@ -934,12 +941,6 @@ if CheckPlace() then
 				prints("Starting a New Match")
 				for i,v in ipairs(StratXLibrary.Strat) do
 					local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
-					local Remote
-					if MapInStrat == "Tutorial" then
-						Remote = TeleportHandler(3260590327,2,7)
-						SafeTeleport(Remote)
-						return
-					end
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
