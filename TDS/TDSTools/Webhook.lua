@@ -64,6 +64,7 @@ local Identifier = {
 	["rbxassetid://128078447476652"] = "Turkey Leg",
 	["rbxassetid://5870325376"] = "Coins",
 	["rbxassetid://5870383867"] = "Gems",
+	["rbxassetid://6794340240"] = "Experience",
 }
 
 --Webhook Functions

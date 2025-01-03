@@ -781,34 +781,26 @@ if CheckPlace() then
 		function CheckReward()
 			local RewardType, RewardAmount
 
-			repeat task.wait() until Rewards:FindFirstChild(1) and Rewards:FindFirstChild(2)--Rewards[1] and Rewards[2]
-			for i , v in ipairs(Rewards:GetChildren()) do
+			repeat task.wait() until Rewards:FindFirstChild(1) or (Rewards:FindFirstChild(1) and Rewards:FindFirstChild(2))--Rewards[1] or ( Rewards[1] and Rewards[2] )
+			for i,v in ipairs(Rewards:GetChildren()) do
 				if v:IsA("Frame") then
 					if v:WaitForChild("content"):FindFirstChild("icon"):IsA("ImageLabel") then
 						if v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://5870325376" then
 							RewardType = "Coins"
 							RewardAmount = tonumber(v.content.textLabel.Text)
 							break
-						else
+						elseif v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://6794340240" then
+							RewardType = "Experience"
+							RewardAmount = tonumber(v.content.textLabel.Text)
+							break
+						elseif v:WaitForChild("content"):FindFirstChild("icon").Image == "rbxassetid://5870383867" then
 							RewardType = "Gems"
 							RewardAmount = tonumber(v.content.textLabel.Text)
+							break
 						end
 					end
 				end
 			end
-			--[[	
-			if Rewards[2]:WaitForChild("content"):WaitForChild("icon").Image == "rbxassetid://5870325376" then
-               			
-           		end
-															
-			if GetPlayerState():GetAttribute("CoinsReward") then
-				RewardType = "Coins"
-				RewardAmount = GetPlayerState():GetAttribute("CoinsReward")
-			else
-				RewardType = "Gems"
-				RewardAmount = GetPlayerState():GetAttribute("GemsReward")
-			end
-			]]
 			return {RewardType, RewardAmount}
 		end
 		warn("Connected?")
