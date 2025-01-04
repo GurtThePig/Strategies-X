@@ -921,6 +921,10 @@ if CheckPlace() then
 				prints("Starting a New Match")
 				for i,v in ipairs(StratXLibrary.Strat) do
 					local MapInStrat = v.Map.Lists[#v.Map.Lists] and v.Map.Lists[#v.Map.Lists].Map
+					if MapInStrat == "Tutorial" then
+					    Remote = TeleportHandler(3260590327,2,7)
+					    SafeTeleport(Remote)
+					end
 					if table.find(SpecialMaps, MapInStrat) then
 						local SpecialTable = SpecialGameMode[MapInStrat]
     					if SpecialTable.mode == "halloween2024" then
@@ -963,9 +967,6 @@ if CheckPlace() then
     						})
 							SafeTeleport(Remote)
     					end
-    				elseif MapInStrat == "Tutorial" then
-						Remote = TeleportHandler(3260590327,2,7)
-						SafeTeleport(Remote)
 					else
 						local DiffTable = {
     						["Easy"] = "Easy",
